@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_api/ament_cmake_core/xarm_apiConfig.cmake

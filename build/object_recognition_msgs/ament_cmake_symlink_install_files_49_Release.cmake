@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/object_recognition_msgs" FILES "/home/anatoly/ros2k_ws/build/object_recognition_msgs/ament_cmake_core/object_recognition_msgsConfig.cmake" "/home/anatoly/ros2k_ws/build/object_recognition_msgs/ament_cmake_core/object_recognition_msgsConfig-version.cmake" "DESTINATION" "share/object_recognition_msgs/cmake")

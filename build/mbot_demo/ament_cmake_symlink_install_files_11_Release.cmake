@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/demo/mbot_demo" FILES "/home/anatoly/ros2k_ws/build/mbot_demo/ament_cmake_index/share/ament_index/resource_index/packages/mbot_demo" "DESTINATION" "share/ament_index/resource_index/packages")

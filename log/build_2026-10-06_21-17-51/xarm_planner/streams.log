@@ -1,0 +1,35 @@
+[0.019s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_planner': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner
+[0.074s] -- The C compiler identification is GNU 13.3.0
+[0.136s] -- The CXX compiler identification is GNU 13.3.0
+[0.155s] -- Detecting C compiler ABI info
+[0.248s] -- Detecting C compiler ABI info - done
+[0.259s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.260s] -- Detecting C compile features
+[0.260s] -- Detecting C compile features - done
+[0.270s] -- Detecting CXX compiler ABI info
+[0.379s] -- Detecting CXX compiler ABI info - done
+[0.390s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.391s] -- Detecting CXX compile features
+[0.391s] -- Detecting CXX compile features - done
+[0.398s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[0.558s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.639s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.709s] [31mCMake Error at CMakeLists.txt:27 (find_package):
+[0.709s]   By not providing "Findmoveit.cmake" in CMAKE_MODULE_PATH this project has
+[0.710s]   asked CMake to find a package configuration file provided by "moveit", but
+[0.710s]   CMake did not find one.
+[0.710s] 
+[0.710s]   Could not find a package configuration file provided by "moveit" with any
+[0.710s]   of the following names:
+[0.710s] 
+[0.710s]     moveitConfig.cmake
+[0.710s]     moveit-config.cmake
+[0.710s] 
+[0.710s]   Add the installation prefix of "moveit" to CMAKE_PREFIX_PATH or set
+[0.710s]   "moveit_DIR" to a directory containing one of the above files.  If "moveit"
+[0.710s]   provides a separate development package or SDK, be sure it has been
+[0.710s]   installed.
+[0.710s] 
+[0.711s] [0m
+[0.711s] -- Configuring incomplete, errors occurred!
+[0.715s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_planner' returned '1': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner

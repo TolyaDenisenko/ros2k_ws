@@ -1,0 +1,22 @@
+[1.209s] Invoking command in '/home/anatoly/ros2k_ws/build/uf_ros_lib': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/anatoly/ros2k_ws/build/uf_ros_lib/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/anatoly/ros2k_ws/build/uf_ros_lib/build --no-deps symlink_data
+[1.752s] running develop
+[2.103s] running egg_info
+[2.103s] creating uf_ros_lib.egg-info
+[2.150s] writing uf_ros_lib.egg-info/PKG-INFO
+[2.153s] writing dependency_links to uf_ros_lib.egg-info/dependency_links.txt
+[2.156s] writing requirements to uf_ros_lib.egg-info/requires.txt
+[2.156s] writing top-level names to uf_ros_lib.egg-info/top_level.txt
+[2.156s] writing manifest file 'uf_ros_lib.egg-info/SOURCES.txt'
+[2.227s] reading manifest file 'uf_ros_lib.egg-info/SOURCES.txt'
+[2.228s] writing manifest file 'uf_ros_lib.egg-info/SOURCES.txt'
+[2.288s] running build_ext
+[2.288s] Creating /home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages/uf-ros-lib.egg-link (link to .)
+[2.289s] 
+[2.289s] Installed /home/anatoly/ros2k_ws/build/uf_ros_lib
+[2.289s] running symlink_data
+[2.289s] creating /home/anatoly/ros2k_ws/install/uf_ros_lib/share/ament_index
+[2.289s] creating /home/anatoly/ros2k_ws/install/uf_ros_lib/share/ament_index/resource_index
+[2.290s] creating /home/anatoly/ros2k_ws/install/uf_ros_lib/share/ament_index/resource_index/packages
+[2.293s] symbolically linking /home/anatoly/ros2k_ws/build/uf_ros_lib/resource/uf_ros_lib -> /home/anatoly/ros2k_ws/install/uf_ros_lib/share/ament_index/resource_index/packages
+[2.295s] symbolically linking /home/anatoly/ros2k_ws/build/uf_ros_lib/package.xml -> /home/anatoly/ros2k_ws/install/uf_ros_lib/share/uf_ros_lib
+[2.393s] Invoked command in '/home/anatoly/ros2k_ws/build/uf_ros_lib' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/anatoly/ros2k_ws/build/uf_ros_lib/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/anatoly/ros2k_ws/build/uf_ros_lib/build --no-deps symlink_data

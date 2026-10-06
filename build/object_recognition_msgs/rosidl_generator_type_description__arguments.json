@@ -1,0 +1,24 @@
+{
+  "package_name": "object_recognition_msgs",
+  "output_dir": "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_generator_type_description/object_recognition_msgs",
+  "idl_tuples": [
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/ObjectInformation.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/ObjectType.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/RecognizedObject.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/RecognizedObjectArray.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/Table.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:msg/TableArray.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:srv/GetObjectInformation.idl",
+    "/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_adapter/object_recognition_msgs:action/ObjectRecognition.idl"
+  ],
+  "include_paths": [
+    "action_msgs:/opt/ros/kilted/share/action_msgs",
+    "builtin_interfaces:/opt/ros/kilted/share/builtin_interfaces",
+    "unique_identifier_msgs:/opt/ros/kilted/share/unique_identifier_msgs",
+    "service_msgs:/opt/ros/kilted/share/service_msgs",
+    "std_msgs:/opt/ros/kilted/share/std_msgs",
+    "geometry_msgs:/opt/ros/kilted/share/geometry_msgs",
+    "sensor_msgs:/opt/ros/kilted/share/sensor_msgs",
+    "shape_msgs:/opt/ros/kilted/share/shape_msgs"
+  ]
+}

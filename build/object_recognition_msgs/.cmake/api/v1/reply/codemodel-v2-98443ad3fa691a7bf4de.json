@@ -1,0 +1,267 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Release-ae68c437a071b570fdfc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						15,
+						16,
+						17,
+						18,
+						19
+					]
+				},
+				{
+					"build" : "object_recognition_msgs__py",
+					"jsonFile" : "directory-object_recognition_msgs__py-Release-8f1a5668595e8cc0e80d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/anatoly/ros2k_ws/build/object_recognition_msgs/object_recognition_msgs__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "object_recognition_msgs__rs",
+					"jsonFile" : "directory-object_recognition_msgs__rs-Release-9793f852578cca3ec4c1.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/anatoly/ros2k_ws/build/object_recognition_msgs/object_recognition_msgs__rs",
+					"targetIndexes" : 
+					[
+						14
+					]
+				}
+			],
+			"name" : "Release",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2
+					],
+					"name" : "object_recognition_msgs",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18,
+						19
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_object_recognition_msgs_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_object_recognition_msgs_egg-Release-66e210ba243b71b37c95.json",
+					"name" : "ament_cmake_python_build_object_recognition_msgs_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_symlink_object_recognition_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_symlink_object_recognition_msgs-Release-93106fad29b842c8e885.json",
+					"name" : "ament_cmake_python_symlink_object_recognition_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs-Release-2cca93a5383c3ea6e107.json",
+					"name" : "object_recognition_msgs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__cpp-Release-5959f79347fb8fb65d3d.json",
+					"name" : "object_recognition_msgs__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "object_recognition_msgs__py::@1739a45b469a4adf97f1",
+					"jsonFile" : "target-object_recognition_msgs__py-Release-b11a692cd016cc52cb69.json",
+					"name" : "object_recognition_msgs__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_generator_c-Release-25bfad0e12a7e479358a.json",
+					"name" : "object_recognition_msgs__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_generator_py-Release-96f7e4f3794f50d44e8a.json",
+					"name" : "object_recognition_msgs__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_generator_type_description::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_generator_type_description-Release-cf262bc74a6292a55648.json",
+					"name" : "object_recognition_msgs__rosidl_generator_type_description",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_c-Release-98d18d88dfec21787253.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_cpp-Release-aa390de4cc45a6fa62d2.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_fastrtps_c-Release-0c64c20912b7403a99cf.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_fastrtps_cpp-Release-29664361307baf02846a.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_introspection_c-Release-7698378e72099734c30d.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs__rosidl_typesupport_introspection_cpp-Release-08069c99f216b983defa.json",
+					"name" : "object_recognition_msgs__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "object_recognition_msgs__rs::@510a56dd8d01e663e757",
+					"jsonFile" : "target-object_recognition_msgs__rs-Release-fe99195d6fb5b3750f3e.json",
+					"name" : "object_recognition_msgs__rs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs_s__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs_s__rosidl_typesupport_c-Release-6874b8e9c8de2e2b1f3b.json",
+					"name" : "object_recognition_msgs_s__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs_s__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs_s__rosidl_typesupport_fastrtps_c-Release-e545b83208cebff14e1a.json",
+					"name" : "object_recognition_msgs_s__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs_s__rosidl_typesupport_introspection_c-Release-d8f1964e455070f0dc74.json",
+					"name" : "object_recognition_msgs_s__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "object_recognition_msgs_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-object_recognition_msgs_uninstall-Release-93ecbf36fe68d0987724.json",
+					"name" : "object_recognition_msgs_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-Release-73aaf40ca8d96f94bb81.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/anatoly/ros2k_ws/build/object_recognition_msgs",
+		"source" : "/home/anatoly/ros2k_ws/src/object_recognition_msgs"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

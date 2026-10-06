@@ -1,0 +1,177 @@
+[0.000000] (-) TimerEvent: {}
+[0.000231] (-) JobUnselected: {'identifier': 'd435i_xarm_setup'}
+[0.000259] (-) JobUnselected: {'identifier': 'mbot_demo'}
+[0.000275] (-) JobUnselected: {'identifier': 'object_recognition_msgs'}
+[0.000288] (-) JobUnselected: {'identifier': 'realsense_gazebo_plugin'}
+[0.000300] (-) JobUnselected: {'identifier': 'uf_ros_lib'}
+[0.000312] (-) JobUnselected: {'identifier': 'xarm_api'}
+[0.000323] (-) JobUnselected: {'identifier': 'xarm_controller'}
+[0.000334] (-) JobUnselected: {'identifier': 'xarm_description'}
+[0.000345] (-) JobUnselected: {'identifier': 'xarm_gazebo'}
+[0.000356] (-) JobUnselected: {'identifier': 'xarm_moveit_config'}
+[0.000367] (-) JobUnselected: {'identifier': 'xarm_msgs'}
+[0.000379] (-) JobUnselected: {'identifier': 'xarm_sdk'}
+[0.000392] (xarm_moveit_servo) JobQueued: {'identifier': 'xarm_moveit_servo', 'dependencies': OrderedDict({'uf_ros_lib': '/home/anatoly/ros2k_ws/install/uf_ros_lib', 'xarm_description': '/home/anatoly/ros2k_ws/install/xarm_description', 'xarm_msgs': '/home/anatoly/ros2k_ws/install/xarm_msgs', 'xarm_sdk': '/home/anatoly/ros2k_ws/install/xarm_sdk', 'xarm_api': '/home/anatoly/ros2k_ws/install/xarm_api', 'xarm_controller': '/home/anatoly/ros2k_ws/install/xarm_controller', 'xarm_gazebo': '/home/anatoly/ros2k_ws/install/xarm_gazebo', 'xarm_moveit_config': '/home/anatoly/ros2k_ws/install/xarm_moveit_config'})}
+[0.000426] (xarm_planner) JobQueued: {'identifier': 'xarm_planner', 'dependencies': OrderedDict({'uf_ros_lib': '/home/anatoly/ros2k_ws/install/uf_ros_lib', 'xarm_description': '/home/anatoly/ros2k_ws/install/xarm_description', 'xarm_msgs': '/home/anatoly/ros2k_ws/install/xarm_msgs', 'xarm_sdk': '/home/anatoly/ros2k_ws/install/xarm_sdk', 'xarm_api': '/home/anatoly/ros2k_ws/install/xarm_api', 'xarm_controller': '/home/anatoly/ros2k_ws/install/xarm_controller', 'xarm_gazebo': '/home/anatoly/ros2k_ws/install/xarm_gazebo', 'xarm_moveit_config': '/home/anatoly/ros2k_ws/install/xarm_moveit_config'})}
+[0.000770] (xarm_moveit_servo) JobStarted: {'identifier': 'xarm_moveit_servo'}
+[0.006785] (xarm_planner) JobStarted: {'identifier': 'xarm_planner'}
+[0.022291] (xarm_moveit_servo) JobProgress: {'identifier': 'xarm_moveit_servo', 'progress': 'cmake'}
+[0.023188] (xarm_moveit_servo) Command: {'cmd': ['/usr/bin/cmake', '/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_servo', '-DCMAKE_BUILD_TYPE=Release', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_moveit_servo'], 'cwd': '/home/anatoly/ros2k_ws/build/xarm_moveit_servo', 'env': OrderedDict({'GZ_SIM_SYSTEM_PLUGIN_PATH': '/opt/ros/kilted/lib', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/kilted/share', 'USER': 'anatoly', 'GZ_CONFIG_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/share/gz:/opt/ros/kilted/opt/sdformat_vendor/share/gz:/opt/ros/kilted/opt/gz_gui_vendor/share/gz:/opt/ros/kilted/opt/gz_transport_vendor/share/gz:/opt/ros/kilted/opt/gz_rendering_vendor/share/gz:/opt/ros/kilted/opt/gz_plugin_vendor/share/gz:/opt/ros/kilted/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/kilted/opt/gz_msgs_vendor/share/gz:/opt/ros/kilted/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:/opt/ros/kilted/opt/gz_sim_vendor/lib:/opt/ros/kilted/opt/gz_sensors_vendor/lib:/opt/ros/kilted/opt/gz_physics_vendor/lib:/opt/ros/kilted/opt/sdformat_vendor/lib:/opt/ros/kilted/opt/gz_gui_vendor/lib:/opt/ros/kilted/opt/gz_transport_vendor/lib:/opt/ros/kilted/opt/gz_rendering_vendor/lib:/opt/ros/kilted/opt/gz_plugin_vendor/lib:/opt/ros/kilted/opt/gz_fuel_tools_vendor/lib:/opt/ros/kilted/opt/gz_msgs_vendor/lib:/opt/ros/kilted/opt/gz_common_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_tools_vendor/lib:/opt/ros/kilted/opt/gz_ogre_next_vendor/lib:/opt/ros/kilted/opt/gz_dartsim_vendor/lib:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'HOME': '/home/anatoly', 'OLDPWD': '/home/anatoly/ros2k_ws', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '2393', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GNOME_KEYRING_CONTROL': '/run/user/1000/keyring', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'anatoly', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.SettingsDaemon.MediaKeys.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'anatoly', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/home/anatoly/.local/bin:/opt/ros/kilted/opt/gz_msgs_vendor/bin:/opt/ros/kilted/opt/gz_tools_vendor/bin:/opt/ros/kilted/opt/gz_ogre_next_vendor/bin:/opt/ros/kilted/bin:/home/anatoly/.local/bin:/home/anatoly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/anatoly-System-Product-Name:@/tmp/.ICE-unix/2056,unix/anatoly-System-Product-Name:/tmp/.ICE-unix/2056', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/868e0e9e_ff4b_4809_97f9_a8237b222384', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.4D74W3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.122', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:/opt/ros/kilted', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/anatoly/ros2k_ws/build/xarm_moveit_servo', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:/opt/ros/kilted/opt/gz_sim_vendor/lib/python:/opt/ros/kilted/opt/sdformat_vendor/lib/python:/opt/ros/kilted/opt/gz_transport_vendor/lib/python:/opt/ros/kilted/opt/gz_msgs_vendor/lib/python:/opt/ros/kilted/opt/gz_math_vendor/lib/python:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted'}), 'shell': False}
+[0.025803] (xarm_planner) JobProgress: {'identifier': 'xarm_planner', 'progress': 'cmake'}
+[0.026344] (xarm_planner) Command: {'cmd': ['/usr/bin/cmake', '/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner', '-DCMAKE_BUILD_TYPE=Release', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner'], 'cwd': '/home/anatoly/ros2k_ws/build/xarm_planner', 'env': OrderedDict({'GZ_SIM_SYSTEM_PLUGIN_PATH': '/opt/ros/kilted/lib', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/kilted/share', 'USER': 'anatoly', 'GZ_CONFIG_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/share/gz:/opt/ros/kilted/opt/sdformat_vendor/share/gz:/opt/ros/kilted/opt/gz_gui_vendor/share/gz:/opt/ros/kilted/opt/gz_transport_vendor/share/gz:/opt/ros/kilted/opt/gz_rendering_vendor/share/gz:/opt/ros/kilted/opt/gz_plugin_vendor/share/gz:/opt/ros/kilted/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/kilted/opt/gz_msgs_vendor/share/gz:/opt/ros/kilted/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:/opt/ros/kilted/opt/gz_sim_vendor/lib:/opt/ros/kilted/opt/gz_sensors_vendor/lib:/opt/ros/kilted/opt/gz_physics_vendor/lib:/opt/ros/kilted/opt/sdformat_vendor/lib:/opt/ros/kilted/opt/gz_gui_vendor/lib:/opt/ros/kilted/opt/gz_transport_vendor/lib:/opt/ros/kilted/opt/gz_rendering_vendor/lib:/opt/ros/kilted/opt/gz_plugin_vendor/lib:/opt/ros/kilted/opt/gz_fuel_tools_vendor/lib:/opt/ros/kilted/opt/gz_msgs_vendor/lib:/opt/ros/kilted/opt/gz_common_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_tools_vendor/lib:/opt/ros/kilted/opt/gz_ogre_next_vendor/lib:/opt/ros/kilted/opt/gz_dartsim_vendor/lib:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'HOME': '/home/anatoly', 'OLDPWD': '/home/anatoly/ros2k_ws', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '2393', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GNOME_KEYRING_CONTROL': '/run/user/1000/keyring', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'anatoly', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.SettingsDaemon.MediaKeys.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'anatoly', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/home/anatoly/.local/bin:/opt/ros/kilted/opt/gz_msgs_vendor/bin:/opt/ros/kilted/opt/gz_tools_vendor/bin:/opt/ros/kilted/opt/gz_ogre_next_vendor/bin:/opt/ros/kilted/bin:/home/anatoly/.local/bin:/home/anatoly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/anatoly-System-Product-Name:@/tmp/.ICE-unix/2056,unix/anatoly-System-Product-Name:/tmp/.ICE-unix/2056', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/868e0e9e_ff4b_4809_97f9_a8237b222384', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.4D74W3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.122', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:/opt/ros/kilted', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/anatoly/ros2k_ws/build/xarm_planner', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:/opt/ros/kilted/opt/gz_sim_vendor/lib/python:/opt/ros/kilted/opt/sdformat_vendor/lib/python:/opt/ros/kilted/opt/gz_transport_vendor/lib/python:/opt/ros/kilted/opt/gz_msgs_vendor/lib/python:/opt/ros/kilted/opt/gz_math_vendor/lib/python:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted'}), 'shell': False}
+[0.038869] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)\n'}
+[0.040879] (xarm_planner) StdoutLine: {'line': b'-- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)\n'}
+[0.099825] (-) TimerEvent: {}
+[0.200085] (-) TimerEvent: {}
+[0.238148] (xarm_moveit_servo) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.238333] (xarm_planner) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.244963] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rclcpp: 29.5.11 (/opt/ros/kilted/share/rclcpp/cmake)\n'}
+[0.259033] (xarm_planner) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:27 (find_package):\n'}
+[0.259238] (xarm_planner) StderrLine: {'line': b'  By not providing "Findmoveit.cmake" in CMAKE_MODULE_PATH this project has\n'}
+[0.259309] (xarm_planner) StderrLine: {'line': b'  asked CMake to find a package configuration file provided by "moveit", but\n'}
+[0.259370] (xarm_planner) StderrLine: {'line': b'  CMake did not find one.\n'}
+[0.259428] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.259485] (xarm_planner) StderrLine: {'line': b'  Could not find a package configuration file provided by "moveit" with any\n'}
+[0.259543] (xarm_planner) StderrLine: {'line': b'  of the following names:\n'}
+[0.259600] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.259656] (xarm_planner) StderrLine: {'line': b'    moveitConfig.cmake\n'}
+[0.259712] (xarm_planner) StderrLine: {'line': b'    moveit-config.cmake\n'}
+[0.259768] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.259824] (xarm_planner) StderrLine: {'line': b'  Add the installation prefix of "moveit" to CMAKE_PREFIX_PATH or set\n'}
+[0.259903] (xarm_planner) StderrLine: {'line': b'  "moveit_DIR" to a directory containing one of the above files.  If "moveit"\n'}
+[0.259963] (xarm_planner) StderrLine: {'line': b'  provides a separate development package or SDK, be sure it has been\n'}
+[0.260021] (xarm_planner) StderrLine: {'line': b'  installed.\n'}
+[0.260086] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.260144] (xarm_planner) StderrLine: {'line': b'\x1b[0m\n'}
+[0.260202] (xarm_planner) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[0.262392] (xarm_planner) CommandEnded: {'returncode': 1}
+[0.263742] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rosidl_generator_c: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_c/cmake)\n'}
+[0.272708] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)\n'}
+[0.283191] (xarm_planner) JobEnded: {'identifier': 'xarm_planner', 'rc': 1}
+[0.284141] (xarm_moveit_servo) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[0.297588] (xarm_moveit_servo) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[0.300145] (-) TimerEvent: {}
+[0.360069] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 7.8.3 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)\n'}
+[0.361447] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 9.3.5 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)\n'}
+[0.400218] (-) TimerEvent: {}
+[0.400901] (xarm_moveit_servo) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[0.478877] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rclcpp_components: 29.5.11 (/opt/ros/kilted/share/rclcpp_components/cmake)\n'}
+[0.500286] (-) TimerEvent: {}
+[0.506393] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found std_msgs: 5.5.3 (/opt/ros/kilted/share/std_msgs/cmake)\n'}
+[0.519553] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found std_srvs: 5.5.3 (/opt/ros/kilted/share/std_srvs/cmake)\n'}
+[0.535921] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found sensor_msgs: 5.5.3 (/opt/ros/kilted/share/sensor_msgs/cmake)\n'}
+[0.576007] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found control_msgs: 6.10.0 (/opt/ros/kilted/share/control_msgs/cmake)\n'}
+[0.600364] (-) TimerEvent: {}
+[0.690292] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found moveit_msgs: 2.7.1 (/opt/ros/kilted/share/moveit_msgs/cmake)\n'}
+[0.700439] (-) TimerEvent: {}
+[0.800644] (-) TimerEvent: {}
+[0.860634] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found moveit_ros_planning: 2.14.3 (/opt/ros/kilted/share/moveit_ros_planning/cmake)\n'}
+[0.900705] (-) TimerEvent: {}
+[1.000882] (-) TimerEvent: {}
+[1.012422] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: system filesystem date_time program_options thread chrono \n'}
+[1.044854] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found tcb_span: 1.3.2 (/opt/ros/kilted/share/tcb_span/cmake)\n'}
+[1.054730] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found rclcpp_lifecycle: 29.5.11 (/opt/ros/kilted/share/rclcpp_lifecycle/cmake)\n'}
+[1.094955] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found parameter_traits: 0.7.6 (/opt/ros/kilted/share/parameter_traits/cmake)\n'}
+[1.100947] (-) TimerEvent: {}
+[1.139150] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: chrono date_time filesystem iostreams program_options regex serialization system thread \n'}
+[1.201047] (-) TimerEvent: {}
+[1.301245] (-) TimerEvent: {}
+[1.303121] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found Eigen3: TRUE (found version "3.4.0") \n'}
+[1.303266] (xarm_moveit_servo) StdoutLine: {'line': b'-- Ensuring Eigen3 include directory is part of orocos-kdl CMake target\n'}
+[1.401313] (-) TimerEvent: {}
+[1.501455] (-) TimerEvent: {}
+[1.507672] (xarm_moveit_servo) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.19.3 (/opt/ros/kilted/share/ament_lint_auto/cmake)\n'}
+[1.601558] (-) TimerEvent: {}
+[1.630168] (xarm_moveit_servo) StderrLine: {'line': b'\x1b[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):\n'}
+[1.630315] (xarm_moveit_servo) StderrLine: {'line': b'  ament_target_dependencies() is deprecated.  Use target_link_libraries()\n'}
+[1.630385] (xarm_moveit_servo) StderrLine: {'line': b'  with modern CMake targets instead.  Try replacing this call with:\n'}
+[1.630456] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.630519] (xarm_moveit_servo) StderrLine: {'line': b'    target_link_libraries(xarm_joystick_input PUBLIC\n'}
+[1.630582] (xarm_moveit_servo) StderrLine: {'line': b'      ${control_msgs_TARGETS}\n'}
+[1.630644] (xarm_moveit_servo) StderrLine: {'line': b'      ${geometry_msgs_TARGETS}\n'}
+[1.630706] (xarm_moveit_servo) StderrLine: {'line': b'      ${moveit_msgs_TARGETS}\n'}
+[1.630768] (xarm_moveit_servo) StderrLine: {'line': b'      ${sensor_msgs_TARGETS}\n'}
+[1.630829] (xarm_moveit_servo) StderrLine: {'line': b'      ${std_msgs_TARGETS}\n'}
+[1.630905] (xarm_moveit_servo) StderrLine: {'line': b'      ${std_srvs_TARGETS}\n'}
+[1.630969] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::default_request_adapter_parameters\n'}
+[1.631033] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::default_response_adapter_parameters\n'}
+[1.631091] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::kinematics_parameters\n'}
+[1.631148] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_collision_plugin_loader\n'}
+[1.631206] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_constraint_sampler_manager_loader\n'}
+[1.631263] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_cpp\n'}
+[1.631320] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_kinematics_plugin_loader\n'}
+[1.631378] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_plan_execution\n'}
+[1.631435] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_pipeline\n'}
+[1.631492] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_pipeline_interfaces\n'}
+[1.631549] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_scene_monitor\n'}
+[1.631607] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_rdf_loader\n'}
+[1.631664] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_robot_model_loader\n'}
+[1.631722] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_trajectory_execution_manager\n'}
+[1.631779] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::planning_pipeline_parameters\n'}
+[1.631837] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::srdf_publisher_node\n'}
+[1.631909] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp::rclcpp\n'}
+[1.631968] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp_components::component\n'}
+[1.632025] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp_components::component_manager\n'}
+[1.632083] (xarm_moveit_servo) StderrLine: {'line': b'      sensor_msgs::sensor_msgs_library\n'}
+[1.632140] (xarm_moveit_servo) StderrLine: {'line': b'    )\n'}
+[1.632197] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.632254] (xarm_moveit_servo) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[1.632312] (xarm_moveit_servo) StderrLine: {'line': b'  CMakeLists.txt:62 (ament_target_dependencies)\n'}
+[1.632370] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.632428] (xarm_moveit_servo) StderrLine: {'line': b'\x1b[0m\n'}
+[1.638107] (xarm_moveit_servo) StderrLine: {'line': b'\x1b[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):\n'}
+[1.638265] (xarm_moveit_servo) StderrLine: {'line': b'  ament_target_dependencies() is deprecated.  Use target_link_libraries()\n'}
+[1.638345] (xarm_moveit_servo) StderrLine: {'line': b'  with modern CMake targets instead.  Try replacing this call with:\n'}
+[1.638436] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.638510] (xarm_moveit_servo) StderrLine: {'line': b'    target_link_libraries(xarm_keyboard_input PUBLIC\n'}
+[1.638583] (xarm_moveit_servo) StderrLine: {'line': b'      ${control_msgs_TARGETS}\n'}
+[1.638655] (xarm_moveit_servo) StderrLine: {'line': b'      ${geometry_msgs_TARGETS}\n'}
+[1.638732] (xarm_moveit_servo) StderrLine: {'line': b'      ${moveit_msgs_TARGETS}\n'}
+[1.638803] (xarm_moveit_servo) StderrLine: {'line': b'      ${sensor_msgs_TARGETS}\n'}
+[1.638884] (xarm_moveit_servo) StderrLine: {'line': b'      ${std_msgs_TARGETS}\n'}
+[1.638960] (xarm_moveit_servo) StderrLine: {'line': b'      ${std_srvs_TARGETS}\n'}
+[1.639028] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::default_request_adapter_parameters\n'}
+[1.639090] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::default_response_adapter_parameters\n'}
+[1.639147] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::kinematics_parameters\n'}
+[1.639203] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_collision_plugin_loader\n'}
+[1.639260] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_constraint_sampler_manager_loader\n'}
+[1.639318] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_cpp\n'}
+[1.639375] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_kinematics_plugin_loader\n'}
+[1.639432] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_plan_execution\n'}
+[1.639489] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_pipeline\n'}
+[1.639546] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_pipeline_interfaces\n'}
+[1.639604] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_planning_scene_monitor\n'}
+[1.639661] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_rdf_loader\n'}
+[1.639717] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_robot_model_loader\n'}
+[1.639774] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::moveit_trajectory_execution_manager\n'}
+[1.639831] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::planning_pipeline_parameters\n'}
+[1.639949] (xarm_moveit_servo) StderrLine: {'line': b'      moveit_ros_planning::srdf_publisher_node\n'}
+[1.640019] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp::rclcpp\n'}
+[1.640078] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp_components::component\n'}
+[1.640137] (xarm_moveit_servo) StderrLine: {'line': b'      rclcpp_components::component_manager\n'}
+[1.640195] (xarm_moveit_servo) StderrLine: {'line': b'      sensor_msgs::sensor_msgs_library\n'}
+[1.640260] (xarm_moveit_servo) StderrLine: {'line': b'    )\n'}
+[1.640633] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.640721] (xarm_moveit_servo) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[1.640786] (xarm_moveit_servo) StderrLine: {'line': b'  CMakeLists.txt:68 (ament_target_dependencies)\n'}
+[1.640877] (xarm_moveit_servo) StderrLine: {'line': b'\n'}
+[1.640962] (xarm_moveit_servo) StderrLine: {'line': b'\x1b[0m\n'}
+[1.649973] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'copyright' to check source files copyright and LICENSE\n"}
+[1.652047] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'cppcheck' to perform static code analysis on C / C++ code\n"}
+[1.652425] (xarm_moveit_servo) StdoutLine: {'line': b'-- Configured cppcheck include dirs: /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_servo/include\n'}
+[1.652516] (xarm_moveit_servo) StdoutLine: {'line': b'-- Configured cppcheck exclude dirs and/or files: \n'}
+[1.654264] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'cpplint' to check C / C++ code against the Google style\n"}
+[1.654362] (xarm_moveit_servo) StdoutLine: {'line': b'-- Configured cpplint exclude dirs and/or files: \n'}
+[1.655146] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'flake8' to check Python code syntax and style conventions\n"}
+[1.655222] (xarm_moveit_servo) StdoutLine: {'line': b"-- Configured 'flake8' exclude dirs and/or files: \n"}
+[1.656131] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[1.656983] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257\n"}
+[1.658783] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'uncrustify' to check C / C++ code style\n"}
+[1.658869] (xarm_moveit_servo) StdoutLine: {'line': b'-- Configured uncrustify additional arguments: \n'}
+[1.659673] (xarm_moveit_servo) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[1.661745] (xarm_moveit_servo) StdoutLine: {'line': b'-- Configuring done (1.6s)\n'}
+[1.701654] (-) TimerEvent: {}
+[1.716459] (xarm_moveit_servo) StdoutLine: {'line': b'-- Generating done (0.0s)\n'}
+[1.726110] (xarm_moveit_servo) StdoutLine: {'line': b'-- Build files have been written to: /home/anatoly/ros2k_ws/build/xarm_moveit_servo\n'}
+[1.738667] (xarm_moveit_servo) JobEnded: {'identifier': 'xarm_moveit_servo', 'rc': 'SIGINT'}
+[1.749150] (-) EventReactorShutdown: {}

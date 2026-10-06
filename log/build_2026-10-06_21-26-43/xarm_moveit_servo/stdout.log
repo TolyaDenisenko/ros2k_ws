@@ -1,0 +1,35 @@
+[100%] Built target xarm_joystick_input
+[100%] Built target xarm_keyboard_input
+-- Install configuration: "Release"
+-- Execute custom install script
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//config/xarm_moveit_servo_config.yaml
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/_robot_moveit_servo.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/_robot_moveit_servo_fake.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/_robot_moveit_servo_realmove.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/lite6_moveit_servo_fake.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/lite6_moveit_servo_realmove.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/uf850_moveit_servo_fake.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/uf850_moveit_servo_realmove.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/xarm_moveit_servo_fake.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//launch/xarm_moveit_servo_realmove.launch.py
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo//rviz/servo.rviz
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/ament_index/resource_index/package_run_dependencies/xarm_moveit_servo
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/ament_index/resource_index/parent_prefix_path/xarm_moveit_servo
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/environment/ament_prefix_path.sh
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/environment/ament_prefix_path.dsv
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/environment/path.sh
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/environment/path.dsv
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/local_setup.bash
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/local_setup.sh
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/local_setup.zsh
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/local_setup.dsv
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/package.dsv
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/ament_index/resource_index/packages/xarm_moveit_servo
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/ament_index/resource_index/rclcpp_components/xarm_moveit_servo
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/cmake/xarm_moveit_servoConfig.cmake
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/cmake/xarm_moveit_servoConfig-version.cmake
+-- Symlinking: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/share/xarm_moveit_servo/package.xml
+-- Installing: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/libxarm_joystick_input.so
+-- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/libxarm_joystick_input.so" to ""
+-- Installing: /home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/xarm_moveit_servo/xarm_keyboard_input
+-- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/xarm_moveit_servo/xarm_keyboard_input" to ""

@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_description" FILES "/home/anatoly/ros2k_ws/build/xarm_description/ament_cmake_index/share/ament_index/resource_index/packages/xarm_description" "DESTINATION" "share/ament_index/resource_index/packages")

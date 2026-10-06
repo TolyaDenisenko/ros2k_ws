@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner" FILES "/home/anatoly/ros2k_ws/build/xarm_planner/ament_cmake_core/xarm_plannerConfig.cmake" "/home/anatoly/ros2k_ws/build/xarm_planner/ament_cmake_core/xarm_plannerConfig-version.cmake" "DESTINATION" "share/xarm_planner/cmake")

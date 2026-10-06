@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_rs/xarm_msgs/rust/src/msg.rs

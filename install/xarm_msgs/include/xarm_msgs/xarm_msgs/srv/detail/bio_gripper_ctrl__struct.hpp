@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_cpp/xarm_msgs/srv/detail/bio_gripper_ctrl__struct.hpp

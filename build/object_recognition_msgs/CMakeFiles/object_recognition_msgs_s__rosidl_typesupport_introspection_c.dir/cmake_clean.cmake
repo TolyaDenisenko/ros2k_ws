@@ -1,0 +1,11 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_introspection_c.c.o"
+  "CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_introspection_c.c.o.d"
+  "rosidl_generator_py/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.pdb"
+  "rosidl_generator_py/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang C)
+  include(CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_introspection_c.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

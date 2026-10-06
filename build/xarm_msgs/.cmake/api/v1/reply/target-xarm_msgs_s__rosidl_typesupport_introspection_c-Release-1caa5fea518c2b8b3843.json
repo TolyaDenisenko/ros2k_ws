@@ -1,0 +1,695 @@
+{
+	"artifacts" : 
+	[
+		{
+			"path" : "rosidl_generator_py/xarm_msgs/xarm_msgs_s__rosidl_typesupport_introspection_c.so"
+		}
+	],
+	"backtrace" : 7,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_library",
+			"__Python3_add_library",
+			"python3_add_library",
+			"include",
+			"ament_execute_extensions",
+			"rosidl_generate_interfaces",
+			"target_link_libraries",
+			"set_target_properties",
+			"find_package",
+			"add_dependencies",
+			"add_definitions",
+			"target_include_directories"
+		],
+		"files" : 
+		[
+			"/usr/share/cmake-3.28/Modules/FindPython/Support.cmake",
+			"/usr/share/cmake-3.28/Modules/FindPython3.cmake",
+			"/opt/ros/kilted/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake",
+			"/opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake",
+			"/opt/ros/kilted/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake",
+			"CMakeLists.txt",
+			"/opt/ros/kilted/share/rosidl_typesupport_c/cmake/rosidl_typesupport_c_generate_interfaces.cmake",
+			"/opt/ros/kilted/share/rosidl_typesupport_introspection_c/cmake/rosidl_typesupport_introspection_c_generate_interfaces.cmake",
+			"/opt/ros/kilted/share/rosidl_generator_c/cmake/rosidl_generator_c_generate_interfaces.cmake",
+			"/opt/ros/kilted/share/rosidl_runtime_c/cmake/rosidl_runtime_cExport.cmake",
+			"/opt/ros/kilted/share/rosidl_runtime_c/cmake/ament_cmake_export_targets-extras.cmake",
+			"/opt/ros/kilted/share/rosidl_runtime_c/cmake/rosidl_runtime_cConfig.cmake",
+			"/opt/ros/kilted/share/builtin_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake",
+			"/opt/ros/kilted/share/builtin_interfaces/cmake/builtin_interfacesConfig.cmake",
+			"/opt/ros/kilted/share/std_msgs/cmake/ament_cmake_export_dependencies-extras.cmake",
+			"/opt/ros/kilted/share/std_msgs/cmake/std_msgsConfig.cmake",
+			"/opt/ros/kilted/share/rcutils/cmake/rcutilsExport.cmake",
+			"/opt/ros/kilted/share/rcutils/cmake/ament_cmake_export_targets-extras.cmake",
+			"/opt/ros/kilted/share/rcutils/cmake/rcutilsConfig.cmake",
+			"/opt/ros/kilted/share/rosidl_runtime_c/cmake/ament_cmake_export_dependencies-extras.cmake",
+			"/opt/ros/kilted/share/ament_cmake_ros_core/cmake/ament_cmake_ros_core-extras.cmake",
+			"/opt/ros/kilted/share/ament_cmake_ros_core/cmake/ament_cmake_ros_coreConfig.cmake",
+			"/opt/ros/kilted/share/rosidl_typesupport_fastrtps_c/cmake/rosidl_typesupport_fastrtps_c_generate_interfaces.cmake"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 5
+			},
+			{
+				"command" : 5,
+				"file" : 5,
+				"line" : 109,
+				"parent" : 0
+			},
+			{
+				"command" : 4,
+				"file" : 4,
+				"line" : 280,
+				"parent" : 1
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 2,
+				"parent" : 3
+			},
+			{
+				"command" : 2,
+				"file" : 2,
+				"line" : 192,
+				"parent" : 4
+			},
+			{
+				"command" : 1,
+				"file" : 1,
+				"line" : 549,
+				"parent" : 5
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 4073,
+				"parent" : 6
+			},
+			{
+				"command" : 6,
+				"file" : 2,
+				"line" : 212,
+				"parent" : 4
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 6,
+				"parent" : 9
+			},
+			{
+				"command" : 6,
+				"file" : 6,
+				"line" : 146,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 6,
+				"line" : 146,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 6,
+				"line" : 146,
+				"parent" : 10
+			},
+			{
+				"command" : 6,
+				"file" : 6,
+				"line" : 146,
+				"parent" : 10
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 7,
+				"parent" : 15
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 142,
+				"parent" : 16
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 151,
+				"parent" : 16
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 151,
+				"parent" : 16
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 8,
+				"parent" : 20
+			},
+			{
+				"command" : 6,
+				"file" : 8,
+				"line" : 165,
+				"parent" : 21
+			},
+			{
+				"command" : 6,
+				"file" : 8,
+				"line" : 165,
+				"parent" : 21
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 151,
+				"parent" : 16
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 151,
+				"parent" : 16
+			},
+			{
+				"command" : 6,
+				"file" : 7,
+				"line" : 145,
+				"parent" : 16
+			},
+			{
+				"command" : 6,
+				"file" : 8,
+				"line" : 165,
+				"parent" : 21
+			},
+			{
+				"command" : 6,
+				"file" : 8,
+				"line" : 165,
+				"parent" : 21
+			},
+			{
+				"command" : 8,
+				"file" : 5,
+				"line" : 35,
+				"parent" : 0
+			},
+			{
+				"file" : 15,
+				"parent" : 29
+			},
+			{
+				"command" : 3,
+				"file" : 15,
+				"line" : 41,
+				"parent" : 30
+			},
+			{
+				"file" : 14,
+				"parent" : 31
+			},
+			{
+				"command" : 8,
+				"file" : 14,
+				"line" : 21,
+				"parent" : 32
+			},
+			{
+				"file" : 13,
+				"parent" : 33
+			},
+			{
+				"command" : 3,
+				"file" : 13,
+				"line" : 41,
+				"parent" : 34
+			},
+			{
+				"file" : 12,
+				"parent" : 35
+			},
+			{
+				"command" : 8,
+				"file" : 12,
+				"line" : 21,
+				"parent" : 36
+			},
+			{
+				"file" : 11,
+				"parent" : 37
+			},
+			{
+				"command" : 3,
+				"file" : 11,
+				"line" : 41,
+				"parent" : 38
+			},
+			{
+				"file" : 10,
+				"parent" : 39
+			},
+			{
+				"command" : 3,
+				"file" : 10,
+				"line" : 9,
+				"parent" : 40
+			},
+			{
+				"file" : 9,
+				"parent" : 41
+			},
+			{
+				"command" : 7,
+				"file" : 9,
+				"line" : 61,
+				"parent" : 42
+			},
+			{
+				"command" : 3,
+				"file" : 11,
+				"line" : 41,
+				"parent" : 38
+			},
+			{
+				"file" : 19,
+				"parent" : 44
+			},
+			{
+				"command" : 8,
+				"file" : 19,
+				"line" : 21,
+				"parent" : 45
+			},
+			{
+				"file" : 18,
+				"parent" : 46
+			},
+			{
+				"command" : 3,
+				"file" : 18,
+				"line" : 41,
+				"parent" : 47
+			},
+			{
+				"file" : 17,
+				"parent" : 48
+			},
+			{
+				"command" : 3,
+				"file" : 17,
+				"line" : 9,
+				"parent" : 49
+			},
+			{
+				"file" : 16,
+				"parent" : 50
+			},
+			{
+				"command" : 7,
+				"file" : 16,
+				"line" : 61,
+				"parent" : 51
+			},
+			{
+				"command" : 9,
+				"file" : 2,
+				"line" : 232,
+				"parent" : 4
+			},
+			{
+				"command" : 9,
+				"file" : 2,
+				"line" : 195,
+				"parent" : 4
+			},
+			{
+				"command" : 7,
+				"file" : 2,
+				"line" : 206,
+				"parent" : 4
+			},
+			{
+				"command" : 3,
+				"file" : 3,
+				"line" : 48,
+				"parent" : 2
+			},
+			{
+				"file" : 22,
+				"parent" : 56
+			},
+			{
+				"command" : 8,
+				"file" : 22,
+				"line" : 21,
+				"parent" : 57
+			},
+			{
+				"file" : 21,
+				"parent" : 58
+			},
+			{
+				"command" : 3,
+				"file" : 21,
+				"line" : 41,
+				"parent" : 59
+			},
+			{
+				"file" : 20,
+				"parent" : 60
+			},
+			{
+				"command" : 10,
+				"file" : 20,
+				"line" : 18,
+				"parent" : 61
+			},
+			{
+				"command" : 11,
+				"file" : 2,
+				"line" : 222,
+				"parent" : 4
+			},
+			{
+				"command" : 6,
+				"file" : 0,
+				"line" : 4082,
+				"parent" : 6
+			}
+		]
+	},
+	"compileGroups" : 
+	[
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-O3 -DNDEBUG -std=gnu99 -fPIC"
+				},
+				{
+					"backtrace" : 55,
+					"fragment" : "-Wall"
+				},
+				{
+					"backtrace" : 55,
+					"fragment" : "-Wextra"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 62,
+					"define" : "ROS_PACKAGE_NAME=\"xarm_msgs\""
+				},
+				{
+					"define" : "xarm_msgs_s__rosidl_typesupport_introspection_c_EXPORTS"
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 63,
+					"path" : "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_c"
+				},
+				{
+					"backtrace" : 63,
+					"path" : "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_py"
+				},
+				{
+					"backtrace" : 8,
+					"path" : "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_typesupport_introspection_c"
+				},
+				{
+					"backtrace" : 64,
+					"isSystem" : true,
+					"path" : "/usr/include/python3.12"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/std_msgs"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/builtin_interfaces"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/rosidl_runtime_c"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/rcutils"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/rosidl_typesupport_interface"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/geometry_msgs"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/service_msgs"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/rosidl_typesupport_introspection_c"
+				},
+				{
+					"backtrace" : 8,
+					"isSystem" : true,
+					"path" : "/opt/ros/kilted/include/rosidl_typesupport_c"
+				}
+			],
+			"language" : "C",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					7
+				],
+				"standard" : "99"
+			},
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"dependencies" : 
+	[
+		{
+			"backtrace" : 8,
+			"id" : "xarm_msgs__rosidl_generator_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 53,
+			"id" : "xarm_msgs__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 54,
+			"id" : "xarm_msgs__rosidl_typesupport_c::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 8,
+			"id" : "xarm_msgs__rosidl_generator_py::@6890427a1f51a3e7e1df"
+		},
+		{
+			"backtrace" : 54,
+			"id" : "xarm_msgs__py::@3449ca7dd1b9effcf93c"
+		}
+	],
+	"id" : "xarm_msgs_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+	"link" : 
+	{
+		"commandFragments" : 
+		[
+			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "-Wl,-rpath,/home/anatoly/ros2k_ws/build/xarm_msgs:/opt/ros/kilted/lib:/opt/ros/kilted/lib/x86_64-linux-gnu",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "libxarm_msgs__rosidl_generator_py.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "libxarm_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "libxarm_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 11,
+				"fragment" : "/opt/ros/kilted/lib/libgeometry_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 12,
+				"fragment" : "/opt/ros/kilted/lib/libstd_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 13,
+				"fragment" : "/opt/ros/kilted/lib/libservice_msgs__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 14,
+				"fragment" : "/opt/ros/kilted/lib/libbuiltin_interfaces__rosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "/opt/ros/kilted/lib/librosidl_typesupport_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 17,
+				"fragment" : "libxarm_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 18,
+				"fragment" : "/opt/ros/kilted/lib/libgeometry_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 19,
+				"fragment" : "/opt/ros/kilted/lib/libstd_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 22,
+				"fragment" : "/opt/ros/kilted/lib/libgeometry_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 23,
+				"fragment" : "/opt/ros/kilted/lib/libstd_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 24,
+				"fragment" : "/opt/ros/kilted/lib/libservice_msgs__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 25,
+				"fragment" : "/opt/ros/kilted/lib/libbuiltin_interfaces__rosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 26,
+				"fragment" : "/opt/ros/kilted/lib/librosidl_typesupport_introspection_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 27,
+				"fragment" : "/opt/ros/kilted/lib/libservice_msgs__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 28,
+				"fragment" : "/opt/ros/kilted/lib/libbuiltin_interfaces__rosidl_generator_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 8,
+				"fragment" : "/opt/ros/kilted/lib/librosidl_runtime_c.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 43,
+				"fragment" : "/opt/ros/kilted/lib/librcutils.so",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 52,
+				"fragment" : "-ldl",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 52,
+				"fragment" : "-latomic",
+				"role" : "libraries"
+			},
+			{
+				"fragment" : "-Wl,-rpath-link,/opt/ros/kilted/lib:/opt/ros/kilted/lib/x86_64-linux-gnu",
+				"role" : "libraries"
+			}
+		],
+		"language" : "C"
+	},
+	"name" : "xarm_msgs_s__rosidl_typesupport_introspection_c",
+	"nameOnDisk" : "xarm_msgs_s__rosidl_typesupport_introspection_c.so",
+	"paths" : 
+	{
+		"build" : ".",
+		"source" : "."
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "Source Files",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"isGenerated" : true,
+			"path" : "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_py/xarm_msgs/_xarm_msgs_s.ep.rosidl_typesupport_introspection_c.c",
+			"sourceGroupIndex" : 0
+		}
+	],
+	"type" : "MODULE_LIBRARY"
+}

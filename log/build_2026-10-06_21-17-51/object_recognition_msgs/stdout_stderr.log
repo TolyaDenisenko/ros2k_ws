@@ -1,0 +1,258 @@
+[  2%] Built target object_recognition_msgs__rs
+[  2%] Built target object_recognition_msgs__rosidl_generator_type_description
+[  2%] Built target ament_cmake_python_symlink_object_recognition_msgs
+[  2%] Built target object_recognition_msgs__cpp
+[ 27%] Built target object_recognition_msgs__rosidl_generator_c
+[ 36%] Built target object_recognition_msgs__rosidl_typesupport_introspection_c
+[ 45%] Built target object_recognition_msgs__rosidl_typesupport_c
+[ 55%] Built target object_recognition_msgs__rosidl_typesupport_cpp
+[ 65%] Built target object_recognition_msgs__rosidl_typesupport_introspection_cpp
+[ 75%] Built target object_recognition_msgs__rosidl_typesupport_fastrtps_cpp
+[ 84%] Built target object_recognition_msgs__rosidl_typesupport_fastrtps_c
+[ 84%] Built target object_recognition_msgs
+[ 85%] Built target object_recognition_msgs__py
+[ 94%] Built target object_recognition_msgs__rosidl_generator_py
+[ 96%] Built target object_recognition_msgs_s__rosidl_typesupport_introspection_c
+[100%] Built target object_recognition_msgs_s__rosidl_typesupport_fastrtps_c
+[100%] Built target object_recognition_msgs_s__rosidl_typesupport_c
+running egg_info
+writing object_recognition_msgs.egg-info/PKG-INFO
+writing dependency_links to object_recognition_msgs.egg-info/dependency_links.txt
+writing top-level names to object_recognition_msgs.egg-info/top_level.txt
+reading manifest file 'object_recognition_msgs.egg-info/SOURCES.txt'
+writing manifest file 'object_recognition_msgs.egg-info/SOURCES.txt'
+[100%] Built target ament_cmake_python_build_object_recognition_msgs_egg
+-- Install configuration: "Release"
+-- Execute custom install script
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/rosidl_interfaces/object_recognition_msgs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.json
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/object_recognition.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_information.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_type.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object_array.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_generator_c__visibility_control.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table_array.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__functions.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__struct.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__type_support.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/get_object_information.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/library_path.sh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/library_path.dsv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_fastrtps_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_introspection_c.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/object_recognition.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_information.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_type.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object_array.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table_array.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__builder.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__struct.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__traits.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__type_support.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/get_object_information.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_fastrtps_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_introspection_cpp.hpp
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/pythonpath.sh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/pythonpath.dsv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/PKG-INFO
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/SOURCES.txt
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/dependency_links.txt
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/top_level.txt
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/__init__.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_c.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_introspection_c.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/__init__.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/_object_recognition.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/_object_recognition_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/__init__.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_information.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_information_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_type.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_type_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_array.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_array_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_array.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_array_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/__init__.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/_get_object_information.py
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/_get_object_information_s.c
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_c.so
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/Cargo.toml
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/build.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/action.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/action/rmw.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/lib.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/msg.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/msg/rmw.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/srv.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/srv/rmw.rs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.idl
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.msg
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.srv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.action
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/package_run_dependencies/object_recognition_msgs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/parent_prefix_path/object_recognition_msgs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/ament_prefix_path.sh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/ament_prefix_path.dsv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/path.sh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/path.dsv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.bash
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.sh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.zsh
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.dsv
+-- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/package.dsv
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/packages/object_recognition_msgs
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_targets-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_aggregate_target-extras.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgsConfig.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgsConfig-version.cmake
+-- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/package.xml
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_c.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_c.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_c.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_c.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_cpp.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_cpp.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_cpp.so
+Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs'...
+Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action'...
+Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg'...
+Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv'...
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_py.so
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cppExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cppExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cppExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cppExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cppExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cppExport-release.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_pyExport.cmake
+-- Up-to-date: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_pyExport-release.cmake

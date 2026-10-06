@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_cmake/rosidl_cmake_aggregate_target-extras.cmake

@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_generator_c/object_recognition_msgs/srv/detail/get_object_information__type_support.h

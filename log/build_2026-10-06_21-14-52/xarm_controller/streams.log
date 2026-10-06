@@ -1,0 +1,139 @@
+[0.013s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_controller': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_controller
+[0.068s] -- The C compiler identification is GNU 13.3.0
+[0.125s] -- The CXX compiler identification is GNU 13.3.0
+[0.143s] -- Detecting C compiler ABI info
+[0.232s] -- Detecting C compiler ABI info - done
+[0.241s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.242s] -- Detecting C compile features
+[0.242s] -- Detecting C compile features - done
+[0.252s] -- Detecting CXX compiler ABI info
+[0.354s] -- Detecting CXX compiler ABI info - done
+[0.363s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.363s] -- Detecting CXX compile features
+[0.364s] -- Detecting CXX compile features - done
+[0.369s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[0.523s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.588s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.648s] -- Found ament_lint_auto: 0.19.3 (/opt/ros/kilted/share/ament_lint_auto/cmake)
+[0.768s] -- Found hardware_interface: 5.18.1 (/opt/ros/kilted/share/hardware_interface/cmake)
+[0.824s] -- Found rosidl_generator_c: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_c/cmake)
+[0.844s] -- Found rosidl_generator_cpp: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)
+[0.867s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.891s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.168s] -- Found TinyXML2 via Config file: /usr/lib/x86_64-linux-gnu/cmake/tinyxml2
+[1.229s] -- Found rmw_implementation_cmake: 7.8.3 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)
+[1.234s] -- Found rmw_fastrtps_cpp: 9.3.5 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)
+[1.273s] -- Found TinyXML2 via Config file: /usr/lib/x86_64-linux-gnu/cmake/tinyxml2
+[1.350s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+[1.354s] -- Found TinyXML2 via Config file: /usr/lib/x86_64-linux-gnu/cmake/tinyxml2
+[1.362s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.493s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0")  
+[1.681s] -- Found controller_manager_msgs: 5.18.1 (/opt/ros/kilted/share/controller_manager_msgs/cmake)
+[1.716s] -- Found xarm_msgs: 0.0.0 (/home/anatoly/ros2k_ws/install/xarm_msgs/share/xarm_msgs/cmake)
+[1.786s] -- Found xarm_api: 0.0.0 (/home/anatoly/ros2k_ws/install/xarm_api/share/xarm_api/cmake)
+[1.788s] -- Found xarm_sdk: 0.0.0 (/home/anatoly/ros2k_ws/install/xarm_sdk/share/xarm_sdk/cmake)
+[1.791s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.792s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.792s]   with modern CMake targets instead.  Try replacing this call with:
+[1.792s] 
+[1.792s]     target_link_libraries(uf_robot_hardware PUBLIC
+[1.792s]       ${controller_manager_msgs_TARGETS}
+[1.792s]       ${sensor_msgs_TARGETS}
+[1.793s]       ${std_msgs_TARGETS}
+[1.793s]       ${xarm_msgs_TARGETS}
+[1.793s]       hardware_interface::hardware_interface
+[1.793s]       hardware_interface::mock_components
+[1.793s]       pluginlib::pluginlib
+[1.793s]       rclcpp::rclcpp
+[1.793s]       rclcpp_action::rclcpp_action
+[1.793s]       rclcpp_lifecycle::rclcpp_lifecycle
+[1.793s]       sensor_msgs::sensor_msgs_library
+[1.793s]     )
+[1.793s] 
+[1.794s] Call Stack (most recent call first):
+[1.794s]   CMakeLists.txt:64 (ament_target_dependencies)
+[1.794s] 
+[1.794s] [0m
+[1.802s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.805s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.805s] -- Configured cppcheck include dirs: /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/include
+[1.805s] -- Configured cppcheck exclude dirs and/or files: 
+[1.808s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[1.808s] -- Configured cpplint exclude dirs and/or files: 
+[1.809s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.809s] -- Configured 'flake8' exclude dirs and/or files: 
+[1.810s] -- Added test 'lint_cmake' to check CMake code style
+[1.811s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.813s] -- Added test 'uncrustify' to check C / C++ code style
+[1.814s] -- Configured uncrustify additional arguments: 
+[1.814s] -- Added test 'xmllint' to check XML markup files
+[1.819s] -- Configuring done (1.8s)
+[1.850s] -- Generating done (0.0s)
+[1.855s] -- Build files have been written to: /home/anatoly/ros2k_ws/build/xarm_controller
+[1.866s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_controller' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_controller
+[1.867s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_controller': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/xarm_controller -- -j12 -l12
+[1.925s] [ 33%] [32mBuilding CXX object CMakeFiles/uf_robot_hardware.dir/src/hardware/uf_robot_system_hardware.cpp.o[0m
+[1.925s] [ 66%] [32mBuilding CXX object CMakeFiles/uf_robot_hardware.dir/src/hardware/uf_robot_fake_system_hardware.cpp.o[0m
+[6.583s] [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/src/hardware/uf_robot_system_hardware.cpp:[m[K In member function ‘[01m[Kvirtual uf_robot_hardware::CallbackReturn uf_robot_hardware::UFRobotSystemHardware::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’:
+[6.583s] [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/src/hardware/uf_robot_system_hardware.cpp:163:57:[m[K [01;35m[Kwarning: [m[K‘[01m[Kvirtual rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn hardware_interface::HardwareComponentInterface::[01;32m[Kon_init[m[K(const hardware_interface::HardwareInfo&)[m[K’ is deprecated: Use on_init(const HardwareComponentInterfaceParams & params) instead. [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.583s]   163 |         if ([01;35m[Khardware_interface::SystemInterface::on_init(info)[m[K != CallbackReturn::SUCCESS) {
+[6.584s]       |             [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~[m[K
+[6.584s] In file included from [01m[K/opt/ros/kilted/include/hardware_interface/hardware_interface/system_interface.hpp:18[m[K,
+[6.584s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/include/xarm_controller/hardware/uf_robot_system_hardware.h:22[m[K,
+[6.584s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/src/hardware/uf_robot_system_hardware.cpp:9[m[K:
+[6.584s] [01m[K/opt/ros/kilted/include/hardware_interface/hardware_interface/hardware_component_interface.hpp:146:26:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.584s]   146 |   virtual CallbackReturn [01;36m[Kon_init[m[K(const HardwareInfo & hardware_info);
+[6.584s]       |                          [01;36m[K^~~~~~~[m[K
+[13.049s] [100%] [32m[1mLinking CXX shared library libuf_robot_hardware.so[0m
+[13.319s] [100%] Built target uf_robot_hardware
+[13.334s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_controller' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/xarm_controller -- -j12 -l12
+[13.335s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_controller': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/xarm_controller
+[13.344s] -- Install configuration: "Release"
+[13.344s] -- Execute custom install script
+[13.345s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//uf_hardware_interface_plugins.xml
+[13.357s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/include/xarm_controller/hardware/bak_uf_robot_fake_system_hardware.h
+[13.370s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/include/xarm_controller/hardware/uf_robot_fake_system_hardware.h
+[13.380s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/include/xarm_controller/hardware/uf_robot_system_hardware.h
+[13.391s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/lib/libuf_robot_hardware.so
+[13.402s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/_dual_ros2_control.launch.py
+[13.413s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/_robot_ros2_control.launch.py
+[13.423s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/_ros2_control.launch.py
+[13.434s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/lib/robot_controller_lib.py
+[13.445s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/lite6_control_rviz_display.launch.py
+[13.455s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/uf850_control_rviz_display.launch.py
+[13.465s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/xarm5_control_rviz_display.launch.py
+[13.475s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/xarm6_control_rviz_display.launch.py
+[13.486s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/xarm7_control_rviz_display.launch.py
+[13.496s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//launch/xarm7_mirror_control_rviz_display.launch.py
+[13.507s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/bio_gripper_controllers.yaml
+[13.518s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/lite6_controllers.yaml
+[13.528s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/uf850_controllers.yaml
+[13.538s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/uf850_gripper_controllers.yaml
+[13.548s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm5_controllers.yaml
+[13.559s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm6_controllers.yaml
+[13.570s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm7_controllers.yaml
+[13.580s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm7_mirror_controllers.yaml
+[13.591s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm7_mirror_gripper_controllers.yaml
+[13.601s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller//config/xarm_gripper_controllers.yaml
+[13.611s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/library_path.sh
+[13.622s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/library_path.dsv
+[13.632s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/ament_index/resource_index/package_run_dependencies/xarm_controller
+[13.642s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/ament_index/resource_index/parent_prefix_path/xarm_controller
+[13.655s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/ament_prefix_path.sh
+[13.667s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/ament_prefix_path.dsv
+[13.679s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/path.sh
+[13.690s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/environment/path.dsv
+[13.701s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/local_setup.bash
+[13.712s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/local_setup.sh
+[13.722s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/local_setup.zsh
+[13.732s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/local_setup.dsv
+[13.742s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/package.dsv
+[13.752s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/ament_index/resource_index/packages/xarm_controller
+[13.764s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/ament_index/resource_index/hardware_interface__pluginlib__plugin/xarm_controller
+[13.777s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/cmake/ament_cmake_export_include_directories-extras.cmake
+[13.789s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/cmake/ament_cmake_export_libraries-extras.cmake
+[13.801s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/cmake/ament_cmake_export_dependencies-extras.cmake
+[13.812s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/cmake/xarm_controllerConfig.cmake
+[13.824s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/cmake/xarm_controllerConfig-version.cmake
+[13.836s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_controller/share/xarm_controller/package.xml
+[13.850s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_controller' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/xarm_controller

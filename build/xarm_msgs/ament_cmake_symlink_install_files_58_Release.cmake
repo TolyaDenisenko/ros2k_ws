@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_msgs" FILES "/home/anatoly/ros2k_ws/build/xarm_msgs/ament_cmake_environment_hooks/pythonpath.sh" "DESTINATION" "share/xarm_msgs/environment")

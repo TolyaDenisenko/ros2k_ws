@@ -1,0 +1,67 @@
+[0.212s] Invoking command in '/home/anatoly/ros2k_ws/build/mbot_demo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/demo/mbot_demo -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/mbot_demo
+[0.274s] -- The C compiler identification is GNU 13.3.0
+[0.333s] -- The CXX compiler identification is GNU 13.3.0
+[0.353s] -- Detecting C compiler ABI info
+[0.453s] -- Detecting C compiler ABI info - done
+[0.464s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.464s] -- Detecting C compile features
+[0.464s] -- Detecting C compile features - done
+[0.474s] -- Detecting CXX compiler ABI info
+[0.587s] -- Detecting CXX compiler ABI info - done
+[0.598s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.599s] -- Detecting CXX compile features
+[0.599s] -- Detecting CXX compile features - done
+[0.604s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[0.767s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.838s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.894s] -- Found ament_lint_auto: 0.19.3 (/opt/ros/kilted/share/ament_lint_auto/cmake)
+[1.154s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.162s] -- Added test 'flake8' to check Python code syntax and style conventions
+[1.162s] -- Configured 'flake8' exclude dirs and/or files: 
+[1.164s] -- Added test 'lint_cmake' to check CMake code style
+[1.168s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[1.168s] -- Added test 'xmllint' to check XML markup files
+[1.171s] -- Configuring done (0.9s)
+[1.184s] -- Generating done (0.0s)
+[1.190s] -- Build files have been written to: /home/anatoly/ros2k_ws/build/mbot_demo
+[1.210s] Invoked command in '/home/anatoly/ros2k_ws/build/mbot_demo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/demo/mbot_demo -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/mbot_demo
+[1.212s] Invoking command in '/home/anatoly/ros2k_ws/build/mbot_demo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/mbot_demo -- -j12 -l12
+[1.349s] Invoked command in '/home/anatoly/ros2k_ws/build/mbot_demo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/mbot_demo -- -j12 -l12
+[1.350s] Invoking command in '/home/anatoly/ros2k_ws/build/mbot_demo': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/mbot_demo
+[1.371s] -- Install configuration: "Release"
+[1.375s] -- Execute custom install script
+[1.381s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//rviz/moveit.rviz
+[1.415s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot.gazebo.xacro
+[1.450s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot.ros2_control.xacro
+[1.474s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot.transmission.xacro
+[1.505s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot.urdf.xacro
+[1.537s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot_macro.xacro
+[1.569s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//urdf/mbot_with_xarm.urdf.xacro
+[1.600s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//srdf/mbot_macro.srdf.xacro
+[1.629s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//srdf/mbot_with_xarm.srdf.xacro
+[1.666s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//config/controllers.yaml
+[1.703s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//config/joint_limits.yaml
+[1.736s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//config/kinematics.yaml
+[1.764s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//config/ompl_planning.yaml
+[1.794s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//config/ros2_controllers.yaml
+[1.818s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//worlds/empty.world
+[1.844s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//launch/_robot_on_mbot_gazebo.launch.py
+[1.869s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//launch/mbot_moveit_fake.launch.py
+[1.911s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//launch/mbot_moveit_gazebo.launch.py
+[1.945s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo//launch/mbot_moveit_realmove.launch.py
+[1.976s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/ament_index/resource_index/package_run_dependencies/mbot_demo
+[1.997s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/ament_index/resource_index/parent_prefix_path/mbot_demo
+[2.038s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/environment/ament_prefix_path.sh
+[2.058s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/environment/ament_prefix_path.dsv
+[2.089s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/environment/path.sh
+[2.116s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/environment/path.dsv
+[2.147s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/local_setup.bash
+[2.162s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/local_setup.sh
+[2.207s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/local_setup.zsh
+[2.240s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/local_setup.dsv
+[2.268s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/package.dsv
+[2.301s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/ament_index/resource_index/packages/mbot_demo
+[2.332s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/cmake/mbot_demoConfig.cmake
+[2.365s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/cmake/mbot_demoConfig-version.cmake
+[2.395s] -- Symlinking: /home/anatoly/ros2k_ws/install/mbot_demo/share/mbot_demo/package.xml
+[2.446s] Invoked command in '/home/anatoly/ros2k_ws/build/mbot_demo' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/mbot_demo

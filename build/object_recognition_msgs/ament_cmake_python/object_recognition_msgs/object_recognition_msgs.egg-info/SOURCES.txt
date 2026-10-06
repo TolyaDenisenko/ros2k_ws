@@ -1,0 +1,17 @@
+setup.py
+object_recognition_msgs/__init__.py
+object_recognition_msgs.egg-info/PKG-INFO
+object_recognition_msgs.egg-info/SOURCES.txt
+object_recognition_msgs.egg-info/dependency_links.txt
+object_recognition_msgs.egg-info/top_level.txt
+object_recognition_msgs/action/__init__.py
+object_recognition_msgs/action/_object_recognition.py
+object_recognition_msgs/msg/__init__.py
+object_recognition_msgs/msg/_object_information.py
+object_recognition_msgs/msg/_object_type.py
+object_recognition_msgs/msg/_recognized_object.py
+object_recognition_msgs/msg/_recognized_object_array.py
+object_recognition_msgs/msg/_table.py
+object_recognition_msgs/msg/_table_array.py
+object_recognition_msgs/srv/__init__.py
+object_recognition_msgs/srv/_get_object_information.py

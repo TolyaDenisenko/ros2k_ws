@@ -1,0 +1,169 @@
+[0.000000] (-) TimerEvent: {}
+[0.000519] (-) JobUnselected: {'identifier': 'd435i_xarm_setup'}
+[0.000549] (-) JobUnselected: {'identifier': 'mbot_demo'}
+[0.000567] (-) JobUnselected: {'identifier': 'object_recognition_msgs'}
+[0.000581] (-) JobUnselected: {'identifier': 'realsense_gazebo_plugin'}
+[0.000595] (-) JobUnselected: {'identifier': 'uf_ros_lib'}
+[0.000608] (-) JobUnselected: {'identifier': 'xarm_api'}
+[0.000631] (-) JobUnselected: {'identifier': 'xarm_controller'}
+[0.000646] (-) JobUnselected: {'identifier': 'xarm_description'}
+[0.000659] (-) JobUnselected: {'identifier': 'xarm_gazebo'}
+[0.000672] (-) JobUnselected: {'identifier': 'xarm_moveit_config'}
+[0.000684] (-) JobUnselected: {'identifier': 'xarm_msgs'}
+[0.000696] (-) JobUnselected: {'identifier': 'xarm_sdk'}
+[0.000710] (xarm_moveit_servo) JobQueued: {'identifier': 'xarm_moveit_servo', 'dependencies': OrderedDict({'uf_ros_lib': '/home/anatoly/ros2k_ws/install/uf_ros_lib', 'xarm_description': '/home/anatoly/ros2k_ws/install/xarm_description', 'xarm_msgs': '/home/anatoly/ros2k_ws/install/xarm_msgs', 'xarm_sdk': '/home/anatoly/ros2k_ws/install/xarm_sdk', 'xarm_api': '/home/anatoly/ros2k_ws/install/xarm_api', 'xarm_controller': '/home/anatoly/ros2k_ws/install/xarm_controller', 'xarm_gazebo': '/home/anatoly/ros2k_ws/install/xarm_gazebo', 'xarm_moveit_config': '/home/anatoly/ros2k_ws/install/xarm_moveit_config'})}
+[0.000744] (xarm_planner) JobQueued: {'identifier': 'xarm_planner', 'dependencies': OrderedDict({'uf_ros_lib': '/home/anatoly/ros2k_ws/install/uf_ros_lib', 'xarm_description': '/home/anatoly/ros2k_ws/install/xarm_description', 'xarm_msgs': '/home/anatoly/ros2k_ws/install/xarm_msgs', 'xarm_sdk': '/home/anatoly/ros2k_ws/install/xarm_sdk', 'xarm_api': '/home/anatoly/ros2k_ws/install/xarm_api', 'xarm_controller': '/home/anatoly/ros2k_ws/install/xarm_controller', 'xarm_gazebo': '/home/anatoly/ros2k_ws/install/xarm_gazebo', 'xarm_moveit_config': '/home/anatoly/ros2k_ws/install/xarm_moveit_config'})}
+[0.000767] (xarm_moveit_servo) JobStarted: {'identifier': 'xarm_moveit_servo'}
+[0.006672] (xarm_planner) JobStarted: {'identifier': 'xarm_planner'}
+[0.020773] (xarm_moveit_servo) JobProgress: {'identifier': 'xarm_moveit_servo', 'progress': 'cmake'}
+[0.021341] (xarm_moveit_servo) JobProgress: {'identifier': 'xarm_moveit_servo', 'progress': 'build'}
+[0.021900] (xarm_moveit_servo) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/anatoly/ros2k_ws/build/xarm_moveit_servo', '--', '-j12', '-l12'], 'cwd': '/home/anatoly/ros2k_ws/build/xarm_moveit_servo', 'env': OrderedDict({'GZ_SIM_SYSTEM_PLUGIN_PATH': '/opt/ros/kilted/lib', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/kilted/share', 'USER': 'anatoly', 'GZ_CONFIG_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/share/gz:/opt/ros/kilted/opt/sdformat_vendor/share/gz:/opt/ros/kilted/opt/gz_gui_vendor/share/gz:/opt/ros/kilted/opt/gz_transport_vendor/share/gz:/opt/ros/kilted/opt/gz_rendering_vendor/share/gz:/opt/ros/kilted/opt/gz_plugin_vendor/share/gz:/opt/ros/kilted/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/kilted/opt/gz_msgs_vendor/share/gz:/opt/ros/kilted/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:/opt/ros/kilted/opt/gz_sim_vendor/lib:/opt/ros/kilted/opt/gz_sensors_vendor/lib:/opt/ros/kilted/opt/gz_physics_vendor/lib:/opt/ros/kilted/opt/sdformat_vendor/lib:/opt/ros/kilted/opt/gz_gui_vendor/lib:/opt/ros/kilted/opt/gz_transport_vendor/lib:/opt/ros/kilted/opt/gz_rendering_vendor/lib:/opt/ros/kilted/opt/gz_plugin_vendor/lib:/opt/ros/kilted/opt/gz_fuel_tools_vendor/lib:/opt/ros/kilted/opt/gz_msgs_vendor/lib:/opt/ros/kilted/opt/gz_common_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_tools_vendor/lib:/opt/ros/kilted/opt/gz_ogre_next_vendor/lib:/opt/ros/kilted/opt/gz_dartsim_vendor/lib:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'HOME': '/home/anatoly', 'OLDPWD': '/home/anatoly/ros2k_ws', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '2393', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GNOME_KEYRING_CONTROL': '/run/user/1000/keyring', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'anatoly', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.SettingsDaemon.MediaKeys.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'anatoly', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/home/anatoly/.local/bin:/opt/ros/kilted/opt/gz_msgs_vendor/bin:/opt/ros/kilted/opt/gz_tools_vendor/bin:/opt/ros/kilted/opt/gz_ogre_next_vendor/bin:/opt/ros/kilted/bin:/home/anatoly/.local/bin:/home/anatoly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/anatoly-System-Product-Name:@/tmp/.ICE-unix/2056,unix/anatoly-System-Product-Name:/tmp/.ICE-unix/2056', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/868e0e9e_ff4b_4809_97f9_a8237b222384', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.4D74W3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.122', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:/opt/ros/kilted', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/anatoly/ros2k_ws/build/xarm_moveit_servo', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:/opt/ros/kilted/opt/gz_sim_vendor/lib/python:/opt/ros/kilted/opt/sdformat_vendor/lib/python:/opt/ros/kilted/opt/gz_transport_vendor/lib/python:/opt/ros/kilted/opt/gz_msgs_vendor/lib/python:/opt/ros/kilted/opt/gz_math_vendor/lib/python:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted'}), 'shell': False}
+[0.025078] (xarm_planner) JobProgress: {'identifier': 'xarm_planner', 'progress': 'cmake'}
+[0.025593] (xarm_planner) Command: {'cmd': ['/usr/bin/cmake', '/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner', '-DCMAKE_BUILD_TYPE=Release', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner'], 'cwd': '/home/anatoly/ros2k_ws/build/xarm_planner', 'env': OrderedDict({'GZ_SIM_SYSTEM_PLUGIN_PATH': '/opt/ros/kilted/lib', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/kilted/share', 'USER': 'anatoly', 'GZ_CONFIG_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/share/gz:/opt/ros/kilted/opt/sdformat_vendor/share/gz:/opt/ros/kilted/opt/gz_gui_vendor/share/gz:/opt/ros/kilted/opt/gz_transport_vendor/share/gz:/opt/ros/kilted/opt/gz_rendering_vendor/share/gz:/opt/ros/kilted/opt/gz_plugin_vendor/share/gz:/opt/ros/kilted/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/kilted/opt/gz_msgs_vendor/share/gz:/opt/ros/kilted/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:/opt/ros/kilted/opt/gz_sim_vendor/lib:/opt/ros/kilted/opt/gz_sensors_vendor/lib:/opt/ros/kilted/opt/gz_physics_vendor/lib:/opt/ros/kilted/opt/sdformat_vendor/lib:/opt/ros/kilted/opt/gz_gui_vendor/lib:/opt/ros/kilted/opt/gz_transport_vendor/lib:/opt/ros/kilted/opt/gz_rendering_vendor/lib:/opt/ros/kilted/opt/gz_plugin_vendor/lib:/opt/ros/kilted/opt/gz_fuel_tools_vendor/lib:/opt/ros/kilted/opt/gz_msgs_vendor/lib:/opt/ros/kilted/opt/gz_common_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_tools_vendor/lib:/opt/ros/kilted/opt/gz_ogre_next_vendor/lib:/opt/ros/kilted/opt/gz_dartsim_vendor/lib:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'HOME': '/home/anatoly', 'OLDPWD': '/home/anatoly/ros2k_ws', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '2393', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GNOME_KEYRING_CONTROL': '/run/user/1000/keyring', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'anatoly', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.SettingsDaemon.MediaKeys.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'anatoly', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/home/anatoly/.local/bin:/opt/ros/kilted/opt/gz_msgs_vendor/bin:/opt/ros/kilted/opt/gz_tools_vendor/bin:/opt/ros/kilted/opt/gz_ogre_next_vendor/bin:/opt/ros/kilted/bin:/home/anatoly/.local/bin:/home/anatoly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/anatoly-System-Product-Name:@/tmp/.ICE-unix/2056,unix/anatoly-System-Product-Name:/tmp/.ICE-unix/2056', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/868e0e9e_ff4b_4809_97f9_a8237b222384', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.4D74W3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.122', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:/opt/ros/kilted', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/anatoly/ros2k_ws/build/xarm_planner', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:/opt/ros/kilted/opt/gz_sim_vendor/lib/python:/opt/ros/kilted/opt/sdformat_vendor/lib/python:/opt/ros/kilted/opt/gz_transport_vendor/lib/python:/opt/ros/kilted/opt/gz_msgs_vendor/lib/python:/opt/ros/kilted/opt/gz_math_vendor/lib/python:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted'}), 'shell': False}
+[0.040065] (xarm_planner) StdoutLine: {'line': b'-- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)\n'}
+[0.089055] (xarm_moveit_servo) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/xarm_joystick_input.dir/src/xarm_joystick_input.cpp.o\x1b[0m\n'}
+[0.089298] (xarm_moveit_servo) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/xarm_keyboard_input.dir/src/xarm_keyboard_input.cpp.o\x1b[0m\n'}
+[0.099823] (-) TimerEvent: {}
+[0.200157] (-) TimerEvent: {}
+[0.253059] (xarm_planner) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[0.275242] (xarm_planner) StderrLine: {'line': b'\x1b[31mCMake Error at CMakeLists.txt:27 (find_package):\n'}
+[0.275495] (xarm_planner) StderrLine: {'line': b'  By not providing "Findmoveit.cmake" in CMAKE_MODULE_PATH this project has\n'}
+[0.275582] (xarm_planner) StderrLine: {'line': b'  asked CMake to find a package configuration file provided by "moveit", but\n'}
+[0.275671] (xarm_planner) StderrLine: {'line': b'  CMake did not find one.\n'}
+[0.275744] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.275817] (xarm_planner) StderrLine: {'line': b'  Could not find a package configuration file provided by "moveit" with any\n'}
+[0.275891] (xarm_planner) StderrLine: {'line': b'  of the following names:\n'}
+[0.275964] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.276036] (xarm_planner) StderrLine: {'line': b'    moveitConfig.cmake\n'}
+[0.276108] (xarm_planner) StderrLine: {'line': b'    moveit-config.cmake\n'}
+[0.276179] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.276241] (xarm_planner) StderrLine: {'line': b'  Add the installation prefix of "moveit" to CMAKE_PREFIX_PATH or set\n'}
+[0.276308] (xarm_planner) StderrLine: {'line': b'  "moveit_DIR" to a directory containing one of the above files.  If "moveit"\n'}
+[0.276370] (xarm_planner) StderrLine: {'line': b'  provides a separate development package or SDK, be sure it has been\n'}
+[0.276432] (xarm_planner) StderrLine: {'line': b'  installed.\n'}
+[0.276493] (xarm_planner) StderrLine: {'line': b'\n'}
+[0.276554] (xarm_planner) StderrLine: {'line': b'\x1b[0m\n'}
+[0.276623] (xarm_planner) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[0.278597] (xarm_planner) CommandEnded: {'returncode': 1}
+[0.298012] (xarm_planner) JobEnded: {'identifier': 'xarm_planner', 'rc': 1}
+[0.300212] (-) TimerEvent: {}
+[0.400366] (-) TimerEvent: {}
+[0.500573] (-) TimerEvent: {}
+[0.600753] (-) TimerEvent: {}
+[0.700931] (-) TimerEvent: {}
+[0.801126] (-) TimerEvent: {}
+[0.901334] (-) TimerEvent: {}
+[1.001536] (-) TimerEvent: {}
+[1.101859] (-) TimerEvent: {}
+[1.202225] (-) TimerEvent: {}
+[1.302571] (-) TimerEvent: {}
+[1.402790] (-) TimerEvent: {}
+[1.503025] (-) TimerEvent: {}
+[1.603265] (-) TimerEvent: {}
+[1.703507] (-) TimerEvent: {}
+[1.803754] (-) TimerEvent: {}
+[1.903991] (-) TimerEvent: {}
+[2.004252] (-) TimerEvent: {}
+[2.104496] (-) TimerEvent: {}
+[2.204746] (-) TimerEvent: {}
+[2.305009] (-) TimerEvent: {}
+[2.405284] (-) TimerEvent: {}
+[2.505526] (-) TimerEvent: {}
+[2.605748] (-) TimerEvent: {}
+[2.705962] (-) TimerEvent: {}
+[2.806128] (-) TimerEvent: {}
+[2.906381] (-) TimerEvent: {}
+[3.006651] (-) TimerEvent: {}
+[3.106897] (-) TimerEvent: {}
+[3.207142] (-) TimerEvent: {}
+[3.307376] (-) TimerEvent: {}
+[3.407578] (-) TimerEvent: {}
+[3.507790] (-) TimerEvent: {}
+[3.608015] (-) TimerEvent: {}
+[3.708270] (-) TimerEvent: {}
+[3.808512] (-) TimerEvent: {}
+[3.908757] (-) TimerEvent: {}
+[4.009000] (-) TimerEvent: {}
+[4.109232] (-) TimerEvent: {}
+[4.209466] (-) TimerEvent: {}
+[4.309685] (-) TimerEvent: {}
+[4.409865] (-) TimerEvent: {}
+[4.509974] (-) TimerEvent: {}
+[4.610090] (-) TimerEvent: {}
+[4.710242] (-) TimerEvent: {}
+[4.810449] (-) TimerEvent: {}
+[4.910668] (-) TimerEvent: {}
+[5.010887] (-) TimerEvent: {}
+[5.111115] (-) TimerEvent: {}
+[5.211344] (-) TimerEvent: {}
+[5.311580] (-) TimerEvent: {}
+[5.411796] (-) TimerEvent: {}
+[5.511923] (-) TimerEvent: {}
+[5.612028] (-) TimerEvent: {}
+[5.712130] (-) TimerEvent: {}
+[5.812419] (-) TimerEvent: {}
+[5.912754] (-) TimerEvent: {}
+[6.013156] (-) TimerEvent: {}
+[6.113293] (-) TimerEvent: {}
+[6.213657] (-) TimerEvent: {}
+[6.314055] (-) TimerEvent: {}
+[6.414475] (-) TimerEvent: {}
+[6.514930] (-) TimerEvent: {}
+[6.615201] (-) TimerEvent: {}
+[6.715647] (-) TimerEvent: {}
+[6.815926] (-) TimerEvent: {}
+[6.916366] (-) TimerEvent: {}
+[7.016883] (-) TimerEvent: {}
+[7.117290] (-) TimerEvent: {}
+[7.210360] (xarm_moveit_servo) StdoutLine: {'line': b'[ 75%] \x1b[32m\x1b[1mLinking CXX executable xarm_keyboard_input\x1b[0m\n'}
+[7.217384] (-) TimerEvent: {}
+[7.317632] (-) TimerEvent: {}
+[7.417893] (-) TimerEvent: {}
+[7.518134] (-) TimerEvent: {}
+[7.528472] (xarm_moveit_servo) StdoutLine: {'line': b'[ 75%] Built target xarm_keyboard_input\n'}
+[7.618227] (-) TimerEvent: {}
+[7.718455] (-) TimerEvent: {}
+[7.818700] (-) TimerEvent: {}
+[7.918946] (-) TimerEvent: {}
+[8.019178] (-) TimerEvent: {}
+[8.119424] (-) TimerEvent: {}
+[8.219680] (-) TimerEvent: {}
+[8.319935] (-) TimerEvent: {}
+[8.420179] (-) TimerEvent: {}
+[8.520398] (-) TimerEvent: {}
+[8.620633] (-) TimerEvent: {}
+[8.720927] (-) TimerEvent: {}
+[8.821166] (-) TimerEvent: {}
+[8.921430] (-) TimerEvent: {}
+[9.021668] (-) TimerEvent: {}
+[9.121902] (-) TimerEvent: {}
+[9.222154] (-) TimerEvent: {}
+[9.322393] (-) TimerEvent: {}
+[9.422635] (-) TimerEvent: {}
+[9.522865] (-) TimerEvent: {}
+[9.623112] (-) TimerEvent: {}
+[9.723349] (-) TimerEvent: {}
+[9.823596] (-) TimerEvent: {}
+[9.923867] (-) TimerEvent: {}
+[10.024122] (-) TimerEvent: {}
+[10.124376] (-) TimerEvent: {}
+[10.224656] (-) TimerEvent: {}
+[10.324901] (-) TimerEvent: {}
+[10.425144] (-) TimerEvent: {}
+[10.525393] (-) TimerEvent: {}
+[10.625646] (-) TimerEvent: {}
+[10.725915] (-) TimerEvent: {}
+[10.826157] (-) TimerEvent: {}
+[10.926406] (-) TimerEvent: {}
+[11.026661] (-) TimerEvent: {}
+[11.126933] (-) TimerEvent: {}
+[11.227299] (-) TimerEvent: {}
+[11.327659] (-) TimerEvent: {}
+[11.427915] (-) TimerEvent: {}
+[11.509437] (xarm_moveit_servo) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX shared library libxarm_joystick_input.so\x1b[0m\n'}
+[11.528017] (-) TimerEvent: {}
+[11.628259] (-) TimerEvent: {}
+[11.728528] (-) TimerEvent: {}
+[11.769904] (xarm_moveit_servo) StdoutLine: {'line': b'[100%] Built target xarm_joystick_input\n'}
+[11.783197] (xarm_moveit_servo) JobEnded: {'identifier': 'xarm_moveit_servo', 'rc': 'SIGINT'}
+[11.784079] (-) EventReactorShutdown: {}

@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_c/xarm_msgs/srv/get_float32.h

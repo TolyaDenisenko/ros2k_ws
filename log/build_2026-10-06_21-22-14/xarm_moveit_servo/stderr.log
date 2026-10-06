@@ -1,0 +1,74 @@
+[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+  ament_target_dependencies() is deprecated.  Use target_link_libraries()
+  with modern CMake targets instead.  Try replacing this call with:
+
+    target_link_libraries(xarm_joystick_input PUBLIC
+      ${control_msgs_TARGETS}
+      ${geometry_msgs_TARGETS}
+      ${moveit_msgs_TARGETS}
+      ${sensor_msgs_TARGETS}
+      ${std_msgs_TARGETS}
+      ${std_srvs_TARGETS}
+      moveit_ros_planning::default_request_adapter_parameters
+      moveit_ros_planning::default_response_adapter_parameters
+      moveit_ros_planning::kinematics_parameters
+      moveit_ros_planning::moveit_collision_plugin_loader
+      moveit_ros_planning::moveit_constraint_sampler_manager_loader
+      moveit_ros_planning::moveit_cpp
+      moveit_ros_planning::moveit_kinematics_plugin_loader
+      moveit_ros_planning::moveit_plan_execution
+      moveit_ros_planning::moveit_planning_pipeline
+      moveit_ros_planning::moveit_planning_pipeline_interfaces
+      moveit_ros_planning::moveit_planning_scene_monitor
+      moveit_ros_planning::moveit_rdf_loader
+      moveit_ros_planning::moveit_robot_model_loader
+      moveit_ros_planning::moveit_trajectory_execution_manager
+      moveit_ros_planning::planning_pipeline_parameters
+      moveit_ros_planning::srdf_publisher_node
+      rclcpp::rclcpp
+      rclcpp_components::component
+      rclcpp_components::component_manager
+      sensor_msgs::sensor_msgs_library
+    )
+
+Call Stack (most recent call first):
+  CMakeLists.txt:62 (ament_target_dependencies)
+
+[0m
+[0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+  ament_target_dependencies() is deprecated.  Use target_link_libraries()
+  with modern CMake targets instead.  Try replacing this call with:
+
+    target_link_libraries(xarm_keyboard_input PUBLIC
+      ${control_msgs_TARGETS}
+      ${geometry_msgs_TARGETS}
+      ${moveit_msgs_TARGETS}
+      ${sensor_msgs_TARGETS}
+      ${std_msgs_TARGETS}
+      ${std_srvs_TARGETS}
+      moveit_ros_planning::default_request_adapter_parameters
+      moveit_ros_planning::default_response_adapter_parameters
+      moveit_ros_planning::kinematics_parameters
+      moveit_ros_planning::moveit_collision_plugin_loader
+      moveit_ros_planning::moveit_constraint_sampler_manager_loader
+      moveit_ros_planning::moveit_cpp
+      moveit_ros_planning::moveit_kinematics_plugin_loader
+      moveit_ros_planning::moveit_plan_execution
+      moveit_ros_planning::moveit_planning_pipeline
+      moveit_ros_planning::moveit_planning_pipeline_interfaces
+      moveit_ros_planning::moveit_planning_scene_monitor
+      moveit_ros_planning::moveit_rdf_loader
+      moveit_ros_planning::moveit_robot_model_loader
+      moveit_ros_planning::moveit_trajectory_execution_manager
+      moveit_ros_planning::planning_pipeline_parameters
+      moveit_ros_planning::srdf_publisher_node
+      rclcpp::rclcpp
+      rclcpp_components::component
+      rclcpp_components::component_manager
+      sensor_msgs::sensor_msgs_library
+    )
+
+Call Stack (most recent call first):
+  CMakeLists.txt:68 (ament_target_dependencies)
+
+[0m

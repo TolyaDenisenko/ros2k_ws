@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_msgs" FILES "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_adapter/xarm_msgs/srv/GetInt16List.idl" "DESTINATION" "share/xarm_msgs/srv")

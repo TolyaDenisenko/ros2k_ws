@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_servo" FILES "/home/anatoly/ros2k_ws/build/xarm_moveit_servo/ament_cmake_index/share/ament_index/resource_index/rclcpp_components/xarm_moveit_servo" "DESTINATION" "share/ament_index/resource_index/rclcpp_components")

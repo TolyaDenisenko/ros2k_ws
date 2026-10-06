@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/object_recognition_msgs/ament_cmake_core/object_recognition_msgsConfig-version.cmake

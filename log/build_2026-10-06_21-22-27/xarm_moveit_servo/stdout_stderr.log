@@ -1,0 +1,6 @@
+[ 25%] [32mBuilding CXX object CMakeFiles/xarm_joystick_input.dir/src/xarm_joystick_input.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/xarm_keyboard_input.dir/src/xarm_keyboard_input.cpp.o[0m
+[ 75%] [32m[1mLinking CXX executable xarm_keyboard_input[0m
+[ 75%] Built target xarm_keyboard_input
+[100%] [32m[1mLinking CXX shared library libxarm_joystick_input.so[0m
+[100%] Built target xarm_joystick_input

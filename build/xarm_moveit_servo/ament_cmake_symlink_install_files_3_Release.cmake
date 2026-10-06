@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_servo" FILES "/home/anatoly/ros2k_ws/build/xarm_moveit_servo/ament_cmake_environment_hooks/ament_prefix_path.dsv" "DESTINATION" "share/xarm_moveit_servo/environment")

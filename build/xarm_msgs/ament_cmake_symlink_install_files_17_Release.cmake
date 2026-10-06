@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_msgs" FILES "/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_type_description/xarm_msgs/srv/GripperMove.json" "DESTINATION" "share/xarm_msgs/srv")

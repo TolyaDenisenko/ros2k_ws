@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_api" FILES "/home/anatoly/ros2k_ws/build/xarm_api/ament_cmake_core/xarm_apiConfig.cmake" "/home/anatoly/ros2k_ws/build/xarm_api/ament_cmake_core/xarm_apiConfig-version.cmake" "DESTINATION" "share/xarm_api/cmake")

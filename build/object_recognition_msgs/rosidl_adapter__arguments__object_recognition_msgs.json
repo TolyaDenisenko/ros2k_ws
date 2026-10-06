@@ -1,0 +1,13 @@
+{
+  "package_name": "object_recognition_msgs",
+  "non_idl_tuples": [
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/ObjectInformation.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/ObjectType.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/RecognizedObject.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/RecognizedObjectArray.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/Table.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:msg/TableArray.msg",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:srv/GetObjectInformation.srv",
+    "/home/anatoly/ros2k_ws/src/object_recognition_msgs:action/ObjectRecognition.action"
+  ]
+}

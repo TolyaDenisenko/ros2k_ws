@@ -1,0 +1,423 @@
+[0.214s] Invoking command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/object_recognition_msgs -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/object_recognition_msgs
+[0.283s] -- The C compiler identification is GNU 13.3.0
+[0.344s] -- The CXX compiler identification is GNU 13.3.0
+[0.364s] -- Detecting C compiler ABI info
+[0.461s] -- Detecting C compiler ABI info - done
+[0.470s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.470s] -- Detecting C compile features
+[0.471s] -- Detecting C compile features - done
+[0.482s] -- Detecting CXX compiler ABI info
+[0.593s] -- Detecting CXX compiler ABI info - done
+[0.606s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.606s] -- Detecting CXX compile features
+[0.606s] -- Detecting CXX compile features - done
+[0.611s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[0.784s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.858s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.919s] -- Found rosidl_default_generators: 1.7.2 (/opt/ros/kilted/share/rosidl_default_generators/cmake)
+[0.928s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.002s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.093s] -- Found rosidl_adapter: 4.9.8 (/opt/ros/kilted/share/rosidl_adapter/cmake)
+[1.098s] -- Found action_msgs: 2.3.2 (/opt/ros/kilted/share/action_msgs/cmake)
+[1.299s] -- Found std_msgs: 5.5.3 (/opt/ros/kilted/share/std_msgs/cmake)
+[1.362s] -- Found geometry_msgs: 5.5.3 (/opt/ros/kilted/share/geometry_msgs/cmake)
+[1.418s] -- Found sensor_msgs: 5.5.3 (/opt/ros/kilted/share/sensor_msgs/cmake)
+[1.483s] -- Found shape_msgs: 5.5.3 (/opt/ros/kilted/share/shape_msgs/cmake)
+[3.390s] -- Found ament_cmake_ros_core: 0.14.8 (/opt/ros/kilted/share/ament_cmake_ros_core/cmake)
+[4.351s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[5.085s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[5.507s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter Development NumPy Development.Module Development.Embed 
+[5.657s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[5.671s] -- Configuring done (5.4s)
+[5.735s] -- Generating done (0.0s)
+[5.749s] -- Build files have been written to: /home/anatoly/ros2k_ws/build/object_recognition_msgs
+[5.760s] Invoked command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/object_recognition_msgs -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/object_recognition_msgs
+[5.761s] Invoking command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/object_recognition_msgs -- -j12 -l12
+[5.823s] [  1%] [34m[1mGenerating type hashes for ROS interfaces[0m
+[5.823s] [  2%] [34m[1mGenerating Rust code for ROS interfaces[0m
+[5.834s] [  2%] Built target ament_cmake_python_symlink_object_recognition_msgs
+[6.046s] running egg_info
+[6.046s] creating object_recognition_msgs.egg-info
+[6.064s] writing object_recognition_msgs.egg-info/PKG-INFO
+[6.064s] writing dependency_links to object_recognition_msgs.egg-info/dependency_links.txt
+[6.064s] writing top-level names to object_recognition_msgs.egg-info/top_level.txt
+[6.064s] writing manifest file 'object_recognition_msgs.egg-info/SOURCES.txt'
+[6.117s] reading manifest file 'object_recognition_msgs.egg-info/SOURCES.txt'
+[6.117s] writing manifest file 'object_recognition_msgs.egg-info/SOURCES.txt'
+[6.145s] [  2%] Built target ament_cmake_python_build_object_recognition_msgs_egg
+[6.405s] [  2%] Built target object_recognition_msgs__rs
+[6.470s] [  2%] Built target object_recognition_msgs__rosidl_generator_type_description
+[6.484s] [  3%] [34m[1mGenerating C code for ROS interfaces[0m
+[6.493s] [  3%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[7.356s] [  3%] Built target object_recognition_msgs__cpp
+[7.559s] [  4%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_information__type_support.c.o[0m
+[7.563s] [  5%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_type__functions.c.o[0m
+[7.564s] [  7%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_type__type_support.c.o[0m
+[7.564s] [  8%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_information__description.c.o[0m
+[7.564s] [  8%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object__description.c.o[0m
+[7.564s] [  9%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object__functions.c.o[0m
+[7.564s] [ 10%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_type__description.c.o[0m
+[7.566s] [ 11%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/object_information__functions.c.o[0m
+[7.568s] [ 13%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object__type_support.c.o[0m
+[7.568s] [ 13%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object_array__functions.c.o[0m
+[7.572s] [ 14%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object_array__description.c.o[0m
+[7.572s] [ 15%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/recognized_object_array__type_support.c.o[0m
+[7.610s] [ 16%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table__description.c.o[0m
+[7.623s] [ 17%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table__type_support.c.o[0m
+[7.627s] [ 18%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table__functions.c.o[0m
+[7.643s] [ 19%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table_array__description.c.o[0m
+[7.662s] [ 20%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table_array__functions.c.o[0m
+[7.686s] [ 21%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/msg/detail/table_array__type_support.c.o[0m
+[7.689s] [ 21%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/srv/detail/get_object_information__description.c.o[0m
+[7.692s] [ 22%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/srv/detail/get_object_information__type_support.c.o[0m
+[7.695s] [ 23%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/action/detail/object_recognition__description.c.o[0m
+[7.700s] [ 24%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/srv/detail/get_object_information__functions.c.o[0m
+[7.713s] [ 26%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/action/detail/object_recognition__type_support.c.o[0m
+[7.714s] [ 26%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_c.dir/rosidl_generator_c/object_recognition_msgs/action/detail/object_recognition__functions.c.o[0m
+[8.153s] [ 27%] [32m[1mLinking C shared library libobject_recognition_msgs__rosidl_generator_c.so[0m
+[8.202s] [ 27%] Built target object_recognition_msgs__rosidl_generator_c
+[8.216s] [ 29%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[8.216s] [ 29%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[8.217s] [ 31%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[8.217s] [ 31%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[8.217s] [ 32%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[8.217s] [ 33%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[9.094s] [ 34%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/object_type__type_support.c.o[0m
+[9.094s] [ 35%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/recognized_object__type_support.c.o[0m
+[9.095s] [ 36%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/recognized_object_array__type_support.c.o[0m
+[9.100s] [ 38%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/object_information__type_support.c.o[0m
+[9.105s] [ 38%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/table__type_support.c.o[0m
+[9.105s] [ 38%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/msg/detail/table_array__type_support.c.o[0m
+[9.105s] [ 39%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/srv/detail/get_object_information__type_support.c.o[0m
+[9.185s] [ 40%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/object_recognition_msgs/action/detail/object_recognition__type_support.c.o[0m
+[9.248s] [ 42%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/object_type__type_support.cpp.o[0m
+[9.248s] [ 42%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/object_information__type_support.cpp.o[0m
+[9.248s] [ 43%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/recognized_object__type_support.cpp.o[0m
+[9.251s] [ 44%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/srv/get_object_information__type_support.cpp.o[0m
+[9.251s] [ 45%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/recognized_object_array__type_support.cpp.o[0m
+[9.252s] [ 46%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/table__type_support.cpp.o[0m
+[9.260s] [ 47%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/msg/table_array__type_support.cpp.o[0m
+[9.263s] [ 48%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/object_information__type_support.cpp.o[0m
+[9.266s] [ 49%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/object_information__type_support.cpp.o[0m
+[9.330s] [ 50%] [32m[1mLinking C shared library libobject_recognition_msgs__rosidl_typesupport_introspection_c.so[0m
+[9.342s] [ 51%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/object_type__type_support.cpp.o[0m
+[9.403s] [ 51%] Built target object_recognition_msgs__rosidl_typesupport_introspection_c
+[9.412s] [ 52%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/recognized_object__type_support.cpp.o[0m
+[9.480s] [ 52%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/recognized_object_array__type_support.cpp.o[0m
+[9.521s] [ 53%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/object_type__type_support.cpp.o[0m
+[9.580s] [ 54%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/table__type_support.cpp.o[0m
+[9.655s] [ 55%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/object_information__type_support.cpp.o[0m
+[9.681s] [ 56%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/msg/table_array__type_support.cpp.o[0m
+[9.682s] [ 57%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/object_type__type_support.cpp.o[0m
+[9.703s] [ 58%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/recognized_object__type_support.cpp.o[0m
+[9.742s] [ 59%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/srv/get_object_information__type_support.cpp.o[0m
+[9.755s] [ 60%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/object_recognition_msgs/action/object_recognition__type_support.cpp.o[0m
+[9.757s] [ 61%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/object_information__type_support_c.cpp.o[0m
+[9.768s] [ 62%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/recognized_object_array__type_support.cpp.o[0m
+[9.786s] [ 63%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/recognized_object__type_support.cpp.o[0m
+[9.846s] [ 64%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/object_recognition_msgs/action/object_recognition__type_support.cpp.o[0m
+[9.857s] [ 65%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/recognized_object_array__type_support.cpp.o[0m
+[9.924s] [ 66%] [32m[1mLinking CXX shared library libobject_recognition_msgs__rosidl_typesupport_c.so[0m
+[9.944s] [ 67%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/object_type__type_support_c.cpp.o[0m
+[10.067s] [ 67%] Built target object_recognition_msgs__rosidl_typesupport_c
+[10.102s] [ 68%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/table__type_support.cpp.o[0m
+[10.161s] [ 69%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/recognized_object__type_support_c.cpp.o[0m
+[10.239s] [ 70%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/msg/detail/table_array__type_support.cpp.o[0m
+[10.266s] [ 71%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/table__type_support.cpp.o[0m
+[10.365s] [ 72%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/recognized_object_array__type_support_c.cpp.o[0m
+[10.458s] [ 72%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/table__type_support_c.cpp.o[0m
+[10.612s] [ 73%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/srv/detail/get_object_information__type_support.cpp.o[0m
+[10.728s] [ 74%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/object_recognition_msgs/action/detail/object_recognition__type_support.cpp.o[0m
+[10.758s] [ 75%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/msg/detail/table_array__type_support_c.cpp.o[0m
+[10.778s] [ 76%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/msg/detail/dds_fastrtps/table_array__type_support.cpp.o[0m
+[10.961s] [ 77%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/srv/detail/get_object_information__type_support_c.cpp.o[0m
+[11.006s] [ 78%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/object_recognition_msgs/action/detail/object_recognition__type_support_c.cpp.o[0m
+[11.017s] [ 79%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/srv/detail/dds_fastrtps/get_object_information__type_support.cpp.o[0m
+[11.098s] [ 80%] [32mBuilding CXX object CMakeFiles/object_recognition_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/action/detail/dds_fastrtps/object_recognition__type_support.cpp.o[0m
+[11.368s] [ 81%] [32m[1mLinking CXX shared library libobject_recognition_msgs__rosidl_typesupport_cpp.so[0m
+[11.521s] [ 81%] Built target object_recognition_msgs__rosidl_typesupport_cpp
+[11.920s] [ 82%] [32m[1mLinking CXX shared library libobject_recognition_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[12.006s] [ 82%] Built target object_recognition_msgs__rosidl_typesupport_fastrtps_c
+[12.497s] [ 83%] [32m[1mLinking CXX shared library libobject_recognition_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[12.578s] [ 83%] Built target object_recognition_msgs__rosidl_typesupport_introspection_cpp
+[12.797s] [ 84%] [32m[1mLinking CXX shared library libobject_recognition_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[12.881s] [ 84%] Built target object_recognition_msgs__rosidl_typesupport_fastrtps_cpp
+[12.905s] [ 84%] Built target object_recognition_msgs
+[12.931s] [ 85%] [34m[1mGenerating Python code for ROS interfaces[0m
+[14.398s] [ 85%] Built target object_recognition_msgs__py
+[14.424s] [ 86%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_object_information_s.c.o[0m
+[14.424s] [ 87%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_object_type_s.c.o[0m
+[14.425s] [ 88%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_recognized_object_array_s.c.o[0m
+[14.425s] [ 90%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_table_s.c.o[0m
+[14.425s] [ 90%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_recognized_object_s.c.o[0m
+[14.425s] [ 91%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/srv/_get_object_information_s.c.o[0m
+[14.425s] [ 92%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/msg/_table_array_s.c.o[0m
+[14.426s] [ 93%] [32mBuilding C object CMakeFiles/object_recognition_msgs__rosidl_generator_py.dir/rosidl_generator_py/object_recognition_msgs/action/_object_recognition_s.c.o[0m
+[14.804s] [ 94%] [32m[1mLinking C shared library libobject_recognition_msgs__rosidl_generator_py.so[0m
+[14.862s] [ 94%] Built target object_recognition_msgs__rosidl_generator_py
+[14.886s] [ 95%] [32mBuilding C object CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[14.886s] [ 96%] [32mBuilding C object CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_c.dir/rosidl_generator_py/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[14.887s] [ 97%] [32mBuilding C object CMakeFiles/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.dir/rosidl_generator_py/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[15.249s] [ 98%] [32m[1mLinking C shared module rosidl_generator_py/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so[0m
+[15.284s] [ 99%] [32m[1mLinking C shared module rosidl_generator_py/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_c.so[0m
+[15.300s] [100%] [32m[1mLinking C shared module rosidl_generator_py/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.so[0m
+[15.301s] [100%] Built target object_recognition_msgs_s__rosidl_typesupport_introspection_c
+[15.333s] [100%] Built target object_recognition_msgs_s__rosidl_typesupport_c
+[15.351s] [100%] Built target object_recognition_msgs_s__rosidl_typesupport_fastrtps_c
+[15.370s] Invoked command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/object_recognition_msgs -- -j12 -l12
+[15.371s] Invoking command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/object_recognition_msgs
+[15.382s] -- Install configuration: "Release"
+[15.382s] -- Execute custom install script
+[15.383s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/rosidl_interfaces/object_recognition_msgs
+[15.393s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.json
+[15.403s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.json
+[15.413s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.json
+[15.424s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.json
+[15.436s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.json
+[15.446s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.json
+[15.456s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.json
+[15.466s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.json
+[15.478s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__functions.h
+[15.488s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__struct.h
+[15.498s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__type_support.h
+[15.508s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/object_recognition.h
+[15.518s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__functions.h
+[15.529s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__struct.h
+[15.539s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__type_support.h
+[15.550s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__functions.h
+[15.560s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__struct.h
+[15.570s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__type_support.h
+[15.582s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__functions.h
+[15.593s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__struct.h
+[15.604s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__type_support.h
+[15.615s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__functions.h
+[15.625s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__struct.h
+[15.637s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__type_support.h
+[15.656s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__functions.h
+[15.674s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__struct.h
+[15.696s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__type_support.h
+[15.712s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__functions.h
+[15.725s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__struct.h
+[15.746s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__type_support.h
+[15.761s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_information.h
+[15.779s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_type.h
+[15.794s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object.h
+[15.808s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object_array.h
+[15.819s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_generator_c__visibility_control.h
+[15.829s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table.h
+[15.840s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table_array.h
+[15.851s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__functions.h
+[15.860s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__struct.h
+[15.872s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__type_support.h
+[15.882s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/get_object_information.h
+[15.892s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/library_path.sh
+[15.903s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/library_path.dsv
+[15.914s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_fastrtps_c.h
+[15.924s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_fastrtps_c.h
+[15.934s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_fastrtps_c.h
+[15.944s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_fastrtps_c.h
+[15.954s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_fastrtps_c.h
+[15.966s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_fastrtps_c.h
+[15.977s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_fastrtps_c.h
+[15.988s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[15.999s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_fastrtps_c.h
+[16.011s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_introspection_c.h
+[16.022s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_introspection_c.h
+[16.032s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_introspection_c.h
+[16.042s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_introspection_c.h
+[16.052s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_introspection_c.h
+[16.062s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_introspection_c.h
+[16.073s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_introspection_c.h
+[16.085s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[16.102s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_introspection_c.h
+[16.111s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__builder.hpp
+[16.122s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__struct.hpp
+[16.140s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__traits.hpp
+[16.147s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__type_support.hpp
+[16.162s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/object_recognition.hpp
+[16.173s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__builder.hpp
+[16.186s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__struct.hpp
+[16.199s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__traits.hpp
+[16.210s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__type_support.hpp
+[16.225s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__builder.hpp
+[16.247s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__struct.hpp
+[16.261s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__traits.hpp
+[16.276s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__type_support.hpp
+[16.290s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__builder.hpp
+[16.309s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__struct.hpp
+[16.322s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__traits.hpp
+[16.335s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__type_support.hpp
+[16.352s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__builder.hpp
+[16.361s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__struct.hpp
+[16.380s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__traits.hpp
+[16.395s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__type_support.hpp
+[16.409s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__builder.hpp
+[16.423s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__struct.hpp
+[16.440s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__traits.hpp
+[16.452s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__type_support.hpp
+[16.474s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__builder.hpp
+[16.487s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__struct.hpp
+[16.500s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__traits.hpp
+[16.516s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__type_support.hpp
+[16.529s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_information.hpp
+[16.540s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/object_type.hpp
+[16.552s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object.hpp
+[16.562s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/recognized_object_array.hpp
+[16.574s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[16.590s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table.hpp
+[16.621s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/table_array.hpp
+[16.651s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__builder.hpp
+[16.683s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__struct.hpp
+[16.695s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__traits.hpp
+[16.710s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__type_support.hpp
+[16.723s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/get_object_information.hpp
+[16.756s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_fastrtps_cpp.hpp
+[16.772s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_fastrtps_cpp.hpp
+[16.819s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_fastrtps_cpp.hpp
+[16.837s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_fastrtps_cpp.hpp
+[16.870s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_fastrtps_cpp.hpp
+[16.888s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_fastrtps_cpp.hpp
+[16.918s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_fastrtps_cpp.hpp
+[16.946s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[16.966s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_fastrtps_cpp.hpp
+[16.977s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_introspection_cpp.hpp
+[17.001s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_information__rosidl_typesupport_introspection_cpp.hpp
+[17.015s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/object_type__rosidl_typesupport_introspection_cpp.hpp
+[17.032s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object__rosidl_typesupport_introspection_cpp.hpp
+[17.045s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/recognized_object_array__rosidl_typesupport_introspection_cpp.hpp
+[17.063s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table__rosidl_typesupport_introspection_cpp.hpp
+[17.075s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/msg/detail/table_array__rosidl_typesupport_introspection_cpp.hpp
+[17.097s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/include/object_recognition_msgs/object_recognition_msgs/srv/detail/get_object_information__rosidl_typesupport_introspection_cpp.hpp
+[17.118s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/pythonpath.sh
+[17.139s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/pythonpath.dsv
+[17.159s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/PKG-INFO
+[17.187s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/SOURCES.txt
+[17.201s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/dependency_links.txt
+[17.217s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs-2.0.0-py3.12.egg-info/top_level.txt
+[17.233s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/__init__.py
+[17.252s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_c.c
+[17.274s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[17.307s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/_object_recognition_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[17.341s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/__init__.py
+[17.369s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/_object_recognition.py
+[17.396s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/_object_recognition_s.c
+[17.410s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/__init__.py
+[17.426s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_information.py
+[17.443s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_information_s.c
+[17.467s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_type.py
+[17.493s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_type_s.c
+[17.510s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object.py
+[17.528s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_array.py
+[17.545s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_array_s.c
+[17.561s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_s.c
+[17.590s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table.py
+[17.622s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_array.py
+[17.657s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_array_s.c
+[17.673s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_s.c
+[17.691s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_c.so
+[17.722s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.so
+[17.747s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so
+[17.764s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/__init__.py
+[17.778s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/_get_object_information.py
+[17.791s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/_get_object_information_s.c
+[17.813s] -- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_fastrtps_c.so
+[17.815s] -- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_introspection_c.so
+[17.815s] -- Up-to-date symlink: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/object_recognition_msgs_s__rosidl_typesupport_c.so
+[17.816s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/Cargo.toml
+[17.833s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/build.rs
+[17.849s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/action.rs
+[17.862s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/action/rmw.rs
+[17.877s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/lib.rs
+[17.907s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/msg.rs
+[17.920s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/msg/rmw.rs
+[17.942s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/srv.rs
+[17.960s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/rust/src/srv/rmw.rs
+[17.972s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.idl
+[17.987s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.idl
+[18.002s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.idl
+[18.025s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.idl
+[18.051s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.idl
+[18.063s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.idl
+[18.090s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.idl
+[18.114s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.idl
+[18.138s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectInformation.msg
+[18.153s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/ObjectType.msg
+[18.170s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObject.msg
+[18.187s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/RecognizedObjectArray.msg
+[18.200s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/Table.msg
+[18.216s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/msg/TableArray.msg
+[18.233s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/srv/GetObjectInformation.srv
+[18.250s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/action/ObjectRecognition.action
+[18.276s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/package_run_dependencies/object_recognition_msgs
+[18.303s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/parent_prefix_path/object_recognition_msgs
+[18.321s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/ament_prefix_path.sh
+[18.336s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/ament_prefix_path.dsv
+[18.351s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/path.sh
+[18.366s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/environment/path.dsv
+[18.383s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.bash
+[18.398s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.sh
+[18.421s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.zsh
+[18.436s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/local_setup.dsv
+[18.450s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/package.dsv
+[18.463s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/ament_index/resource_index/packages/object_recognition_msgs
+[18.473s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake-extras.cmake
+[18.483s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[18.497s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[18.508s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[18.519s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[18.530s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[18.541s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[18.551s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/rosidl_cmake_aggregate_target-extras.cmake
+[18.562s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgsConfig.cmake
+[18.572s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgsConfig-version.cmake
+[18.582s] -- Symlinking: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/package.xml
+[18.592s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_c.so
+[18.593s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_c.so" to ""
+[18.593s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_c.so
+[18.593s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[18.593s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_c.so
+[18.594s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_c.so" to ""
+[18.594s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_c.so
+[18.594s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_c.so" to ""
+[18.594s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_cpp.so
+[18.595s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[18.595s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_cpp.so
+[18.595s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[18.596s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_cpp.so
+[18.596s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_typesupport_cpp.so" to ""
+[18.649s] Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs'...
+[18.649s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/__init__.py'...
+[18.649s] Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action'...
+[18.649s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/__init__.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/action/_object_recognition.py'...
+[18.650s] Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/__init__.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_information.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_object_type.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_recognized_object_array.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/msg/_table_array.py'...
+[18.650s] Listing '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/__init__.py'...
+[18.650s] Compiling '/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/python3.12/site-packages/object_recognition_msgs/srv/_get_object_information.py'...
+[18.658s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_py.so
+[18.659s] -- Set non-toolchain portion of runtime path of "/home/anatoly/ros2k_ws/install/object_recognition_msgs/lib/libobject_recognition_msgs__rosidl_generator_py.so" to ""
+[18.659s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cExport.cmake
+[18.659s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cExport-release.cmake
+[18.659s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[18.659s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cExport-release.cmake
+[18.659s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cExport.cmake
+[18.660s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cExport-release.cmake
+[18.660s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cExport.cmake
+[18.660s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cExport-release.cmake
+[18.660s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_cppExport.cmake
+[18.660s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[18.661s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_typesupport_fastrtps_cppExport-release.cmake
+[18.661s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[18.661s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_introspection_cppExport-release.cmake
+[18.661s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cppExport.cmake
+[18.661s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/object_recognition_msgs__rosidl_typesupport_cppExport-release.cmake
+[18.662s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_pyExport.cmake
+[18.662s] -- Installing: /home/anatoly/ros2k_ws/install/object_recognition_msgs/share/object_recognition_msgs/cmake/export_object_recognition_msgs__rosidl_generator_pyExport-release.cmake
+[18.665s] Invoked command in '/home/anatoly/ros2k_ws/build/object_recognition_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/object_recognition_msgs

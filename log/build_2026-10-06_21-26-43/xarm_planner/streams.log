@@ -1,0 +1,388 @@
+[0.019s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_planner': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner
+[0.032s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[0.242s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.256s] -- Found moveit: 2.14.3 (/opt/ros/kilted/share/moveit/cmake)
+[0.261s] -- Found moveit_ros_planning_interface: 2.14.3 (/opt/ros/kilted/share/moveit_ros_planning_interface/cmake)
+[0.409s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: date_time filesystem program_options system thread 
+[0.470s] -- Found rosidl_generator_c: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_c/cmake)
+[0.494s] -- Found rosidl_generator_cpp: 4.9.8 (/opt/ros/kilted/share/rosidl_generator_cpp/cmake)
+[0.518s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.544s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.908s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: chrono date_time filesystem iostreams program_options regex serialization system thread 
+[1.009s] -- Found rclcpp: 29.5.11 (/opt/ros/kilted/share/rclcpp/cmake)
+[1.076s] -- Found rmw_implementation_cmake: 7.8.3 (/opt/ros/kilted/share/rmw_implementation_cmake/cmake)
+[1.081s] -- Found rmw_fastrtps_cpp: 9.3.5 (/opt/ros/kilted/share/rmw_fastrtps_cpp/cmake)
+[1.202s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.13")  
+[1.214s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[1.315s] -- Found tcb_span: 1.3.2 (/opt/ros/kilted/share/tcb_span/cmake)
+[1.325s] -- Found rclcpp_lifecycle: 29.5.11 (/opt/ros/kilted/share/rclcpp_lifecycle/cmake)
+[1.367s] -- Found parameter_traits: 0.7.6 (/opt/ros/kilted/share/parameter_traits/cmake)
+[1.467s] -- Found Eigen3: TRUE (found version "3.4.0") 
+[1.467s] -- Ensuring Eigen3 include directory is part of orocos-kdl CMake target
+[1.683s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: system filesystem date_time program_options thread chrono 
+[1.743s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: thread system filesystem regex date_time program_options 
+[1.778s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.83.0/BoostConfig.cmake (found version "1.83.0") found components: system filesystem date_time program_options thread 
+[1.823s] -- Found xarm_msgs: 0.0.0 (/home/anatoly/ros2k_ws/install/xarm_msgs/share/xarm_msgs/cmake)
+[1.893s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.893s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.893s]   with modern CMake targets instead.  Try replacing this call with:
+[1.893s] 
+[1.893s]     target_link_libraries(xarm_planner PUBLIC
+[1.893s]       ${geometry_msgs_TARGETS}
+[1.894s]       ${moveit_msgs_TARGETS}
+[1.894s]       ${std_msgs_TARGETS}
+[1.894s]       ${xarm_msgs_TARGETS}
+[1.894s]       moveit_ros_planning_interface::moveit_common_planning_interface_objects
+[1.894s]       moveit_ros_planning_interface::moveit_move_group_interface
+[1.894s]       moveit_ros_planning_interface::moveit_planning_scene_interface
+[1.894s]       rclcpp::rclcpp
+[1.894s]     )
+[1.894s] 
+[1.894s] Call Stack (most recent call first):
+[1.894s]   CMakeLists.txt:45 (ament_target_dependencies)
+[1.894s] 
+[1.894s] [0m
+[1.897s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.897s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.898s]   with modern CMake targets instead.  Try replacing this call with:
+[1.898s] 
+[1.898s]     target_link_libraries(xarm_planner_node PUBLIC
+[1.898s]       ${geometry_msgs_TARGETS}
+[1.898s]       ${moveit_msgs_TARGETS}
+[1.898s]       ${std_msgs_TARGETS}
+[1.898s]       ${xarm_msgs_TARGETS}
+[1.898s]       rclcpp::rclcpp
+[1.898s]     )
+[1.898s] 
+[1.898s] Call Stack (most recent call first):
+[1.898s]   CMakeLists.txt:51 (ament_target_dependencies)
+[1.898s] 
+[1.898s] [0m
+[1.901s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.902s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.902s]   with modern CMake targets instead.  Try replacing this call with:
+[1.902s] 
+[1.902s]     target_link_libraries(xarm_gripper_planner_node PUBLIC
+[1.902s]       ${geometry_msgs_TARGETS}
+[1.902s]       ${moveit_msgs_TARGETS}
+[1.902s]       ${std_msgs_TARGETS}
+[1.902s]       ${xarm_msgs_TARGETS}
+[1.902s]       rclcpp::rclcpp
+[1.902s]     )
+[1.902s] 
+[1.902s] Call Stack (most recent call first):
+[1.902s]   CMakeLists.txt:60 (ament_target_dependencies)
+[1.902s] 
+[1.902s] [0m
+[1.905s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.905s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.905s]   with modern CMake targets instead.  Try replacing this call with:
+[1.905s] 
+[1.905s]     target_link_libraries(test_xarm_planner_api_joint PUBLIC
+[1.906s]       ${geometry_msgs_TARGETS}
+[1.906s]       ${moveit_msgs_TARGETS}
+[1.906s]       ${std_msgs_TARGETS}
+[1.906s]       ${xarm_msgs_TARGETS}
+[1.906s]       rclcpp::rclcpp
+[1.906s]     )
+[1.906s] 
+[1.906s] Call Stack (most recent call first):
+[1.906s]   CMakeLists.txt:69 (ament_target_dependencies)
+[1.906s] 
+[1.906s] [0m
+[1.909s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.909s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.909s]   with modern CMake targets instead.  Try replacing this call with:
+[1.909s] 
+[1.909s]     target_link_libraries(test_dual_xarm_planner_api_joint PUBLIC
+[1.909s]       ${geometry_msgs_TARGETS}
+[1.909s]       ${moveit_msgs_TARGETS}
+[1.909s]       ${std_msgs_TARGETS}
+[1.909s]       ${xarm_msgs_TARGETS}
+[1.909s]       rclcpp::rclcpp
+[1.909s]     )
+[1.909s] 
+[1.910s] Call Stack (most recent call first):
+[1.910s]   CMakeLists.txt:78 (ament_target_dependencies)
+[1.910s] 
+[1.910s] [0m
+[1.912s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.912s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.912s]   with modern CMake targets instead.  Try replacing this call with:
+[1.912s] 
+[1.912s]     target_link_libraries(test_xarm_planner_api_pose PUBLIC
+[1.912s]       ${geometry_msgs_TARGETS}
+[1.913s]       ${moveit_msgs_TARGETS}
+[1.913s]       ${std_msgs_TARGETS}
+[1.913s]       ${xarm_msgs_TARGETS}
+[1.913s]       rclcpp::rclcpp
+[1.913s]     )
+[1.913s] 
+[1.913s] Call Stack (most recent call first):
+[1.913s]   CMakeLists.txt:87 (ament_target_dependencies)
+[1.913s] 
+[1.913s] [0m
+[1.916s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.916s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.916s]   with modern CMake targets instead.  Try replacing this call with:
+[1.916s] 
+[1.916s]     target_link_libraries(test_xarm_gripper_planner_api_joint PUBLIC
+[1.916s]       ${geometry_msgs_TARGETS}
+[1.916s]       ${moveit_msgs_TARGETS}
+[1.916s]       ${std_msgs_TARGETS}
+[1.916s]       ${xarm_msgs_TARGETS}
+[1.916s]       rclcpp::rclcpp
+[1.916s]     )
+[1.916s] 
+[1.916s] Call Stack (most recent call first):
+[1.916s]   CMakeLists.txt:96 (ament_target_dependencies)
+[1.917s] 
+[1.917s] [0m
+[1.919s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.919s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.919s]   with modern CMake targets instead.  Try replacing this call with:
+[1.919s] 
+[1.919s]     target_link_libraries(test_xarm_planner_client_joint PUBLIC
+[1.919s]       ${geometry_msgs_TARGETS}
+[1.919s]       ${moveit_msgs_TARGETS}
+[1.920s]       ${std_msgs_TARGETS}
+[1.920s]       ${xarm_msgs_TARGETS}
+[1.920s]       rclcpp::rclcpp
+[1.920s]     )
+[1.920s] 
+[1.920s] Call Stack (most recent call first):
+[1.920s]   CMakeLists.txt:105 (ament_target_dependencies)
+[1.920s] 
+[1.920s] [0m
+[1.923s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.923s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.923s]   with modern CMake targets instead.  Try replacing this call with:
+[1.923s] 
+[1.923s]     target_link_libraries(test_xarm_planner_client_pose PUBLIC
+[1.923s]       ${geometry_msgs_TARGETS}
+[1.923s]       ${moveit_msgs_TARGETS}
+[1.923s]       ${std_msgs_TARGETS}
+[1.923s]       ${xarm_msgs_TARGETS}
+[1.923s]       rclcpp::rclcpp
+[1.923s]     )
+[1.923s] 
+[1.923s] Call Stack (most recent call first):
+[1.923s]   CMakeLists.txt:110 (ament_target_dependencies)
+[1.923s] 
+[1.924s] [0m
+[1.926s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.926s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.926s]   with modern CMake targets instead.  Try replacing this call with:
+[1.926s] 
+[1.926s]     target_link_libraries(test_xarm_gripper_planner_client_joint PUBLIC
+[1.926s]       ${geometry_msgs_TARGETS}
+[1.926s]       ${moveit_msgs_TARGETS}
+[1.926s]       ${std_msgs_TARGETS}
+[1.926s]       ${xarm_msgs_TARGETS}
+[1.926s]       rclcpp::rclcpp
+[1.926s]     )
+[1.927s] 
+[1.927s] Call Stack (most recent call first):
+[1.927s]   CMakeLists.txt:115 (ament_target_dependencies)
+[1.927s] 
+[1.927s] [0m
+[1.929s] [0mCMake Deprecation Warning at /opt/ros/kilted/share/ament_cmake_target_dependencies/cmake/ament_target_dependencies.cmake:87 (message):
+[1.930s]   ament_target_dependencies() is deprecated.  Use target_link_libraries()
+[1.930s]   with modern CMake targets instead.  Try replacing this call with:
+[1.930s] 
+[1.930s]     target_link_libraries(test_lite_gripper_realmove PUBLIC
+[1.930s]       ${geometry_msgs_TARGETS}
+[1.930s]       ${moveit_msgs_TARGETS}
+[1.930s]       ${std_msgs_TARGETS}
+[1.930s]       ${xarm_msgs_TARGETS}
+[1.930s]       rclcpp::rclcpp
+[1.930s]     )
+[1.930s] 
+[1.930s] Call Stack (most recent call first):
+[1.930s]   CMakeLists.txt:120 (ament_target_dependencies)
+[1.930s] 
+[1.930s] [0m
+[1.936s] -- Found ament_lint_auto: 0.19.3 (/opt/ros/kilted/share/ament_lint_auto/cmake)
+[2.064s] -- Added test 'copyright' to check source files copyright and LICENSE
+[2.067s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[2.068s] -- Configured cppcheck include dirs: /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include
+[2.068s] -- Configured cppcheck exclude dirs and/or files: 
+[2.071s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[2.071s] -- Configured cpplint exclude dirs and/or files: 
+[2.072s] -- Added test 'flake8' to check Python code syntax and style conventions
+[2.072s] -- Configured 'flake8' exclude dirs and/or files: 
+[2.073s] -- Added test 'lint_cmake' to check CMake code style
+[2.074s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[2.077s] -- Added test 'uncrustify' to check C / C++ code style
+[2.077s] -- Configured uncrustify additional arguments: 
+[2.078s] -- Added test 'xmllint' to check XML markup files
+[2.080s] -- Configuring done (2.1s)
+[2.220s] -- Generating done (0.1s)
+[2.253s] -- Build files have been written to: /home/anatoly/ros2k_ws/build/xarm_planner
+[2.270s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_planner' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner -DCMAKE_BUILD_TYPE=Release -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_planner
+[2.271s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_planner': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/xarm_planner -- -j12 -l12
+[2.333s] [  4%] [32mBuilding CXX object CMakeFiles/test_xarm_planner_client_joint.dir/test/test_xarm_planner_client_joint.cpp.o[0m
+[2.333s] [ 13%] [32mBuilding CXX object CMakeFiles/xarm_planner.dir/src/xarm_planner.cpp.o[0m
+[2.333s] [ 13%] [32mBuilding CXX object CMakeFiles/test_xarm_planner_client_pose.dir/test/test_xarm_planner_client_pose.cpp.o[0m
+[2.334s] [ 22%] [32mBuilding CXX object CMakeFiles/test_lite_gripper_realmove.dir/test/test_lite_gripper_realmove.cpp.o[0m
+[2.335s] [ 22%] [32mBuilding CXX object CMakeFiles/test_xarm_gripper_planner_client_joint.dir/test/test_xarm_gripper_planner_client_joint.cpp.o[0m
+[4.944s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[4.945s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/src/xarm_planner.cpp:8[m[K:
+[4.945s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[4.945s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[4.945s]       |                                                                             [01;36m[K^[m[K
+[6.359s] [ 27%] [32m[1mLinking CXX executable test_lite_gripper_realmove[0m
+[6.539s] [ 27%] Built target test_lite_gripper_realmove
+[6.597s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[6.598s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[6.598s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[6.598s]       |                                                                             [01;36m[K^[m[K
+[6.686s] [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/src/xarm_planner.cpp:[m[K In member function ‘[01m[Kbool xarm_planner::XArmPlanner::[01;32m[KplanCartesianPath[m[K(const std::vector<geometry_msgs::msg::Pose_<std::allocator<void> > >&)[m[K’:
+[6.686s] [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/src/xarm_planner.cpp:81:56:[m[K [01;35m[Kwarning: [m[K‘[01m[Kdouble moveit::planning_interface::MoveGroupInterface::[01;32m[KcomputeCartesianPath[m[K(const std::vector<geometry_msgs::msg::Pose_<std::allocator<void> > >&, double, double, moveit_msgs::msg::RobotTrajectory&, bool, moveit_msgs::msg::MoveItErrorCodes*)[m[K’ is deprecated: Drop jump_threshold [[01;35m[K]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wdeprecated-declarations-Wdeprecated-declarations]8;;[m[K]
+[6.686s]    81 |     double fraction = [01;35m[Kmove_group_->computeCartesianPath(pose_target_vector, eef_step, jump_threshold, trajectory_)[m[K;
+[6.686s]       |                       [01;35m[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[6.686s] In file included from [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:52[m[K:
+[6.686s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.hpp:765:3:[m[K [01;36m[Knote: [m[Kdeclared here
+[6.687s]   765 |   [01;36m[KcomputeCartesianPath[m[K(const std::vector<geometry_msgs::msg::Pose>& waypoints, double eef_step,
+[6.687s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[7.187s] [ 31%] [32m[1mLinking CXX executable test_xarm_gripper_planner_client_joint[0m
+[7.241s] [ 36%] [32m[1mLinking CXX executable test_xarm_planner_client_joint[0m
+[7.360s] [ 40%] [32m[1mLinking CXX executable test_xarm_planner_client_pose[0m
+[7.373s] [ 40%] Built target test_xarm_gripper_planner_client_joint
+[7.429s] [ 40%] Built target test_xarm_planner_client_joint
+[7.538s] [ 40%] Built target test_xarm_planner_client_pose
+[9.003s] [ 45%] [32m[1mLinking CXX shared library libxarm_planner.so[0m
+[9.181s] [ 45%] Built target xarm_planner
+[9.208s] [ 63%] [32mBuilding CXX object CMakeFiles/test_xarm_planner_api_joint.dir/test/test_xarm_planner_api_joint.cpp.o[0m
+[9.208s] [ 63%] [32mBuilding CXX object CMakeFiles/xarm_planner_node.dir/src/xarm_planner_node.cpp.o[0m
+[9.208s] [ 63%] [32mBuilding CXX object CMakeFiles/xarm_gripper_planner_node.dir/src/xarm_gripper_planner_node.cpp.o[0m
+[9.208s] [ 63%] [32mBuilding CXX object CMakeFiles/test_xarm_gripper_planner_api_joint.dir/test/test_xarm_gripper_planner_api_joint.cpp.o[0m
+[9.211s] [ 68%] [32mBuilding CXX object CMakeFiles/test_xarm_planner_api_pose.dir/test/test_xarm_planner_api_pose.cpp.o[0m
+[9.212s] [ 72%] [32mBuilding CXX object CMakeFiles/test_dual_xarm_planner_api_joint.dir/test/test_dual_xarm_planner_api_joint.cpp.o[0m
+[11.572s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[11.573s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/test/test_xarm_planner_api_joint.cpp:8[m[K:
+[11.573s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[11.573s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[11.573s]       |                                                                             [01;36m[K^[m[K
+[11.684s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[11.684s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/src/xarm_planner_node.cpp:10[m[K:
+[11.684s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[11.684s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[11.684s]       |                                                                             [01;36m[K^[m[K
+[11.716s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[11.716s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/test/test_xarm_gripper_planner_api_joint.cpp:8[m[K:
+[11.716s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[11.716s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[11.716s]       |                                                                             [01;36m[K^[m[K
+[11.726s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[11.727s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/src/xarm_gripper_planner_node.cpp:10[m[K:
+[11.727s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[11.727s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[11.727s]       |                                                                             [01;36m[K^[m[K
+[11.855s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[11.855s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/test/test_xarm_planner_api_pose.cpp:8[m[K:
+[11.855s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[11.855s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[11.855s]       |                                                                             [01;36m[K^[m[K
+[12.055s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:14[m[K,
+[12.055s]                  from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/test/test_dual_xarm_planner_api_joint.cpp:8[m[K:
+[12.055s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/move_group_interface/move_group_interface.h:51:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[12.056s]    51 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[12.056s]       |                                                                             [01;36m[K^[m[K
+[13.292s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.292s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.292s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.293s]       |                                                                             [01;36m[K^[m[K
+[13.419s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.419s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.419s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.419s]       |                                                                             [01;36m[K^[m[K
+[13.432s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.433s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.433s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.433s]       |                                                                             [01;36m[K^[m[K
+[13.455s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.456s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.456s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.456s]       |                                                                             [01;36m[K^[m[K
+[13.566s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.567s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.567s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.567s]       |                                                                             [01;36m[K^[m[K
+[13.900s] In file included from [01m[K/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/include/xarm_planner/xarm_planner.h:15[m[K:
+[13.900s] [01m[K/opt/ros/kilted/include/moveit_ros_planning_interface/moveit/planning_scene_interface/planning_scene_interface.h:50:77:[m[K [01;36m[Knote: [m[K‘[01m[K#pragma message: .h header is obsolete. Please use the .hpp header instead.[m[K’
+[13.900s]    50 | #pragma message(".h header is obsolete. Please use the .hpp header instead."[01;36m[K)[m[K
+[13.900s]       |                                                                             [01;36m[K^[m[K
+[15.696s] [ 77%] [32m[1mLinking CXX executable test_xarm_planner_api_joint[0m
+[15.807s] [ 81%] [32m[1mLinking CXX executable test_xarm_gripper_planner_api_joint[0m
+[15.939s] [ 86%] [32m[1mLinking CXX executable test_xarm_planner_api_pose[0m
+[16.066s] [ 86%] Built target test_xarm_planner_api_joint
+[16.149s] [ 86%] Built target test_xarm_gripper_planner_api_joint
+[16.267s] [ 86%] Built target test_xarm_planner_api_pose
+[16.587s] [ 90%] [32m[1mLinking CXX executable test_dual_xarm_planner_api_joint[0m
+[16.908s] [ 90%] Built target test_dual_xarm_planner_api_joint
+[17.598s] [ 95%] [32m[1mLinking CXX executable xarm_gripper_planner_node[0m
+[17.925s] [ 95%] Built target xarm_gripper_planner_node
+[18.536s] [100%] [32m[1mLinking CXX executable xarm_planner_node[0m
+[18.848s] [100%] Built target xarm_planner_node
+[18.864s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_planner' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/anatoly/ros2k_ws/build/xarm_planner -- -j12 -l12
+[18.866s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_planner': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/xarm_planner
+[18.875s] -- Install configuration: "Release"
+[18.875s] -- Execute custom install script
+[18.875s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/include/xarm_planner/xarm_planner.h
+[18.886s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/libxarm_planner.so
+[18.898s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/xarm_planner_node
+[18.908s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/xarm_gripper_planner_node
+[18.918s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_planner_api_joint
+[18.929s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_dual_xarm_planner_api_joint
+[18.940s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_planner_api_pose
+[18.950s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_gripper_planner_api_joint
+[18.960s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_planner_client_joint
+[18.970s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_planner_client_pose
+[18.980s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_xarm_gripper_planner_client_joint
+[18.991s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/lib/xarm_planner/test_lite_gripper_realmove
+[19.004s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/_dual_robot_planner.launch.py
+[19.014s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/_robot_planner.launch.py
+[19.024s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/lite6_planner_fake.launch.py
+[19.035s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/lite6_planner_gazebo.launch.py
+[19.046s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/lite6_planner_realmove.launch.py
+[19.057s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_dual_xarm_planner_api_joint.launch.py
+[19.069s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_lite_gripper_realmove.launch.py
+[19.079s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_move_group.launch.py
+[19.090s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_gripper_planner_api_joint.launch.py
+[19.100s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_gripper_planner_client_joint.launch.py
+[19.113s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_planner_api_joint.launch.py
+[19.125s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_planner_api_pose.launch.py
+[19.137s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_planner_client_joint.launch.py
+[19.148s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/test_xarm_planner_client_pose.launch.py
+[19.160s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/uf850_planner_fake.launch.py
+[19.171s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/uf850_planner_gazebo.launch.py
+[19.183s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/uf850_planner_realmove.launch.py
+[19.195s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm5_planner_fake.launch.py
+[19.206s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm5_planner_gazebo.launch.py
+[19.218s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm5_planner_realmove.launch.py
+[19.230s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm6_planner_fake.launch.py
+[19.240s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm6_planner_gazebo.launch.py
+[19.250s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm6_planner_realmove.launch.py
+[19.262s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_mirror_planner_fake.launch.py
+[19.274s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_mirror_planner_gazebo.launch.py
+[19.286s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_mirror_planner_realmove.launch.py
+[19.298s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_planner_fake.launch.py
+[19.310s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_planner_gazebo.launch.py
+[19.324s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner//launch/xarm7_planner_realmove.launch.py
+[19.335s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/ament_index/resource_index/package_run_dependencies/xarm_planner
+[19.348s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/ament_index/resource_index/parent_prefix_path/xarm_planner
+[19.360s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/environment/ament_prefix_path.sh
+[19.370s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/environment/ament_prefix_path.dsv
+[19.380s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/environment/path.sh
+[19.391s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/environment/path.dsv
+[19.402s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/local_setup.bash
+[19.413s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/local_setup.sh
+[19.424s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/local_setup.zsh
+[19.435s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/local_setup.dsv
+[19.447s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/package.dsv
+[19.458s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/ament_index/resource_index/packages/xarm_planner
+[19.469s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/cmake/xarm_plannerConfig.cmake
+[19.482s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/cmake/xarm_plannerConfig-version.cmake
+[19.494s] -- Symlinking: /home/anatoly/ros2k_ws/install/xarm_planner/share/xarm_planner/package.xml
+[19.507s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_planner' returned '0': AMENT_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/home/anatoly/ros2k_ws/install/uf_ros_lib:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/anatoly/ros2k_ws/install/xarm_controller:/home/anatoly/ros2k_ws/install/xarm_api:/home/anatoly/ros2k_ws/install/xarm_sdk:/home/anatoly/ros2k_ws/install/xarm_msgs:/home/anatoly/ros2k_ws/install/xarm_description:/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor:/opt/ros/kilted DEBUGINFOD_URLS=https://debuginfod.ubuntu.com LD_LIBRARY_PATH=/home/anatoly/ros2k_ws/install/xarm_controller/lib:/home/anatoly/ros2k_ws/install/xarm_api/lib:/home/anatoly/ros2k_ws/install/xarm_sdk/lib:/home/anatoly/ros2k_ws/install/xarm_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/anatoly/ros2k_ws/install/xarm_msgs/lib/python3.12/site-packages:/home/anatoly/ros2k_ws/build/uf_ros_lib:/home/anatoly/ros2k_ws/install/uf_ros_lib/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/anatoly/ros2k_ws/build/xarm_planner

@@ -1,0 +1,56 @@
+{
+  "type_description_msg": {
+    "type_description": {
+      "type_name": "object_recognition_msgs/srv/GetObjectInformation_Request",
+      "fields": [
+        {
+          "name": "type",
+          "type": {
+            "type_id": 1,
+            "capacity": 0,
+            "string_capacity": 0,
+            "nested_type_name": "object_recognition_msgs/msg/ObjectType"
+          },
+          "default_value": ""
+        }
+      ]
+    },
+    "referenced_type_descriptions": [
+      {
+        "type_name": "object_recognition_msgs/msg/ObjectType",
+        "fields": [
+          {
+            "name": "key",
+            "type": {
+              "type_id": 17,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          },
+          {
+            "name": "db",
+            "type": {
+              "type_id": 17,
+              "capacity": 0,
+              "string_capacity": 0,
+              "nested_type_name": ""
+            },
+            "default_value": ""
+          }
+        ]
+      }
+    ]
+  },
+  "type_hashes": [
+    {
+      "type_name": "object_recognition_msgs/srv/GetObjectInformation_Request",
+      "hash_string": "RIHS01_4fc4ed7ffd4a0b23b6f264771971952b0523260de8809dbcae075f893df6daf4"
+    },
+    {
+      "type_name": "object_recognition_msgs/msg/ObjectType",
+      "hash_string": "RIHS01_5eb3ee3976403366d7c50d7dbee8bec96b3bced1e752674a7194a35841632134"
+    }
+  ]
+}

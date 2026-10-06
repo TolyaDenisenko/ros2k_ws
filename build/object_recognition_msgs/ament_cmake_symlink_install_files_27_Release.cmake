@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/object_recognition_msgs" FILES "/home/anatoly/ros2k_ws/src/object_recognition_msgs/srv/GetObjectInformation.srv" "DESTINATION" "share/object_recognition_msgs/srv")

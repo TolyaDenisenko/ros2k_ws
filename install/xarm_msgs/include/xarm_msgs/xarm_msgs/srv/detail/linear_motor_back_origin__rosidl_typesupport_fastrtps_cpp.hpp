@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_typesupport_fastrtps_cpp/xarm_msgs/srv/detail/linear_motor_back_origin__rosidl_typesupport_fastrtps_cpp.hpp
