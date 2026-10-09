@@ -1,0 +1,1 @@
+ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_gz_bringup" FILES "/home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_index/share/ament_index/resource_index/package_run_dependencies/xarm_gz_bringup" "DESTINATION" "share/ament_index/resource_index/package_run_dependencies")

@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_environment_hooks/local_setup.sh

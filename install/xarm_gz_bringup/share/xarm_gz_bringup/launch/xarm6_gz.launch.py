@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/src/xarm_gz_bringup/launch/xarm6_gz.launch.py

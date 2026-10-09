@@ -1,0 +1,1 @@
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_core/xarm_gz_bringupConfig-version.cmake

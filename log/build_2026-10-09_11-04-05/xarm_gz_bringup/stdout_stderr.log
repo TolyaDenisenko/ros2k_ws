@@ -1,0 +1,5 @@
+[31mCMake Error at CMakeLists.txt:1:
+  Parse error.  Expected "(", got unquoted argument with text ">".
+
+-- Configuring incomplete, errors occurred!
+[0m

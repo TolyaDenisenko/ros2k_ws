@@ -1,0 +1,9 @@
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/uninstall.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/xarm_gz_bringup_uninstall.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/test.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/edit_cache.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/rebuild_cache.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/list_install_components.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/install.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/install/local.dir
+/home/anatoly/ros2k_ws/build/xarm_gz_bringup/CMakeFiles/install/strip.dir

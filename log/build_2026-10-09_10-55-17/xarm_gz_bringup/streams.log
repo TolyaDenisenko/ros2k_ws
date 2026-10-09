@@ -1,0 +1,7 @@
+[0.032s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_gz_bringup': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_gz_bringup -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_gz_bringup
+[0.049s] [31mCMake Error at CMakeLists.txt:1:
+[0.049s]   Parse error.  Expected "(", got unquoted argument with text ">".
+[0.050s] 
+[0.050s] [0m
+[0.050s] -- Configuring incomplete, errors occurred!
+[0.055s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_gz_bringup' returned '1': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_gz_bringup -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_gz_bringup

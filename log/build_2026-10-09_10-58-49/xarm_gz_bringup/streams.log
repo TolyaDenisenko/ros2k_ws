@@ -1,0 +1,59 @@
+[0.031s] Invoking command in '/home/anatoly/ros2k_ws/build/xarm_gz_bringup': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_gz_bringup -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_gz_bringup
+[0.289s] -- The C compiler identification is GNU 13.3.0
+[0.541s] -- The CXX compiler identification is GNU 13.3.0
+[0.583s] -- Detecting C compiler ABI info
+[0.812s] -- Detecting C compiler ABI info - done
+[0.838s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.840s] -- Detecting C compile features
+[0.857s] -- Detecting C compile features - done
+[0.881s] -- Detecting CXX compiler ABI info
+[1.141s] -- Detecting CXX compiler ABI info - done
+[1.169s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[1.169s] -- Detecting CXX compile features
+[1.170s] -- Detecting CXX compile features - done
+[1.196s] -- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)
+[1.629s] -- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter 
+[2.219s] Error parsing '/home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml':
+[7.816s] Traceback (most recent call last):
+[7.816s]   File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 610, in parse_package_string
+[7.818s]     root = dom.parseString(data)
+[7.820s]            ^^^^^^^^^^^^^^^^^^^^^
+[7.820s]   File "/usr/lib/python3.12/xml/dom/minidom.py", line 1995, in parseString
+[7.822s]     return expatbuilder.parseString(string)
+[7.822s]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[7.823s]   File "/usr/lib/python3.12/xml/dom/expatbuilder.py", line 922, in parseString
+[7.823s]     return builder.parseString(string)
+[7.823s]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[7.824s]   File "/usr/lib/python3.12/xml/dom/expatbuilder.py", line 220, in parseString
+[7.828s]     parser.Parse(string, True)
+[7.831s] xml.parsers.expat.ExpatError: syntax error: line 1, column 0
+[7.832s] 
+[7.832s] During handling of the above exception, another exception occurred:
+[7.835s] 
+[7.835s] Traceback (most recent call last):
+[7.835s]   File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 150, in <module>
+[7.836s]     main()
+[7.836s]   File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 53, in main
+[7.837s]     raise e
+[7.837s]   File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 49, in main
+[7.837s]     package = parse_package_string(
+[7.838s]               ^^^^^^^^^^^^^^^^^^^^^
+[7.838s]   File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 612, in parse_package_string
+[7.838s]     raise InvalidPackage('The manifest contains invalid XML:\n%s' % ex, filename)
+[7.839s] catkin_pkg.package.InvalidPackage: Error(s) in package '/home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml':
+[7.839s] The manifest contains invalid XML:
+[7.839s] syntax error: line 1, column 0
+[7.974s] [31mCMake Error at /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):
+[7.974s]   execute_process(/usr/bin/python3
+[7.974s]   /opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py
+[7.977s]   /home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml
+[7.977s]   /home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_core/package.cmake)
+[7.979s]   returned error code 1
+[7.980s] Call Stack (most recent call first):
+[7.981s]   /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)
+[7.982s]   /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package.cmake:63 (ament_package_xml)
+[7.983s]   CMakeLists.txt:14 (ament_package)
+[7.983s] 
+[7.984s] [0m
+[7.986s] -- Configuring incomplete, errors occurred!
+[8.006s] Invoked command in '/home/anatoly/ros2k_ws/build/xarm_gz_bringup' returned '1': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/anatoly/ros2k_ws/src/xarm_gz_bringup -DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_gz_bringup

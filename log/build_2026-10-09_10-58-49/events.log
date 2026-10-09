@@ -1,0 +1,157 @@
+[0.000000] (-) TimerEvent: {}
+[0.000635] (-) JobUnselected: {'identifier': 'd435i_xarm_setup'}
+[0.000724] (-) JobUnselected: {'identifier': 'mbot_demo'}
+[0.001335] (-) JobUnselected: {'identifier': 'realsense_gazebo_plugin'}
+[0.001399] (-) JobUnselected: {'identifier': 'uf_ros_lib'}
+[0.001466] (-) JobUnselected: {'identifier': 'xarm_api'}
+[0.001523] (-) JobUnselected: {'identifier': 'xarm_controller'}
+[0.001557] (-) JobUnselected: {'identifier': 'xarm_description'}
+[0.001586] (-) JobUnselected: {'identifier': 'xarm_gazebo'}
+[0.001615] (-) JobUnselected: {'identifier': 'xarm_moveit_config'}
+[0.001644] (-) JobUnselected: {'identifier': 'xarm_moveit_servo'}
+[0.001671] (-) JobUnselected: {'identifier': 'xarm_msgs'}
+[0.001717] (-) JobUnselected: {'identifier': 'xarm_planner'}
+[0.001800] (-) JobUnselected: {'identifier': 'xarm_sdk'}
+[0.001855] (xarm_gz_bringup) JobQueued: {'identifier': 'xarm_gz_bringup', 'dependencies': OrderedDict()}
+[0.001899] (xarm_gz_bringup) JobStarted: {'identifier': 'xarm_gz_bringup'}
+[0.026097] (xarm_gz_bringup) JobProgress: {'identifier': 'xarm_gz_bringup', 'progress': 'cmake'}
+[0.027272] (xarm_gz_bringup) Command: {'cmd': ['/usr/bin/cmake', '/home/anatoly/ros2k_ws/src/xarm_gz_bringup', '-DCMAKE_INSTALL_PREFIX=/home/anatoly/ros2k_ws/install/xarm_gz_bringup'], 'cwd': '/home/anatoly/ros2k_ws/build/xarm_gz_bringup', 'env': OrderedDict({'GZ_SIM_SYSTEM_PLUGIN_PATH': '/opt/ros/kilted/lib', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'GZ_SIM_RESOURCE_PATH': '/opt/ros/kilted/share', 'USER': 'anatoly', 'GZ_CONFIG_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/share/gz:/opt/ros/kilted/opt/sdformat_vendor/share/gz:/opt/ros/kilted/opt/gz_gui_vendor/share/gz:/opt/ros/kilted/opt/gz_transport_vendor/share/gz:/opt/ros/kilted/opt/gz_rendering_vendor/share/gz:/opt/ros/kilted/opt/gz_plugin_vendor/share/gz:/opt/ros/kilted/opt/gz_fuel_tools_vendor/share/gz:/opt/ros/kilted/opt/gz_msgs_vendor/share/gz:/opt/ros/kilted/opt/gz_common_vendor/share/gz', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/kilted/opt/gz_sim_vendor/lib:/opt/ros/kilted/opt/gz_sensors_vendor/lib:/opt/ros/kilted/opt/gz_physics_vendor/lib:/opt/ros/kilted/opt/sdformat_vendor/lib:/opt/ros/kilted/opt/gz_gui_vendor/lib:/opt/ros/kilted/opt/gz_transport_vendor/lib:/opt/ros/kilted/opt/gz_rendering_vendor/lib:/opt/ros/kilted/opt/gz_plugin_vendor/lib:/opt/ros/kilted/opt/gz_fuel_tools_vendor/lib:/opt/ros/kilted/opt/gz_msgs_vendor/lib:/opt/ros/kilted/opt/gz_common_vendor/lib:/opt/ros/kilted/opt/gz_math_vendor/lib:/opt/ros/kilted/opt/gz_utils_vendor/lib:/opt/ros/kilted/opt/rviz_ogre_vendor/lib:/opt/ros/kilted/lib/x86_64-linux-gnu:/opt/ros/kilted/opt/gz_tools_vendor/lib:/opt/ros/kilted/opt/gz_ogre_next_vendor/lib:/opt/ros/kilted/opt/gz_dartsim_vendor/lib:/opt/ros/kilted/opt/gz_cmake_vendor/lib:/opt/ros/kilted/lib', 'HOME': '/home/anatoly', 'OLDPWD': '/home/anatoly/ros2k_ws/src', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'SYSTEMD_EXEC_PID': '2457', 'GSM_SKIP_SSH_AGENT_WORKAROUND': 'true', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'GNOME_KEYRING_CONTROL': '/run/user/1000/keyring', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'kilted', 'LOGNAME': 'anatoly', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'MEMORY_PRESSURE_WATCH': '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/session.slice/org.gnome.SettingsDaemon.MediaKeys.service/memory.pressure', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'anatoly', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'PATH': '/opt/ros/kilted/opt/gz_msgs_vendor/bin:/opt/ros/kilted/opt/gz_tools_vendor/bin:/opt/ros/kilted/opt/gz_ogre_next_vendor/bin:/opt/ros/kilted/bin:/home/anatoly/.local/bin:/home/anatoly/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/anatoly-Extensa-2511:@/tmp/.ICE-unix/2251,unix/anatoly-Extensa-2511:/tmp/.ICE-unix/2251', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/33f97fd5_5bca_44b6_a1d6_bc81b65d6a2a', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.D16TW3', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'GNOME_TERMINAL_SERVICE': ':1.100', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/opt/ros/kilted', 'SHELL': '/bin/bash', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/anatoly/ros2k_ws/build/xarm_gz_bringup', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/opt/ros/kilted/opt/gz_sim_vendor/lib/python:/opt/ros/kilted/opt/sdformat_vendor/lib/python:/opt/ros/kilted/opt/gz_transport_vendor/lib/python:/opt/ros/kilted/opt/gz_msgs_vendor/lib/python:/opt/ros/kilted/opt/gz_math_vendor/lib/python:/opt/ros/kilted/lib/python3.12/site-packages', 'COLCON': '1', 'MEMORY_PRESSURE_WRITE': 'c29tZSAyMDAwMDAgMjAwMDAwMAA=', 'VTE_VERSION': '7600', 'CMAKE_PREFIX_PATH': '/opt/ros/kilted/opt/gz_sim_vendor:/opt/ros/kilted/opt/gz_sensors_vendor:/opt/ros/kilted/opt/gz_physics_vendor:/opt/ros/kilted/opt/sdformat_vendor:/opt/ros/kilted/opt/gz_gui_vendor:/opt/ros/kilted/opt/gz_transport_vendor:/opt/ros/kilted/opt/gz_rendering_vendor:/opt/ros/kilted/opt/gz_plugin_vendor:/opt/ros/kilted/opt/gz_fuel_tools_vendor:/opt/ros/kilted/opt/gz_msgs_vendor:/opt/ros/kilted/opt/gz_common_vendor:/opt/ros/kilted/opt/gz_math_vendor:/opt/ros/kilted/opt/gz_utils_vendor:/opt/ros/kilted/opt/gz_tools_vendor:/opt/ros/kilted/opt/gz_ogre_next_vendor:/opt/ros/kilted/opt/gz_dartsim_vendor:/opt/ros/kilted/opt/gz_cmake_vendor'}), 'shell': False}
+[0.099499] (-) TimerEvent: {}
+[0.200113] (-) TimerEvent: {}
+[0.290073] (xarm_gz_bringup) StdoutLine: {'line': b'-- The C compiler identification is GNU 13.3.0\n'}
+[0.300241] (-) TimerEvent: {}
+[0.400620] (-) TimerEvent: {}
+[0.500951] (-) TimerEvent: {}
+[0.542305] (xarm_gz_bringup) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 13.3.0\n'}
+[0.585124] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.601071] (-) TimerEvent: {}
+[0.701463] (-) TimerEvent: {}
+[0.801946] (-) TimerEvent: {}
+[0.813291] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.839337] (xarm_gz_bringup) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[0.841734] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[0.858417] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[0.882186] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[0.902051] (-) TimerEvent: {}
+[1.002423] (-) TimerEvent: {}
+[1.102922] (-) TimerEvent: {}
+[1.142344] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.170183] (xarm_gz_bringup) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.171005] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.172147] (xarm_gz_bringup) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.197670] (xarm_gz_bringup) StdoutLine: {'line': b'-- Found ament_cmake: 2.7.5 (/opt/ros/kilted/share/ament_cmake/cmake)\n'}
+[1.203083] (-) TimerEvent: {}
+[1.303555] (-) TimerEvent: {}
+[1.404020] (-) TimerEvent: {}
+[1.504430] (-) TimerEvent: {}
+[1.604811] (-) TimerEvent: {}
+[1.630779] (xarm_gz_bringup) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.12.3") found components: Interpreter \n'}
+[1.704954] (-) TimerEvent: {}
+[1.805354] (-) TimerEvent: {}
+[1.905839] (-) TimerEvent: {}
+[2.006427] (-) TimerEvent: {}
+[2.106824] (-) TimerEvent: {}
+[2.207212] (-) TimerEvent: {}
+[2.220708] (xarm_gz_bringup) StderrLine: {'line': b"Error parsing '/home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml':\n"}
+[2.307350] (-) TimerEvent: {}
+[2.407785] (-) TimerEvent: {}
+[2.508268] (-) TimerEvent: {}
+[2.608712] (-) TimerEvent: {}
+[2.709184] (-) TimerEvent: {}
+[2.810012] (-) TimerEvent: {}
+[2.910402] (-) TimerEvent: {}
+[3.010856] (-) TimerEvent: {}
+[3.111298] (-) TimerEvent: {}
+[3.211777] (-) TimerEvent: {}
+[3.312236] (-) TimerEvent: {}
+[3.412626] (-) TimerEvent: {}
+[3.513391] (-) TimerEvent: {}
+[3.617144] (-) TimerEvent: {}
+[3.717937] (-) TimerEvent: {}
+[3.818549] (-) TimerEvent: {}
+[3.919019] (-) TimerEvent: {}
+[4.019453] (-) TimerEvent: {}
+[4.120881] (-) TimerEvent: {}
+[4.221504] (-) TimerEvent: {}
+[4.322868] (-) TimerEvent: {}
+[4.424464] (-) TimerEvent: {}
+[4.524870] (-) TimerEvent: {}
+[4.625289] (-) TimerEvent: {}
+[4.726896] (-) TimerEvent: {}
+[4.828652] (-) TimerEvent: {}
+[4.929479] (-) TimerEvent: {}
+[5.030878] (-) TimerEvent: {}
+[5.131887] (-) TimerEvent: {}
+[5.232465] (-) TimerEvent: {}
+[5.333430] (-) TimerEvent: {}
+[5.433958] (-) TimerEvent: {}
+[5.534520] (-) TimerEvent: {}
+[5.635049] (-) TimerEvent: {}
+[5.735491] (-) TimerEvent: {}
+[5.839641] (-) TimerEvent: {}
+[5.940516] (-) TimerEvent: {}
+[6.041078] (-) TimerEvent: {}
+[6.142060] (-) TimerEvent: {}
+[6.243947] (-) TimerEvent: {}
+[6.344410] (-) TimerEvent: {}
+[6.445401] (-) TimerEvent: {}
+[6.547182] (-) TimerEvent: {}
+[6.647870] (-) TimerEvent: {}
+[6.748538] (-) TimerEvent: {}
+[6.849304] (-) TimerEvent: {}
+[6.951697] (-) TimerEvent: {}
+[7.052271] (-) TimerEvent: {}
+[7.152803] (-) TimerEvent: {}
+[7.253397] (-) TimerEvent: {}
+[7.353904] (-) TimerEvent: {}
+[7.454355] (-) TimerEvent: {}
+[7.554847] (-) TimerEvent: {}
+[7.655419] (-) TimerEvent: {}
+[7.756258] (-) TimerEvent: {}
+[7.817182] (xarm_gz_bringup) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[7.817711] (xarm_gz_bringup) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 610, in parse_package_string\n'}
+[7.819802] (xarm_gz_bringup) StderrLine: {'line': b'    root = dom.parseString(data)\n'}
+[7.820455] (xarm_gz_bringup) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^\n'}
+[7.821730] (xarm_gz_bringup) StderrLine: {'line': b'  File "/usr/lib/python3.12/xml/dom/minidom.py", line 1995, in parseString\n'}
+[7.822496] (xarm_gz_bringup) StderrLine: {'line': b'    return expatbuilder.parseString(string)\n'}
+[7.823557] (xarm_gz_bringup) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[7.824336] (xarm_gz_bringup) StderrLine: {'line': b'  File "/usr/lib/python3.12/xml/dom/expatbuilder.py", line 922, in parseString\n'}
+[7.824693] (xarm_gz_bringup) StderrLine: {'line': b'    return builder.parseString(string)\n'}
+[7.825057] (xarm_gz_bringup) StderrLine: {'line': b'           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'}
+[7.825381] (xarm_gz_bringup) StderrLine: {'line': b'  File "/usr/lib/python3.12/xml/dom/expatbuilder.py", line 220, in parseString\n'}
+[7.825691] (xarm_gz_bringup) StderrLine: {'line': b'    parser.Parse(string, True)\n'}
+[7.829696] (xarm_gz_bringup) StderrLine: {'line': b'xml.parsers.expat.ExpatError: syntax error: line 1, column 0\n'}
+[7.833250] (xarm_gz_bringup) StderrLine: {'line': b'\n'}
+[7.833540] (xarm_gz_bringup) StderrLine: {'line': b'During handling of the above exception, another exception occurred:\n'}
+[7.835623] (xarm_gz_bringup) StderrLine: {'line': b'\n'}
+[7.836634] (xarm_gz_bringup) StderrLine: {'line': b'Traceback (most recent call last):\n'}
+[7.837001] (xarm_gz_bringup) StderrLine: {'line': b'  File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 150, in <module>\n'}
+[7.837309] (xarm_gz_bringup) StderrLine: {'line': b'    main()\n'}
+[7.837573] (xarm_gz_bringup) StderrLine: {'line': b'  File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 53, in main\n'}
+[7.838386] (xarm_gz_bringup) StderrLine: {'line': b'    raise e\n'}
+[7.838775] (xarm_gz_bringup) StderrLine: {'line': b'  File "/opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py", line 49, in main\n'}
+[7.839118] (xarm_gz_bringup) StderrLine: {'line': b'    package = parse_package_string(\n'}
+[7.839409] (xarm_gz_bringup) StderrLine: {'line': b'              ^^^^^^^^^^^^^^^^^^^^^\n'}
+[7.839720] (xarm_gz_bringup) StderrLine: {'line': b'  File "/usr/lib/python3/dist-packages/catkin_pkg/package.py", line 612, in parse_package_string\n'}
+[7.840073] (xarm_gz_bringup) StderrLine: {'line': b"    raise InvalidPackage('The manifest contains invalid XML:\\n%s' % ex, filename)\n"}
+[7.840355] (xarm_gz_bringup) StderrLine: {'line': b"catkin_pkg.package.InvalidPackage: Error(s) in package '/home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml':\n"}
+[7.840663] (xarm_gz_bringup) StderrLine: {'line': b'The manifest contains invalid XML:\n'}
+[7.841019] (xarm_gz_bringup) StderrLine: {'line': b'syntax error: line 1, column 0\n'}
+[7.856525] (-) TimerEvent: {}
+[7.957310] (-) TimerEvent: {}
+[7.975030] (xarm_gz_bringup) StderrLine: {'line': b'\x1b[31mCMake Error at /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:95 (message):\n'}
+[7.975518] (xarm_gz_bringup) StderrLine: {'line': b'  execute_process(/usr/bin/python3\n'}
+[7.975893] (xarm_gz_bringup) StderrLine: {'line': b'  /opt/ros/kilted/share/ament_cmake_core/cmake/core/package_xml_2_cmake.py\n'}
+[7.978291] (xarm_gz_bringup) StderrLine: {'line': b'  /home/anatoly/ros2k_ws/src/xarm_gz_bringup/package.xml\n'}
+[7.978988] (xarm_gz_bringup) StderrLine: {'line': b'  /home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_core/package.cmake)\n'}
+[7.979328] (xarm_gz_bringup) StderrLine: {'line': b'  returned error code 1\n'}
+[7.981240] (xarm_gz_bringup) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[7.982882] (xarm_gz_bringup) StderrLine: {'line': b'  /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package_xml.cmake:49 (_ament_package_xml)\n'}
+[7.983292] (xarm_gz_bringup) StderrLine: {'line': b'  /opt/ros/kilted/share/ament_cmake_core/cmake/core/ament_package.cmake:63 (ament_package_xml)\n'}
+[7.983589] (xarm_gz_bringup) StderrLine: {'line': b'  CMakeLists.txt:14 (ament_package)\n'}
+[7.984973] (xarm_gz_bringup) StderrLine: {'line': b'\n'}
+[7.985324] (xarm_gz_bringup) StderrLine: {'line': b'\x1b[0m\n'}
+[7.985656] (xarm_gz_bringup) StdoutLine: {'line': b'-- Configuring incomplete, errors occurred!\n'}
+[8.007002] (xarm_gz_bringup) CommandEnded: {'returncode': 1}
+[8.008037] (xarm_gz_bringup) JobEnded: {'identifier': 'xarm_gz_bringup', 'rc': 1}
+[8.018598] (-) EventReactorShutdown: {}
