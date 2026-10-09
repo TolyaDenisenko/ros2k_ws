@@ -136,18 +136,30 @@ def generate_launch_description():
             xarm6_traj_controller_spawner,
         ]
     )
-    moveit_delay = TimerAction(period=7.0, actions=[moveit_common])
+    moveit_delay = TimerAction(period=12.0, actions=[moveit_common])   # было 7.0
         # Ноды из чужих include-ов (move_group, rviz2, robot_state_publisher)
     # не получают use_sim_time при старте — принудительно выставляем его после запуска
+        # Надёжный фиксер: ждём появления move_group и проставляем use_sim_time всем нодам
     fix_sim_time = TimerAction(
-        period=12.0,
+        period=8.0,
         actions=[
             ExecuteProcess(
-                cmd=['bash', '-c',
-                     'for i in 1 2 3; do '
-                     'for n in $(ros2 node list --no-daemon 2>/dev/null); do '
-                     'ros2 param set "$n" use_sim_time true >/dev/null 2>&1 || true; done; '
-                     'sleep 3; done'],
+                cmd=['bash', '-c', '''
+                    for attempt in 1 2 3 4 5 6 7 8; do
+                        # проверяем, есть ли move_group
+                        if ros2 node list --no-daemon 2>/dev/null | grep -q "/move_group"; then
+                            # ждём ещё 2 сек чтобы все ноды точно стартовали
+                            sleep 2
+                            for n in $(ros2 node list --no-daemon 2>/dev/null); do
+                                ros2 param set "$n" use_sim_time true >/dev/null 2>&1 || true
+                            done
+                            echo "[fix_sim_time] Applied use_sim_time=true to all nodes (attempt $attempt)"
+                            exit 0
+                        fi
+                        sleep 2
+                    done
+                    echo "[fix_sim_time] WARNING: move_group never appeared after 16s"
+                '''],
                 output='screen',
             )
         ],

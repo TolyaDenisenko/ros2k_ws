@@ -243,6 +243,7 @@ def launch_setup(context, *args, **kwargs):
         executable='move_group',
         output='screen',
         parameters=[
+            {'use_sim_time': use_sim_time},
             robot_description_parameters,
             ompl_planning_pipeline_config,
             trajectory_execution,
@@ -250,7 +251,7 @@ def launch_setup(context, *args, **kwargs):
             moveit_controllers,
             planning_scene_monitor_parameters,
             # sensor_manager_parameters,
-            {'use_sim_time': use_sim_time},
+            
         ],
     )
 
@@ -264,9 +265,10 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         arguments=['-d', rviz_config_file],
         parameters=[
+            {'use_sim_time': use_sim_time},
             robot_description_parameters,
             ompl_planning_pipeline_config,
-            {'use_sim_time': use_sim_time},
+            
         ],
         remappings=[
             ('/tf', 'tf'),
