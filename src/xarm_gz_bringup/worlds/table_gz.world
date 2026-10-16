@@ -25,5 +25,10 @@
       <gravity>0 0 0</gravity>
     </physics>
 
+  
+    <include>
+      <uri>model://cylinder_block</uri>
+    </include>
+
   </world>
 </sdf>
