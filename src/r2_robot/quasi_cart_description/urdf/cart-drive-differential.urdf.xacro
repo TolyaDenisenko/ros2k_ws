@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<robot name="quasi_c2_diffdrive" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="base_axis_z_offset" value="0.065" />
+
+  <link
+      name="drive_wheel_right_link">
+    <inertial>
+      <origin
+          xyz="4.2386E-08 0.00080684 -1.8609E-06"
+          rpy="0 0 0" />
+      <mass
+          value="1.9617" />
+      <inertia
+          ixx="0.0031338"
+          ixy="3.57E-09"
+          ixz="9.3858E-09"
+          iyy="0.0047355"
+          iyz="3.3658E-09"
+          izz="0.0031332" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_right_link.STL" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.52941 0.54902 0.54902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_right_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+      name="drive_wheel_left_link">
+    <inertial>
+      <origin
+          xyz="-4.2386E-08 -0.00080684 -1.8609E-06"
+          rpy="0 0 0" />
+      <mass
+          value="1.9617" />
+      <inertia
+          ixx="0.0031338"
+          ixy="3.57E-09"
+          ixz="-9.3858E-09"
+          iyy="0.0047355"
+          iyz="-3.3658E-09"
+          izz="0.0031332" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_left_link.STL" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.52941 0.54902 0.54902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_left_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+      name="caster_wheel_right_bracket_link">
+    <inertial>
+      <origin
+          xyz="-0.0161165372172484 -3.01383719822357E-06 -0.0291173737808093"
+          rpy="0 0 0" />
+      <mass
+          value="0.0935516794391494" />
+      <inertia
+          ixx="0.00011567600059861"
+          ixy="-1.4648493992754E-09"
+          ixz="-2.83145149552501E-05"
+          iyy="0.000113821434517946"
+          iyz="-4.26637575370352E-09"
+          izz="0.000106214747819547" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_bracket_rr_link.stl" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_bracket_rr_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+      name="caster_wheel_right_link">
+    <inertial>
+      <origin
+          xyz="0 -2.77555756156289E-17 2.77555756156289E-17"
+          rpy="0 0 0" />
+      <mass
+          value="0.26801708152548" />
+      <inertia
+          ixx="0.000325819072766632"
+          ixy="4.61319223190865E-21"
+          ixz="8.40576779079474E-37"
+          iyy="0.000568643248195286"
+          iyz="-1.94627295355545E-37"
+          izz="0.000325819072766632" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_rr_link.stl" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_rr_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+      name="caster_wheel_right_joint"
+      type="fixed">
+    <origin
+        xyz="-0.045 0 -0.079"
+        rpy="0 0 0" />
+    <parent
+        link="caster_wheel_right_bracket_link" />
+    <child
+        link="caster_wheel_right_link" />
+    <axis
+        xyz="0 1 0" />
+    <limit
+        lower="0"
+        upper="0"
+        effort="0"
+        velocity="0" />
+  </joint>
+  <link
+      name="caster_wheel_left_bracket_link">
+    <inertial>
+      <origin
+          xyz="-0.0161165372172484 -3.01383719825132E-06 -0.0291173737808094"
+          rpy="0 0 0" />
+      <mass
+          value="0.0935516794391506" />
+      <inertia
+          ixx="0.000115676000598611"
+          ixy="-1.46484939948803E-09"
+          ixz="-2.83145149552502E-05"
+          iyy="0.000113821434517947"
+          iyz="-4.26637575400673E-09"
+          izz="0.000106214747819548" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_bracket_rl_link.stl" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_bracket_rl_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+      name="caster_wheel_left_link">
+    <inertial>
+      <origin
+          xyz="5.55111512312578E-17 0 0"
+          rpy="0 0 0" />
+      <mass
+          value="0.26801708152548" />
+      <inertia
+          ixx="0.000325819072766632"
+          ixy="2.36076221857002E-21"
+          ixz="8.40576779079469E-37"
+          iyy="0.000568643248195285"
+          iyz="-1.94627295355544E-37"
+          izz="0.000325819072766632" />
+    </inertial>
+    <visual>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_rl_link.stl" />
+      </geometry>
+      <material
+          name="">
+        <color
+            rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+      <geometry>
+        <mesh
+            filename="file://$(find quasi_cart_description)/meshes/wheel_rl_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+      name="caster_wheel_left_joint"
+      type="fixed">
+    <origin
+        xyz="-0.045 0 -0.079"
+        rpy="0 0 0" />
+    <parent
+        link="caster_wheel_left_bracket_link" />
+    <child
+        link="caster_wheel_left_link" />
+    <axis
+        xyz="0 1 0" />
+    <limit
+        lower="0"
+        upper="0"
+        effort="0"
+        velocity="0" />
+  </joint>
+
+</robot>

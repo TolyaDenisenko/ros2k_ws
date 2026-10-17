@@ -1,0 +1,338 @@
+<?xml version="1.0" ?>
+<robot name="quasi_c2m" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="cart_version" value="v3"/>
+
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+          xyz="-0.0303126584436207 -0.00307102740104827 0.373705471737013"
+          rpy="0 0 0" />
+      <mass
+          value="19.830060650448" />
+      <inertia
+          ixx="0.312280085886007"
+          ixy="-3.761576155834E-05"
+          ixz="0.000370022113907018"
+          iyy="0.291327368144116"
+          iyz="1.17329409304311E-05"
+          izz="0.166528823503745" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/base_link_c2m-v3.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/base_link_c2m-v3.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="drive_joint" type="fixed">
+    <origin xyz="0.1695 0 0" rpy="0 0 0" />
+    <parent link="drive_link" />
+    <child link="base_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <joint
+    name="tof1"
+    type="fixed">
+    <origin xyz="0.229213579001789 0.216399228992693 0.865972431864313" rpy="0 0.523598775598304 0.349065850398865"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof1_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof2"
+    type="fixed">
+    <origin xyz="0.21658716751688 0.229145174973094 0.865972431864313" rpy="0 0.523598775598304 1.22173047639603"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof2_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof3"
+    type="fixed">
+    <origin xyz="-0.216399228992669 0.22921357900177 0.865972431864309" rpy="0 0.523598775598319 1.91986217719376"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof3_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof4"
+    type="fixed">
+    <origin xyz="-0.229145174973071 0.21658716751686 0.865972431864309" rpy="0 0.523598775598313 2.79252680319094"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof4_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof5"
+    type="fixed">
+    <origin xyz="-0.229213579001735 -0.2163992289927 0.865972431864309" rpy="0 0.523598775598312 -2.79252680319093"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof5_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof6"
+    type="fixed">
+    <origin xyz="-0.216587167516826 -0.229145174973101 0.865972431864309" rpy="0 0.523598775598319 -1.91986217719376"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof6_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof7"
+    type="fixed">
+    <origin xyz="0.216399228992722 -0.229213579001756 0.865972431864313" rpy="0 0.523598775598304 -1.22173047639603"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof7_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof8"
+    type="fixed">
+    <origin xyz="0.229145174973124 -0.216587167516846 0.865972431864313" rpy="0 0.523598775598304 -0.349065850398865"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof8_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof9"
+    type="fixed">
+    <origin xyz="0.217604636143912 0.156986038969316 0.121490350801279" rpy="0 -0.890117918517118 0"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof9_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof10"
+    type="fixed">
+    <origin xyz="0.157186038969323 0.217342464466989 0.121490350801279" rpy="0 -0.890117918517115 1.5707963267949"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof10_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof11"
+    type="fixed">
+    <origin xyz="-0.156786038969319 0.217604636143906 0.121440005169987" rpy="0 -0.8901179185171 1.5707963267949"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof11_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof12"
+    type="fixed">
+    <origin xyz="-0.217204636143909 0.157186038969316 0.121440005169987" rpy="0 -0.890117918517111 3.14159265358977"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof12_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof13"
+    type="fixed">
+    <origin xyz="-0.21760463614391 -0.157186038969316 0.121440005169982" rpy="0 -0.890117918517111 -3.14159265358978"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof13_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof14"
+    type="fixed">
+    <origin xyz="-0.15718603896932 -0.217604636143906 0.121440005169981" rpy="0 -0.8901179185171 -1.5707963267949"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof14_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof15"
+    type="fixed">
+    <origin xyz="0.157186038969322 -0.217420179063156 0.121427418762174" rpy="0 -0.890117918517114 -1.5707963267949"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof15_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <joint
+    name="tof16"
+    type="fixed">
+    <origin xyz="0.217604636143912 -0.156986038969337 0.121427418762174" rpy="0 -0.890117918517114 0"/>
+    <parent
+      link="base_link" />
+    <child
+      link="tof16_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+  <joint
+    name="lidar"
+    type="fixed">
+    <origin xyz="0 0 0.428099999999984" rpy="3.14159265358979 0 3.14159265358979"/>
+    <parent
+      link="base_link" />
+    <child
+      link="lidar_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+  <joint
+    name="imu"
+    type="fixed">
+    <origin xyz="0.174249999999997 0 0.0392999999999866" rpy="0 0 ${pi}"/>
+    <parent
+      link="base_link" />
+    <child
+      link="imu_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+
+
+  <joint
+    name="drive_wheel_right_joint"
+    type="revolute">
+    <origin xyz="0 -0.177 0" rpy="0 0 0"/>
+    <parent
+      link="drive_link" />
+    <child
+      link="drive_wheel_right_link" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <joint
+    name="drive_wheel_left_joint"
+    type="revolute">
+    <origin xyz="0 0.177 0" rpy="0 0 0"/>
+    <parent
+      link="drive_link" />
+    <child
+      link="drive_wheel_left_link" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <joint
+      name="caster_wheel_right_bracket_joint"
+      type="fixed">
+    <origin xyz="0.3285 -0.173649999999996 0.0764999999999789" rpy="0 0 0"/>
+    <parent
+        link="drive_link" />
+    <child
+        link="caster_wheel_right_bracket_link" />
+    <axis
+        xyz="0 0 0" />
+  </joint>
+  <joint
+      name="caster_wheel_left_bracket_joint"
+      type="fixed">
+    <origin xyz="0.3285 0.173649999999996 0.0764999999999758" rpy="0 0 0"/>
+    <parent
+        link="drive_link" />
+    <child
+        link="caster_wheel_left_bracket_link" />
+    <axis
+        xyz="0 0 0" />
+  </joint>
+
+  <xacro:if value="$(arg enable_camera_realsense)">
+      <xacro:property name="camera_offset_x" value="0.181276790340661"/>
+      <xacro:property name="camera_offset_y" value="0.00025"/>
+      <xacro:property name="camera_offset_z" value="0.82083"/>
+      <xacro:property name="camera_roll" value="${-pi}"/>
+      <xacro:property name="camera_pitch" value="-0.041"/>
+      <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+  <xacro:if value="$(arg enable_camera_oak)">
+      <xacro:property name="camera_offset_x" value="0.181276790340661"/>
+      <xacro:property name="camera_offset_y" value="0.00025"/>
+      <xacro:property name="camera_offset_z" value="0.82083"/>
+      <xacro:property name="camera_roll" value="${-pi}"/>
+      <xacro:property name="camera_pitch" value="-0.041"/>
+      <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+  <xacro:if value="$(arg enable_camera_orbbec)">
+      <xacro:property name="camera_offset_x" value="0.184128774587888"/>
+      <xacro:property name="camera_offset_y" value="0.0"/>
+      <xacro:property name="camera_offset_z" value="0.839651263498303"/>
+      <xacro:property name="camera_roll" value="${-pi}"/>
+      <xacro:property name="camera_pitch" value="0.041"/>
+      <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+
+</robot>

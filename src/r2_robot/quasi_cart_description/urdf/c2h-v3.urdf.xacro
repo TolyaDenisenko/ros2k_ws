@@ -1,0 +1,404 @@
+<?xml version="1.0" ?>
+<robot name="quasi_c2l-v3" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="cart_version" value="v3" />
+  <xacro:property name="drive" value="mecanum"/>
+
+  <link name="base_link">
+    <inertial>
+      <origin xyz="-0.00456997847341854 -0.0114158410550115 0.30884308195183" rpy="0 0 0"/>
+      <mass value="39.8838391686164"/>
+      <inertia ixx="0.805521349417337" ixy="-0.000587196060251581" ixz="6.05457611268979E-05" iyy="1.08631039777439" iyz="1.69922540058229E-05" izz="1.47248373257198"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/base_link_c2h-v3.stl" />
+      </geometry>
+      <material name="">
+        <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/base_link_c2h-v3.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="drive_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.02" rpy="0 0 0" />
+    <parent link="drive_link" />
+    <child link="base_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <joint name="tof1" type="fixed">
+    <origin xyz="0.454213579001806 0.291399228992664 0.882302431864312" rpy="0 0.523598775598304 0.349065850398865"/>
+    <parent link="base_link" />
+    <child link="tof1_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof2" type="fixed">
+    <origin xyz="0.441587167516896 0.304145174973065 0.882302431864312" rpy="0 0.523598775598304 1.22173047639603"/>
+    <parent link="base_link" />
+    <child link="tof2_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof3" type="fixed">
+    <origin xyz="-0.4413992289927 0.30421357900174 0.882302431864306" rpy="0 0.523598775598319 1.91986217719376"/>
+    <parent link="base_link" />
+    <child link="tof3_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof4" type="fixed">
+    <origin xyz="-0.454145174973102 0.29158716751683 0.882302431864306" rpy="0 0.523598775598313 2.79252680319094"/>
+    <parent link="base_link" />
+    <child link="tof4_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof5" type="fixed">
+    <origin xyz="-0.454213579001766 -0.291399228992651 0.882302431864306" rpy="0 0.523598775598312 -2.79252680319093"/>
+    <parent link="base_link" />
+    <child link="tof5_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof6" type="fixed">
+    <origin xyz="-0.441587167516857 -0.304145174973053 0.882302431864306" rpy="0 0.523598775598319 -1.91986217719376"/>
+    <parent link="base_link" />
+    <child link="tof6_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof7" type="fixed">
+    <origin xyz="0.441399228992739 -0.304213579001708 0.882302431864311" rpy="0 0.523598775598304 -1.22173047639603"/>
+    <parent link="base_link" />
+    <child link="tof7_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof8" type="fixed">
+    <origin xyz="0.45414517497314 -0.291587167516799 0.882302431864312" rpy="0 0.523598775598304 -0.349065850398865"/>
+    <parent link="base_link" />
+    <child link="tof8_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof9" type="fixed">
+    <origin xyz="0.442499387894085 0.231986038969287 0.137855233522254" rpy="0 -0.890117918517118 0"/>
+    <parent link="base_link" />
+    <child link="tof9_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof10" type="fixed">
+    <origin xyz="0.381986038969344 0.292420179063107 0.137757418762178" rpy="0 -0.890117918517115 1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof10_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof11" type="fixed">
+    <origin xyz="-0.381986038969323 0.292420179063105 0.13775741876217" rpy="0 -0.8901179185171 1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof11_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof12" type="fixed">
+    <origin xyz="-0.442420179063141 0.231986038969286 0.137757418762171" rpy="0 -0.890117918517111 3.14159265358977"/>
+    <parent link="base_link" />
+    <child link="tof12_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof13" type="fixed">
+    <origin xyz="-0.442420179063139 -0.231986038969289 0.137757418762171" rpy="0 -0.890117918517111 -3.14159265358977"/>
+    <parent link="base_link" />
+    <child link="tof13_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof14" type="fixed">
+    <origin xyz="-0.38198603896932 -0.292420179063108 0.137757418762171" rpy="0 -0.8901179185171 -1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof14_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof15" type="fixed">
+    <origin xyz="0.381986038969344 -0.292420179063104 0.137757418762176" rpy="0 -0.890117918517114 -1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof15_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof16" type="fixed">
+    <origin xyz="0.44249938789408 -0.231986038969286 0.137855233522248" rpy="0 -0.890117918517114 0"/>
+    <parent link="base_link" />
+    <child link="tof16_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <joint name="tof21" type="fixed">
+    <origin xyz="0.453522566139405 0.0662434371097188 0.122557533339203" rpy="0.0100699886639368 0.226673072969036 0.0447794504584443"/>
+    <parent link="base_link" />
+    <child link="tof21_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof22" type="fixed">
+    <origin xyz="0.372386188001429 0.303789372742906 0.122495936181267" rpy="0 0.226892802759262 1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof22_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof23" type="fixed">
+    <origin xyz="-0.453522566139384 0.0662434371097137 0.122557533339198" rpy="-0.0100699886639185 0.226673072969044 3.09681320313136"/>
+    <parent link="base_link" />
+    <child link="tof23_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof24" type="fixed">
+    <origin xyz="-0.453522566139381 -0.0662434371097207 0.1225575333392" rpy="0.0100699886639211 0.226673072969044 -3.09681320313135"/>
+    <parent link="base_link" />
+    <child link="tof24_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof25" type="fixed">
+    <origin xyz="0.372392421261424 -0.303789372742905 0.122495936181267" rpy="0 0.226892802759263 -1.5707963267949"/>
+    <parent link="base_link" />
+    <child link="tof25_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <joint name="tof26" type="fixed">
+    <origin xyz="0.453522566139405 -0.0662434371097131 0.122557533339202" rpy="-0.0100699886639337 0.22667307296904 -0.0447794504584373"/>
+    <parent link="base_link" />
+    <child link="tof26_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+  <joint name="tof27" type="fixed">
+    <origin xyz="0.452805655463659 0.176066183969887 0.122723045210111" rpy="0.0380858166578787 0.223727735486863 0.170085076781732"/>
+    <parent link="base_link"/>
+    <child link="tof27_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="tof28" type="fixed">
+    <origin xyz="-0.45280534261584 0.176066183969883 0.122721690117416" rpy="-0.0380858166578642 0.223727735486873 2.97150757680806"/>
+    <parent link="base_link"/>
+    <child link="tof28_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="tof29" type="fixed">
+    <origin xyz="-0.452805655463635 -0.176066183969889 0.122723045210106" rpy="0.0380858166578642 0.223727735486873 -2.97150757680806"/>
+    <parent link="base_link"/>
+    <child link="tof29_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <joint name="tof30" type="fixed">
+    <origin xyz="0.452805342615861 -0.176066183969882 0.122721690117421" rpy="-0.0380858166578781 0.223727735486867 -0.170085076781731"/>
+    <parent link="base_link"/>
+    <child link="tof30_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+  <link name="tof31_link">
+    <inertial>
+      <origin xyz="-0.00199743939221109 3.69310772074805E-07 0.000255004205831383" rpy="0 0 0"/>
+      <mass value="0.000290995197223374"/>
+      <inertia ixx="5.74205064793357E-09" ixy="7.61164130305225E-13" ixz="2.14617768696697E-10" iyy="2.7332206686287E-09" iyz="-8.28089770434475E-12" izz="3.61775620051163E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof31_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof31_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof31" type="fixed">
+    <origin xyz="0.194517177802552 0.302345437436958 0.122829294913453" rpy="0.051887427210915 0.220979667679274 1.80344688284092"/>
+    <parent link="base_link"/>
+    <child link="tof31_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <link name="tof32_link">
+    <inertial>
+      <origin xyz="-0.00199743939218577 3.69311804249151E-07 0.000255004205837295" rpy="0 0 0"/>
+      <mass value="0.000290995197223369"/>
+      <inertia ixx="5.74205064796087E-09" ixy="7.61163559292056E-13" ixz="2.14617768693927E-10" iyy="2.7332206686363E-09" iyz="-8.28089764159839E-12" izz="3.61775620054785E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof32_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof32_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof32" type="fixed">
+    <origin xyz="-0.194517177802531 0.302345437436957 0.122829294913447" rpy="-0.0518874272109262 0.220979667679288 1.33814577074887"/>
+    <parent link="base_link"/>
+    <child link="tof32_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <link name="tof33_link">
+    <inertial>
+      <origin xyz="-0.00199743939298042 3.69311236536607E-07 0.00025500420581677" rpy="0 0 0"/>
+      <mass value="0.000290995197223375"/>
+      <inertia ixx="5.74205064796373E-09" ixy="7.61163847254565E-13" ixz="2.14617768650973E-10" iyy="2.7332206683956E-09" iyz="-8.28089769388709E-12" izz="3.6177562003052E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof33_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof33_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof33" type="fixed">
+    <origin xyz="-0.372392421261402 0.303789372742905 0.12249593618126" rpy="0 0.226892802759278 1.57079632679489"/>
+    <parent link="base_link"/>
+    <child link="tof33_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <link name="tof34_link">
+    <inertial>
+      <origin xyz="-0.00199743939298064 3.69311236425585E-07 0.00025500420581677" rpy="0 0 0"/>
+      <mass value="0.000290995197223371"/>
+      <inertia ixx="5.74205064796369E-09" ixy="7.61163847243995E-13" ixz="2.14617768650971E-10" iyy="2.73322066839561E-09" iyz="-8.28089769388795E-12" izz="3.61775620030516E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof34_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof34_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof34" type="fixed">
+    <origin xyz="-0.372386188001405 -0.303789372742908 0.12249593618126" rpy="0 0.226892802759278 -1.57079632679489"/>
+    <parent link="base_link"/>
+    <child link="tof34_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <link name="tof35_link">
+    <inertial>
+      <origin xyz="-0.00199743939221114 3.69310772019293E-07 0.000255004205831327" rpy="0 0 0"/>
+      <mass value="0.000290995197223372"/>
+      <inertia ixx="5.74205064793357E-09" ixy="7.61164130297987E-13" ixz="2.14617768696676E-10" iyy="2.73322066862867E-09" iyz="-8.28089770433246E-12" izz="3.61775620051162E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof35_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof35_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof35" type="fixed">
+    <origin xyz="-0.194517177802527 -0.30234543743696 0.122829294913448" rpy="0.0518874272109258 0.220979667679288 -1.33814577074887"/>
+    <parent link="base_link"/>
+    <child link="tof35_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+  <link name="tof36_link">
+    <inertial>
+      <origin xyz="-0.00199743939218594 3.69311804304662E-07 0.000255004205837267" rpy="0 0 0"/>
+      <mass value="0.000290995197223371"/>
+      <inertia ixx="5.7420506479609E-09" ixy="7.61163559295003E-13" ixz="2.14617768693926E-10" iyy="2.73322066863631E-09" iyz="-8.28089764160347E-12" izz="3.61775620054786E-09"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof36_link.STL"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/tof36_link.STL"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="tof36" type="fixed">
+    <origin xyz="0.194517177802552 -0.302345437436957 0.122829294913453" rpy="-0.0518874272109193 0.220979667679275 -1.80344688284092"/>
+    <parent link="base_link"/>
+    <child link="tof36_link"/>
+    <axis xyz="0 0 0"/>
+  </joint>
+
+  <joint name="lidar" type="fixed">
+    <origin xyz="0 0 0.304429999999973" rpy="3.14159265358979 0 3.14159265358979"/>
+    <parent link="base_link" />
+    <child link="lidar_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+  <joint name="imu" type="fixed">
+    <origin xyz="0 0 0.0531700000000002" rpy="0 0 ${pi}" />
+    <parent link="base_link" />
+    <child link="imu_link" />
+    <axis xyz="0 0 0" />
+  </joint>
+
+
+  <xacro:if value="$(arg enable_camera_realsense)">
+    <xacro:property name="camera_offset_x" value="0.406277"/>
+    <xacro:property name="camera_offset_y" value="0.000"/>
+    <xacro:property name="camera_offset_z" value="0.82083"/>
+    <xacro:property name="camera_roll" value="${-pi}"/>
+    <xacro:property name="camera_pitch" value="-0.041"/>
+    <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+  <xacro:if value="$(arg enable_camera_oak)">
+    <xacro:property name="camera_offset_x" value="0.406277"/>
+    <xacro:property name="camera_offset_y" value="0.000"/>
+    <xacro:property name="camera_offset_z" value="0.82083"/>
+    <xacro:property name="camera_roll" value="${-pi}"/>
+    <xacro:property name="camera_pitch" value="-0.041"/>
+    <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+  <xacro:if value="$(arg enable_camera_orbbec)">
+    <xacro:property name="camera_offset_x" value="0.40912"/>
+    <xacro:property name="camera_offset_y" value="0.0"/>
+    <xacro:property name="camera_offset_z" value="0.84094"/>
+    <xacro:property name="camera_roll" value="${-pi}"/>
+    <xacro:property name="camera_pitch" value="0.041"/>
+    <xacro:property name="camera_yaw" value="0.0"/>
+  </xacro:if>
+
+</robot>

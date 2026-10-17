@@ -1,0 +1,61 @@
+<?xml version="1.0" ?>
+<!--
+  Мир "тележка + стол с цилиндрическим блоком" для cart_xarm_bringup.
+  Стол и блок — те же модели, что и в xarm_gz_bringup/worlds/table_gz.world.
+  Тележка спавнится отдельно через ros_gz_sim create (см. launch).
+-->
+<sdf version="1.6">
+  <world name="cart_xarm_world">
+
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Ground Plane</uri>
+    </include>
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Sun</uri>
+    </include>
+
+    <!-- Стол перед точкой спавна тележки -->
+    <include>
+      <uri>https://fuel.gazebosim.org/1.0/OpenRobotics/models/Table</uri>
+      <name>table</name>
+      <pose>1.7 0.0 0 0 0 0</pose>
+    </include>
+
+    <!-- Цилиндрический блок на столе (r=0.04, h=0.09; столешница ~0.955) -->
+    <model name="cylinder_block">
+      <static>true</static>
+      <pose>1.85 0.10 1.00 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.09</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.45 0.1 1</ambient>
+            <diffuse>0.9 0.45 0.1 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
+        </visual>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>0.04</radius>
+              <length>0.09</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+
+    <physics type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <gravity>0 0 -9.81</gravity>
+    </physics>
+
+  </world>
+</sdf>

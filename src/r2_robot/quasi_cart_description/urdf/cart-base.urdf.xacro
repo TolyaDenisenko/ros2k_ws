@@ -1,0 +1,1023 @@
+<?xml version="1.0" ?>
+<robot name="quasi_c2" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="camera_roll_offset" value="$(arg camera_roll_offset)" />
+  <xacro:property name="camera_pitch_offset" value="$(arg camera_pitch_offset)" />
+
+  <link name="base_footprint" />
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint" />
+    <child link="drive_link" />
+    <origin xyz="0 0 ${base_axis_z_offset}" rpy="0 0 0" />
+  </joint>
+
+  <link name="drive_link">
+    <inertial>
+      <origin xyz="1.11022302462516E-15 3.84381027928966E-15 -2.3037127760972E-15" rpy="0 0 0" />
+      <mass value="9.8174770424681E-05" />
+      <inertia ixx="3.5792885050665E-10" ixy="1.71200513021298E-27" ixz="1.94111863664301E-42"
+        iyy="3.06796157577128E-10" iyz="-6.71520157584803E-26" izz="3.5792885050665E-10" />
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/drive_link.stl" />
+      </geometry>
+      <material name="">
+        <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="file://$(find quasi_cart_description)/meshes/drive_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+
+  <link
+    name="tof1_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof1_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof1_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof2_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof2_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof2_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof3_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof3_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof3_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <xacro:unless value="${robot_model.startswith('c2w')}">
+    <link
+      name="tof4_link">
+      <inertial>
+        <origin
+          xyz="-0.0025846 -4.2344E-07 0.00034738"
+          rpy="0 0 0" />
+        <mass
+          value="0.0004546" />
+        <inertia
+          ixx="8.7396E-09"
+          ixy="-3.7673E-13"
+          ixz="2.7453E-10"
+          iyy="4.2937E-09"
+          iyz="-1.2482E-11"
+          izz="5.7698E-09" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof4_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.49804 0.49804 0.49804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof4_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="tof5_link">
+      <inertial>
+        <origin
+          xyz="-0.0025846 -4.2344E-07 0.00034738"
+          rpy="0 0 0" />
+        <mass
+          value="0.0004546" />
+        <inertia
+          ixx="8.7396E-09"
+          ixy="-3.7673E-13"
+          ixz="2.7453E-10"
+          iyy="4.2937E-09"
+          iyz="-1.2482E-11"
+          izz="5.7698E-09" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof5_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.49804 0.49804 0.49804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof5_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:unless>
+  <link
+    name="tof6_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof6_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof6_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof7_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof7_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof7_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof8_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof8_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof8_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof9_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof9_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof9_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof10_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof10_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof10_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof11_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof11_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof11_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <xacro:unless value="${robot_model.startswith('c2w')}">
+    <link
+      name="tof12_link">
+      <inertial>
+        <origin
+          xyz="-0.0025846 -4.2344E-07 0.00034738"
+          rpy="0 0 0" />
+        <mass
+          value="0.0004546" />
+        <inertia
+          ixx="8.7396E-09"
+          ixy="-3.7673E-13"
+          ixz="2.7453E-10"
+          iyy="4.2937E-09"
+          iyz="-1.2482E-11"
+          izz="5.7698E-09" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof12_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.49804 0.49804 0.49804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof12_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link
+      name="tof13_link">
+      <inertial>
+        <origin
+          xyz="-0.0025846 -4.2344E-07 0.00034738"
+          rpy="0 0 0" />
+        <mass
+          value="0.0004546" />
+        <inertia
+          ixx="8.7396E-09"
+          ixy="-3.7673E-13"
+          ixz="2.7453E-10"
+          iyy="4.2937E-09"
+          iyz="-1.2482E-11"
+          izz="5.7698E-09" />
+      </inertial>
+      <visual>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof13_link.STL" />
+        </geometry>
+        <material
+          name="">
+          <color
+            rgba="0.49804 0.49804 0.49804 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin
+          xyz="0 0 0"
+          rpy="0 0 0" />
+        <geometry>
+          <mesh
+            filename="file://$(find quasi_cart_description)/meshes/tof13_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+  </xacro:unless>
+  <link
+    name="tof14_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof14_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof14_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof15_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof15_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof15_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="tof16_link">
+    <inertial>
+      <origin
+        xyz="-0.0025846 -4.2344E-07 0.00034738"
+        rpy="0 0 0" />
+      <mass
+        value="0.0004546" />
+      <inertia
+        ixx="8.7396E-09"
+        ixy="-3.7673E-13"
+        ixz="2.7453E-10"
+        iyy="4.2937E-09"
+        iyz="-1.2482E-11"
+        izz="5.7698E-09" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof16_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.49804 0.49804 0.49804 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/tof16_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <xacro:if value="$(arg enable_floor_tofs)">
+    <link name="tof21_link">
+      <inertial>
+        <origin xyz="-0.00199743939275915 3.69311252357285E-07 0.000255004205731935" rpy="0 0 0" />
+        <mass value="0.00029099519722337" />
+        <inertia ixx="5.74205064797311E-09" ixy="7.61163846350548E-13" ixz="2.14617768717447E-10"
+                 iyy="2.73322066846908E-09" iyz="-8.28089768646609E-12" izz="3.61775620036919E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof21_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof21_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="tof22_link">
+      <inertial>
+        <origin xyz="-0.00199743939347424 3.69311206893652E-07 0.000255004204297277" rpy="0 0 0" />
+        <mass value="0.000290995197223369" />
+        <inertia ixx="5.74205064799778E-09" ixy="7.61163847835819E-13" ixz="2.14617769547909E-10"
+                 iyy="2.73322066829709E-09" iyz="-8.28089767949944E-12" izz="3.61775620017253E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof22_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof22_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="tof23_link">
+      <inertial>
+        <origin xyz="-0.0019974393927592 3.69311252385041E-07 0.000255004205731948" rpy="0 0 0" />
+        <mass value="0.000290995197223371" />
+        <inertia ixx="5.74205064797313E-09" ixy="7.61163846352939E-13" ixz="2.14617768717441E-10"
+                 iyy="2.73322066846909E-09" iyz="-8.28089768647144E-12" izz="3.6177562003692E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof23_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof23_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="tof24_link">
+      <inertial>
+        <origin xyz="-0.00199743939275909 3.69311252385041E-07 0.000255004205731893" rpy="0 0 0" />
+        <mass value="0.00029099519722337" />
+        <inertia ixx="5.74205064797313E-09" ixy="7.6116384635424E-13" ixz="2.14617768717441E-10"
+                 iyy="2.73322066846908E-09" iyz="-8.28089768647392E-12" izz="3.6177562003692E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof24_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof24_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="tof25_link">
+      <inertial>
+        <origin xyz="-0.00199743939347419 3.69311206838141E-07 0.00025500420429711" rpy="0 0 0" />
+        <mass value="0.000290995197223375" />
+        <inertia ixx="5.74205064799778E-09" ixy="7.61163847853703E-13" ixz="2.14617769547897E-10"
+                 iyy="2.7332206682971E-09" iyz="-8.28089767949249E-12" izz="3.61775620017253E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof25_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof25_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+    <link name="tof26_link">
+      <inertial>
+        <origin xyz="-0.00199743939275948 3.69311252523818E-07 0.000255004205731935" rpy="0 0 0" />
+        <mass value="0.000290995197223372" />
+        <inertia ixx="5.74205064797309E-09" ixy="7.61163846358905E-13" ixz="2.14617768717448E-10"
+                 iyy="2.73322066846908E-09" iyz="-8.28089768647951E-12" izz="3.61775620036918E-09" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof26_link.STL" />
+        </geometry>
+        <material name="">
+          <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="file://$(find quasi_cart_description)/meshes/tof26_link.STL" />
+        </geometry>
+      </collision>
+    </link>
+
+    <xacro:if value="$(arg enable_extra_floor_tofs)">
+      <link name="tof27_link">
+        <inertial>
+          <origin xyz="-0.00199743939562563 -3.69311308118236E-07 -0.000255004205254009" rpy="0 0 0"/>
+          <mass value="0.000290995197223371"/>
+          <inertia ixx="5.74205064801625E-09" ixy="-7.61163700320263E-13" ixz="-2.14617768830622E-10" iyy="2.7332206678951E-09" iyz="-8.28089774594265E-12" izz="3.61775619976512E-09"/>
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof27_link.STL"/>
+          </geometry>
+          <material name="">
+            <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+          </material>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof27_link.STL"/>
+          </geometry>
+        </collision>
+      </link>
+      <link name="tof28_link">
+        <inertial>
+          <origin xyz="-0.00199743939255259 3.69311415393536E-07 0.000255004205731796" rpy="0 0 0"/>
+          <mass value="0.00029099519722337"/>
+          <inertia ixx="5.74205064797614E-09" ixy="7.6116376231007E-13" ixz="2.14617768731544E-10" iyy="2.73322066853149E-09" iyz="-8.28089767280864E-12" izz="3.61775620043461E-09"/>
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof28_link.STL"/>
+          </geometry>
+          <material name="">
+            <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+          </material>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof28_link.STL"/>
+          </geometry>
+        </collision>
+      </link>
+      <link name="tof29_link">
+        <inertial>
+          <origin xyz="-0.00199743939255953 3.69311116910076E-07 0.000255004205721443" rpy="0 0 0"/>
+          <mass value="0.000290995197223374"/>
+          <inertia ixx="5.74205064796881E-09" ixy="7.61163928808318E-13" ixz="2.14617768737588E-10" iyy="2.73322066853047E-09" iyz="-8.28089768893743E-12" izz="3.61775620042408E-09"/>
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof29_link.STL"/>
+          </geometry>
+          <material name="">
+            <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+          </material>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof29_link.STL"/>
+          </geometry>
+        </collision>
+      </link>
+      <link name="tof30_link">
+        <inertial>
+          <origin xyz="-0.00199743939298691 3.69311399905925E-07 0.000255004205839559" rpy="0 0 0"/>
+          <mass value="0.000290995197223374"/>
+          <inertia ixx="5.74205064796447E-09" ixy="7.61163755255008E-13" ixz="2.14617768636615E-10" iyy="2.73322066839122E-09" iyz="-8.28089768455934E-12" izz="3.6177562003069E-09"/>
+        </inertial>
+        <visual>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof30_link.STL"/>
+          </geometry>
+          <material name="">
+            <color rgba="0.525490196078431 0.525490196078431 0.525490196078431 1"/>
+          </material>
+        </visual>
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <mesh filename="file://$(find quasi_cart_description)/meshes/tof30_link.STL"/>
+          </geometry>
+        </collision>
+      </link>
+    </xacro:if>
+  </xacro:if>
+
+
+  <link
+    name="lidar_link">
+    <inertial>
+      <origin
+        xyz="2.3731E-05 -4.9421E-18 -0.01097"
+        rpy="0 0 0" />
+      <mass
+        value="0.38194" />
+      <inertia
+        ixx="0.00016276"
+        ixy="-2.563E-21"
+        ixz="1.2943E-07"
+        iyy="0.00016313"
+        iyz="-8.447E-21"
+        izz="0.00024829" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/lidar_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/lidar_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <link
+    name="imu_link">
+    <inertial>
+      <origin
+        xyz="-2.5592E-06 -4.0177E-06 -0.000825"
+        rpy="0 0 0" />
+      <mass
+        value="0.00089212" />
+      <inertia
+        ixx="3.6884E-08"
+        ixy="-2.6769E-12"
+        ixz="-2.0917E-22"
+        iyy="4.6288E-08"
+        iyz="3.0769E-23"
+        izz="8.2767E-08" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/imu_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.17647 0.17647 0.17647 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find quasi_cart_description)/meshes/imu_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+
+  <xacro:if value="$(arg enable_camera_realsense)">
+    <xacro:include filename="_d455.urdf.xacro" />
+    <xacro:sensor_d455 name="realsense" parent="base_link" use_nominal_extrinsics="true">
+        <origin xyz="${camera_offset_x} ${camera_offset_y} ${camera_offset_z}" rpy="${camera_roll + camera_roll_offset} ${camera_pitch + camera_pitch_offset} ${camera_yaw}"/> <!-- 0.331613 -->
+    </xacro:sensor_d455>
+  </xacro:if>
+
+  <xacro:if value="$(arg enable_camera_oak)">
+    <xacro:include filename="$(find depthai_descriptions)/urdf/include/depthai_macro.urdf.xacro"/>
+    <xacro:depthai_camera camera_name="camera" camera_model="OAK-D-PRO" parent="base_link" base_frame="camera"
+        cam_pos_x="${camera_offset_x}" cam_pos_y="${camera_offset_y}" cam_pos_z="${camera_offset_z}"
+        cam_roll="${camera_roll + camera_roll_offset}" cam_pitch="${camera_pitch + camera_pitch_offset}" cam_yaw="${camera_yaw}" />
+  </xacro:if>
+
+  <xacro:if value="$(arg enable_camera_orbbec)">
+    <xacro:include filename="$(find orbbec_description)/urdf/gemini_335_L_336_L.urdf.xacro"/>
+    <joint name="orbbec_camera_joint" type="fixed">
+      <origin xyz="${camera_offset_x} ${camera_offset_y} ${camera_offset_z}" rpy="${camera_roll + camera_roll_offset} ${camera_pitch + camera_pitch_offset} ${camera_yaw}" />
+      <parent link="base_link" />
+      <child link="camera_bottom_screw_frame" />
+      <axis xyz="0 0 0" />
+    </joint>
+  </xacro:if>
+
+</robot>

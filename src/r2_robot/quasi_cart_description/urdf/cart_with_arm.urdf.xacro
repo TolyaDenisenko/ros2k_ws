@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+  cart_with_arm.urdf.xacro — тележка quasi_cart (репозиторий r2_robot)
+  + манипулятор xArm6 с вакуумным гриппером и камерой на ЭФ.
+
+  Рука расположена ПО ЦЕНТРУ верхней плоской платформы тележки:
+  joint arm_mount_joint (base_link -> arm_mount_link, xyz="-0.0075 0 0.849"),
+  затем world_joint руки (arm_mount_link -> link_base).
+
+  Этот URDF имеет ПРЯМУЮ ссылку на добавленный манипулятор:
+      <xacro:include filename="cart-arm.xacro"/>
+      <xacro:mount_xarm6_on_cart/>   # xArm6 + add_vacuum_gripper + D435i camera
+
+  Проверка генерации:
+      xacro cart_with_arm.urdf.xacro use_sim:=true
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cart_with_arm">
+
+    <!-- ==================== Аргументы ==================== -->
+    <xacro:arg name="use_sim" default="false" />
+    <xacro:arg name="robot_model" default="c2" />
+    <xacro:arg name="simulator" default="ignition" />
+    <xacro:arg name="enable_floor_tofs" default="true" />
+    <xacro:arg name="camera_roll_offset" default="0.0"/>
+    <xacro:arg name="camera_pitch_offset" default="0.0"/>
+
+    <!-- Аргументы руки (пробрасываются в cart-arm.xacro) -->
+    <xacro:arg name="arm_dof" default="6"/>
+    <xacro:arg name="arm_prefix" default=""/>
+    <xacro:arg name="arm_hw_ns" default="xarm"/>
+    <xacro:arg name="arm_offset_xyz" default="0 0 0"/>
+    <xacro:arg name="arm_offset_rpy" default="0 0 0"/>
+    <xacro:arg name="arm_ros2_control_plugin" default="gz_ros2_control/GazeboSimSystem"/>
+
+    <xacro:property name="var_simulator" value="$(arg simulator)"/>
+    <xacro:property name="drive" value="differential"/>
+
+    <material name="white_pva"><color rgba="1 1 1 1"/></material>
+    <material name="dark"><color rgba="0.1 0.1 0.1 1"/></material>
+    <material name="yellow"><color rgba="0.9 0.9 0 1"/></material>
+    <material name="dark_yellow"><color rgba="0.7 0.7 0 1"/></material>
+
+    <!-- ==================== ТЕЛЕЖКА (как в cart.urdf.xacro) ==================== -->
+    <xacro:include filename="$(arg robot_model).urdf.xacro"/>
+    <xacro:include filename="cart-drive-${drive}.urdf.xacro"/>
+    <xacro:include filename="cart-base.urdf.xacro"/>
+
+    <xacro:if value="$(arg use_sim)">
+        <xacro:if value="${var_simulator == 'ignition'}">
+            <xacro:include filename="cart.ign.xacro" />
+            <xacro:property name="var_wheel_type" value="continuous"/>
+            <xacro:include filename="cart-sensors.ign.xacro" />
+        </xacro:if>
+    </xacro:if>
+
+    <!-- ==================== МАНИПУЛЯТОР НА ТЕЛЕЖКЕ ==================== -->
+    <!-- Ссылка на руку: include + вызов макроса mount_xarm6_on_cart.
+         Внутри: xArm6 dof=$(arg arm_dof) + add_vacuum_gripper=true
+         + add_realsense_d435i=true (камера гриппера для grasp_analyzer). -->
+    <xacro:include filename="cart-arm.xacro"/>
+    <xacro:mount_xarm6_on_cart/>
+
+</robot>

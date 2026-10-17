@@ -1,0 +1,477 @@
+<?xml version="1.0"?>
+<robot name="quasi_cart_sim" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="laser_visual"    default="true"/>
+  <xacro:arg name="imu_visual"      default="false"/>
+  <xacro:arg name="tof_visual"      default="false"/>
+  <xacro:arg name="camera_visual" default="true"/>
+
+  <gazebo>
+    <plugin
+            filename="ignition-gazebo-velocity-control-system"
+            name="ignition::gazebo::systems::VelocityControl">
+      <topic>/model/cart/cmd_vel</topic>
+    </plugin>
+  </gazebo>
+
+  <!-- <gazebo>
+    <plugin
+      filename="ignition-gazebo-mecanum-drive-system"
+      name="ignition::gazebo::systems::MecanumDrive">
+      <topic>/model/r2/cmd_vel</topic>
+      <front_left_joint>wheel_front_left_joint</front_left_joint>
+      <front_right_joint>wheel_front_right_joint</front_right_joint>
+      <back_left_joint>wheel_rear_left_joint</back_left_joint>
+      <back_right_joint>wheel_rear_right_joint</back_right_joint>
+      <wheel_separation>0.3787</wheel_separation>
+      <wheelbase>0.268</wheelbase>
+      <wheel_radius>0.076</wheel_radius>
+      <min_acceleration>-5</min_acceleration>
+      <max_acceleration>5</max_acceleration>
+    </plugin>
+  </gazebo> -->
+
+  <gazebo>
+    <plugin
+            filename="ignition-gazebo-odometry-publisher-system"
+            name="ignition::gazebo::systems::OdometryPublisher">
+      <odom_topic>/model/cart/odom</odom_topic>
+      <tf_topic>/model/cart/tf</tf_topic>
+      <odom_publish_frequency>20</odom_publish_frequency>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_frame>odom</odom_frame>
+      <dimensions>2</dimensions>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin
+      filename="ignition-gazebo-sensors-system"
+      name="ignition::gazebo::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-imu-system"
+      name="ignition::gazebo::systems::Imu">
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="imu_link">
+    <sensor name="imu" type="imu">
+      <topic>/model/cart/imu</topic>
+      <ignition_frame_id>imu_link</ignition_frame_id>
+      <always_on>true</always_on>
+      <visualize>$(arg imu_visual)</visualize>
+      <update_rate>50</update_rate>
+      <imu>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.0001</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.0001</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.0001</stddev>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>
+          </z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <gazebo reference="tof1_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor1">
+      <topic>/model/cart/tof_sensor1/scan</topic>
+      <ignition_frame_id>tof1_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof2_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensocart">
+      <topic>/model/cart/tof_sensor2/scan</topic>
+      <ignition_frame_id>tof2_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof3_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor3">
+      <topic>/model/cart/tof_sensor3/scan</topic>
+      <ignition_frame_id>tof3_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof4_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor4">
+      <topic>/model/cart/tof_sensor4/scan</topic>
+      <ignition_frame_id>tof4_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof5_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor5">
+      <topic>/model/cart/tof_sensor5/scan</topic>
+      <ignition_frame_id>tof5_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof6_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor6">
+      <topic>/model/cart/tof_sensor6/scan</topic>
+      <ignition_frame_id>tof6_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof7_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor7">
+      <topic>/model/cart/tof_sensor7/scan</topic>
+      <ignition_frame_id>tof7_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="tof8_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_ray" name="tof_sensor8">
+      <topic>/model/cart/tof_sensor8/scan</topic>
+      <ignition_frame_id>tof8_link</ignition_frame_id>
+      <update_rate>10</update_rate>
+      <visualize>$(arg tof_visual)</visualize>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>18</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi/180.0*9.0}</min_angle>
+            <max_angle>${pi/180.0*9.0}</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.01</min>
+          <max>5.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </ray>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="lidar_link">
+    <material>Gazebo/FlatBlack</material>
+    <sensor type="gpu_lidar" name="ydlidar_tg15_sensor">
+      <topic>/model/cart/lidar</topic>
+      <ignition_frame_id>lidar_link</ignition_frame_id>
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>$(arg laser_visual)</visualize>
+      <update_rate>10</update_rate>
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>2000</samples>
+            <resolution>1</resolution>
+            <min_angle>${-pi}</min_angle> <!-- -143 degree -->
+            <max_angle>${pi}</max_angle>  <!--  116 degree -->
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.38</min>
+          <max>30.0</max>
+          <resolution>0.005</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+    </sensor>
+  </gazebo>
+
+  <xacro:property name="var_camera_width" value="848"/>
+  <xacro:property name="var_camera_height" value="480"/>
+  <xacro:property name="var_camera_fov" value="1.50098"/>
+
+  <gazebo reference="camera_rgb_camera_frame">
+    <sensor type="rgbd_camera" name="realsense">
+      <topic>/model/cart/realsense</topic>
+      <ignition_frame_id>camera_rgb_camera_frame</ignition_frame_id>
+      <always_on>1</always_on>
+      <update_rate>15.0</update_rate>
+      <visualize>$(arg camera_visual)</visualize>
+      <camera name="realsense">
+        <optical_frame_id>camera_rgb_camera_optical_frame</optical_frame_id>
+        <horizontal_fov>${var_camera_fov}</horizontal_fov>
+        <lens>
+          <intrinsics>
+            <fx>${var_camera_width*.5/tan(var_camera_fov*.5)}</fx>
+            <fy>${var_camera_width*.5/tan(var_camera_fov*.5)}</fy>
+            <cx>${(var_camera_width + 1)/2}</cx>
+            <cy>${(var_camera_height + 1)/2}</cy>
+            <s>1.0</s>
+          </intrinsics>
+          <projection>
+            <p_fx>${var_camera_width*.5/tan(var_camera_fov*.5)}</p_fx>
+            <p_fy>${var_camera_width*.5/tan(var_camera_fov*.5)}</p_fy>
+            <p_cx>${(var_camera_width + 1)/2}</p_cx>
+            <p_cy>${(var_camera_height + 1)/2}</p_cy>
+            <tx>0.0</tx>
+            <ty>0.0</ty>
+          </projection>
+        </lens>>
+        <image>
+          <width>${var_camera_width}</width>
+          <height>${var_camera_height}</height>
+          <format>B8G8R8</format>
+        </image>
+        <depth_camera>
+        </depth_camera>
+        <clip>
+          <near>0.3</near>
+          <far>6</far>
+          <!--far>3.0</far-->
+        </clip>
+      </camera>
+    </sensor>
+  </gazebo>
+
+</robot>

@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+  cart-arm.xacro — интеграция манипулятора xArm6 с вакуумным гриппером
+  и камерой на ЭФ (Realsense D435i) в URDF тележки quasi_cart (r2_robot).
+
+  Манипулятор ставится СТРОГО ПО ЦЕНТРУ верхней плоской платформы тележки.
+  Координаты верхнего листа base_link (по мешу base_link_c2-v3.stl):
+      z_top = 0.849 м,  x[-0.359 .. 0.359], y[-0.235 .. 0.235]
+  Центр платформы в base_link: (-0.0075, 0.0) — сюда крепится база руки.
+
+  Использование (из cart_with_arm.urdf.xacro):
+      <xacro:include filename="cart-arm.xacro"/>
+      <xacro:mount_xarm6_on_cart/>
+
+  Важно: пакет xarm_description должен присутствовать в workspace (он даёт
+  макросы xarm_device / realsense_gz и меши руки + присоски).
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cart_arm">
+
+  <!-- ==================== Собственные аргументы ==================== -->
+  <xacro:arg name="arm_dof" default="6"/>
+  <xacro:arg name="arm_prefix" default=""/>
+  <xacro:arg name="arm_hw_ns" default="xarm"/>
+  <!-- Поза базы руки относительно центра верхней платформы (доп. смещение) -->
+  <xacro:arg name="arm_offset_xyz" default="0 0 0"/>
+  <xacro:arg name="arm_offset_rpy" default="0 0 0"/>
+  <!-- ros2_control плагин: для Gazebo Sim используйте gz_ros2_control/GazeboSimSystem -->
+  <xacro:arg name="arm_ros2_control_plugin" default="gz_ros2_control/GazeboSimSystem"/>
+
+  <!-- ==================== Фланец крепления на крыше тележки ==================== -->
+  <xacro:macro name="arm_mount_link" params="">
+    <!-- Фиктивный link-«фланец» на верхней плоской платформе тележки -->
+    <link name="arm_mount_link"/>
+
+    <joint name="arm_mount_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="arm_mount_link"/>
+      <!-- центр платформы: x=-0.0075 (середина [-0.359..0.359]), y=0, z=верх 0.849 -->
+      <origin xyz="-0.0075 0.0 0.849" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- ==================== Установка xArm6 на тележку ==================== -->
+  <xacro:macro name="mount_xarm6_on_cart" params="">
+
+    <xacro:arm_mount_link/>
+
+    <!-- Подключаем описание xArm (официальный пакет xarm_ros2) -->
+    <xacro:include filename="$(find xarm_description)/urdf/xarm_device_macro.xacro"/>
+
+    <!--
+      attach_to="arm_mount_link" — рука ЖЁСТКО вшита в URDF тележки;
+      add_vacuum_gripper=true   — вакуумная присоска на link_eef;
+      add_realsense_d435i=true  — камера гриппера: топики camera/color/image_raw,
+                                  camera/color/camera_info, camera/depth/points
+                                  публикуются из Gazebo (realsense_gz при
+                                  ros2_control_plugin=gz_ros2_control/GazeboSimSystem).
+    -->
+    <xacro:xarm_device
+      prefix="$(arg arm_prefix)"
+      hw_ns="$(arg arm_hw_ns)"
+      dof="$(arg arm_dof)"
+      robot_type="xarm"
+      limited="false"
+      effort_control="false"
+      velocity_control="false"
+      add_gripper="false"
+      add_vacuum_gripper="true"
+      add_bio_gripper="false"
+      add_realsense_d435i="true"
+      add_d435i_links="true"
+      ros2_control_plugin="$(arg arm_ros2_control_plugin)"
+      ros2_control_params="$(find xarm_controller)/config/xarm6_controllers.yaml"
+      load_gazebo_plugin="true"
+      attach_to="arm_mount_link"
+      attach_xyz="$(arg arm_offset_xyz)"
+      attach_rpy="$(arg arm_offset_rpy)"
+    />
+
+  </xacro:macro>
+
+</robot>

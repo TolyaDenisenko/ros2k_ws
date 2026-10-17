@@ -1,0 +1,445 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="cart">
+    <xacro:arg name="use_sim" default="false" />
+    <xacro:arg name="robot_model" default="c2" />
+    <xacro:arg name="simulator" default="ignition" />
+    <xacro:arg name="enable_floor_tofs" default="true" />
+    <xacro:arg name="enable_extra_floor_tofs" default="false" />
+    <xacro:arg name="enable_camera_realsense" default="false"/>
+    <xacro:arg name="enable_camera_oak" default="false"/>
+    <xacro:arg name="enable_camera_orbbec" default="false"/>
+    <xacro:arg name="camera_roll_offset" default="0.0"/>
+    <xacro:arg name="camera_pitch_offset" default="0.0"/>
+    <xacro:arg name="enable_pace_battery" default="true"/>
+
+    <xacro:property name="var_simulator" value="$(arg simulator)"/>
+    <xacro:property name="robot_model" value="$(arg robot_model)"/>
+
+    <xacro:property name="drive" value="differential"/>
+
+    <material name="white_pva">
+        <color rgba="1 1 1 1"/>
+    </material>
+    <material name="dark">
+        <color rgba="0.1 0.1 0.1 1"/>
+    </material>
+    <material name="yellow">
+        <color rgba="0.9 0.9 0 1"/>
+    </material>
+    <material name="dark_yellow">
+        <color rgba="0.7 0.7 0 1"/>
+    </material>
+
+    <xacro:include filename="$(arg robot_model).urdf.xacro"/>
+    <xacro:include filename="cart-drive-${drive}.urdf.xacro"/>
+    <xacro:include filename="cart-base.urdf.xacro"/>
+
+    <xacro:if value="$(arg use_sim)">
+        <xacro:if value="${var_simulator == 'ignition'}">
+            <xacro:include filename="cart.ign.xacro" />
+            <xacro:property name="var_wheel_type" value="continuous"/>
+            <xacro:include filename="cart-sensors.ign.xacro" />
+        </xacro:if>
+    </xacro:if>
+
+    <xacro:if value="$(arg enable_pace_battery)">
+        <ros2_control name="CartBatteryInterface" type="sensor" is_async="true" rw_rate="1">
+            <hardware>
+                <plugin>quasi_battery_hardware/PaceBatteryHardware</plugin>
+            </hardware>
+            <sensor name="battery">
+                <param name="type">battery</param>
+                <param name="id">1</param>
+                <state_interface name="voltage"/>
+                <state_interface name="cell_voltage.0"/>
+                <state_interface name="cell_voltage.1"/>
+                <state_interface name="cell_voltage.2"/>
+                <state_interface name="cell_voltage.3"/>
+                <state_interface name="cell_voltage.4"/>
+                <state_interface name="cell_voltage.5"/>
+                <state_interface name="cell_voltage.6"/>
+                <state_interface name="cell_voltage.7"/>
+                <state_interface name="cell_voltage.8"/>
+                <state_interface name="cell_voltage.9"/>
+                <state_interface name="temperature"/>
+                <state_interface name="temperature.0"/>
+                <state_interface name="temperature.1"/>
+                <state_interface name="temperature.2"/>
+                <state_interface name="temperature.3"/>
+                <state_interface name="current"/>
+                <state_interface name="charge"/>
+                <state_interface name="capacity"/>
+                <state_interface name="design_capacity"/>
+                <state_interface name="status"/>
+            </sensor>
+        </ros2_control>
+    </xacro:if>
+
+    <ros2_control name="CartDynamixelInterface" type="system">
+        <xacro:unless value="$(arg use_sim)">
+            <hardware>
+                <plugin>dynamixel_hardware/DynamixelHardware</plugin>
+            </hardware>
+
+            <sensor name="tof1_sensor">
+                <param name="type">distance</param>
+                <param name="id">52</param>
+                <param name="value_item">64</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <sensor name="tof2_sensor">
+                <param name="type">distance</param>
+                <param name="id">52</param>
+                <param name="value_item">320</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <sensor name="tof3_sensor">
+                <param name="type">distance</param>
+                <param name="id">51</param>
+                <param name="value_item">64</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <xacro:unless value="${robot_model.startswith('c2w')}">
+                <sensor name="tof4_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">51</param>
+                    <param name="value_item">320</param>
+                    <param name="value_len">256</param>
+                    <param name="Resolution">8</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+
+                <sensor name="tof5_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">54</param>
+                    <param name="value_item">64</param>
+                    <param name="value_len">256</param>
+                    <param name="Resolution">8</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+            </xacro:unless>
+            <sensor name="tof6_sensor">
+                <param name="type">distance</param>
+                <param name="id">54</param>
+                <param name="value_item">320</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <sensor name="tof7_sensor">
+                <param name="type">distance</param>
+                <param name="id">53</param>
+                <param name="value_item">64</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <sensor name="tof8_sensor">
+                <param name="type">distance</param>
+                <param name="id">53</param>
+                <param name="value_item">320</param>
+                <param name="value_len">256</param>
+                <param name="Resolution">8</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <sensor name="tof9_sensor">
+                <param name="type">distance</param>
+                <param name="id">57</param>
+                <param name="value_item">64</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <sensor name="tof10_sensor">
+                <param name="type">distance</param>
+                <param name="id">57</param>
+                <param name="value_item">320</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <sensor name="tof11_sensor">
+                <param name="type">distance</param>
+                <param name="id">58</param>
+                <param name="value_item">64</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <xacro:unless value="${robot_model.startswith('c2w')}">
+                <sensor name="tof12_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">58</param>
+                    <param name="value_item">320</param>
+                    <param name="value_len">64</param>
+                    <param name="Resolution">4</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+
+                <sensor name="tof13_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">55</param>
+                    <param name="value_item">64</param>
+                    <param name="value_len">64</param>
+                    <param name="Resolution">4</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+            </xacro:unless>
+            <sensor name="tof14_sensor">
+                <param name="type">distance</param>
+                <param name="id">55</param>
+                <param name="value_item">320</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <sensor name="tof15_sensor">
+                <param name="type">distance</param>
+                <param name="id">56</param>
+                <param name="value_item">64</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+            <sensor name="tof16_sensor">
+                <param name="type">distance</param>
+                <param name="id">56</param>
+                <param name="value_item">320</param>
+                <param name="value_len">64</param>
+                <param name="Resolution">4</param>
+                <state_interface name="distances"/>
+                <state_interface name="status"/>
+            </sensor>
+
+            <xacro:if value="$(arg enable_floor_tofs)">
+                <sensor name="tof21_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">43</param>
+                    <param name="value_item">64</param>
+                    <param name="value_len">4</param>
+                    <param name="Resolution">1</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+                <sensor name="tof22_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">43</param>
+                    <param name="value_item">68</param>
+                    <param name="value_len">4</param>
+                    <param name="Resolution">1</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+
+                <xacro:unless value="${robot_model.startswith('c2h')}">
+                    <sensor name="tof23_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">42</param>
+                        <param name="value_item">68</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof24_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">42</param>
+                        <param name="value_item">64</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                </xacro:unless>
+
+                <sensor name="tof25_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">41</param>
+                    <param name="value_item">64</param>
+                    <param name="value_len">4</param>
+                    <param name="Resolution">1</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+                <sensor name="tof26_sensor">
+                    <param name="type">distance</param>
+                    <param name="id">41</param>
+                    <param name="value_item">68</param>
+                    <param name="value_len">4</param>
+                    <param name="Resolution">1</param>
+                    <state_interface name="distances"/>
+                    <state_interface name="status"/>
+                </sensor>
+
+                <xacro:if value="$(arg enable_extra_floor_tofs)">
+                    <sensor name="tof27_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">43</param>
+                        <param name="value_item">72</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof30_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">41</param>
+                        <param name="value_item">72</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+
+                    <xacro:unless value="${robot_model.startswith('c2h')}">
+                        <sensor name="tof28_sensor">
+                            <param name="type">distance</param>
+                            <param name="id">42</param>
+                            <param name="value_item">76</param>
+                            <param name="value_len">4</param>
+                            <param name="Resolution">1</param>
+                            <state_interface name="distances"/>
+                            <state_interface name="status"/>
+                        </sensor>
+                        <sensor name="tof29_sensor">
+                            <param name="type">distance</param>
+                            <param name="id">42</param>
+                            <param name="value_item">72</param>
+                            <param name="value_len">4</param>
+                            <param name="Resolution">1</param>
+                            <state_interface name="distances"/>
+                            <state_interface name="status"/>
+                        </sensor>
+                    </xacro:unless>
+                </xacro:if>
+                <xacro:if value="${robot_model.startswith('c2h')}">
+                    <!-- Front left corner -->
+                    <sensor name="tof31_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">43</param>
+                        <param name="value_item">76</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+
+                    <!-- Front right corner -->
+                    <sensor name="tof36_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">41</param>
+                        <param name="value_item">76</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+
+                    <!-- Rear left corner -->
+                    <sensor name="tof23_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">45</param>
+                        <param name="value_item">68</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof28_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">45</param>
+                        <param name="value_item">72</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof32_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">45</param>
+                        <param name="value_item">76</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof33_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">45</param>
+                        <param name="value_item">64</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+
+                    <!-- Rear right corner -->
+                    <sensor name="tof24_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">44</param>
+                        <param name="value_item">64</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof29_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">44</param>
+                        <param name="value_item">72</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof35_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">44</param>
+                        <param name="value_item">76</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                    <sensor name="tof34_sensor">
+                        <param name="type">distance</param>
+                        <param name="id">44</param>
+                        <param name="value_item">68</param>
+                        <param name="value_len">4</param>
+                        <param name="Resolution">1</param>
+                        <state_interface name="distances"/>
+                        <state_interface name="status"/>
+                    </sensor>
+                </xacro:if>
+            </xacro:if>
+
+        </xacro:unless>
+    </ros2_control>
+
+</robot>
