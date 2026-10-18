@@ -1,0 +1,5 @@
+# Пакет написан под Gazebo Classic (gz-server 11): в package.xml есть
+# <depend>gazebo_ros</depend>, которого НЕ СУЩЕСТВУЕТ в ROS 2 Kilted / gz-sim.
+# В этом workspace симуляция руки идёт через xarm_gz_bringup + gz_ros2_control,
+# поэтому классический пакет намеренно исключён из сборки colcon'ом.
+# Удалите этот файл только если вернётесь на ROS 2 Humble + Gazebo Classic.

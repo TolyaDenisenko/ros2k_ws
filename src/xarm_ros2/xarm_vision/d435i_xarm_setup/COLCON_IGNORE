@@ -1,0 +1,4 @@
+# Зависит от find_object_2d и object_recognition_msgs — их нет ни в репозитории,
+# ни в стандартном Debian-пакете ROS 2 Kilted (apt install не поможет без PPA).
+# Этот пакет нужен только для реальной камеры D435i+AR-метки; в симуляции захват
+# цилиндра обеспечивает xarm_grasping/grasp_analyzer.py (без внешних зависимостей).

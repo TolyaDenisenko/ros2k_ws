@@ -1,0 +1,3 @@
+# Требует метапакет <depend>moveit</depend>, который недоступен/неполон в ROS 2
+# Kilted (в Kilted MoveIt 2 ставится как отдельные ros-kilted-moveit-* пакеты).
+# Планирование траекторий для симуляции даёт xarm_moveit_config — этот пакет избыточен.

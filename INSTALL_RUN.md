@@ -178,6 +178,43 @@ colcon полностью пропускает этот пакет. Он **не 
 colcon build --symlink-install --packages-skip realsense_gazebo_plugin
 ```
 
+### Другие пакеты Gazebo Classic, которые не собираются на Kilted (тоже в `COLCON_IGNORE`)
+
+В `src/xarm_ros2` есть ещё несколько легаси-пакетов под **Gazebo Classic**, они
+помечены файлами `COLCON_IGNORE` (в каждом внутри — комментарий с причиной):
+
+| Пакет | Почему исключён |
+|---|---|
+| `xarm_gazebo` | `<depend>gazebo_ros</depend>` — его нет в Kilted; симуляция идёт через `xarm_gz_bringup` + `gz_ros2_control` |
+| `xarm_vision/d435i_xarm_setup` | требует `find_object_2d` / `object_recognition_msgs` (нет в deb-репозитории Kilted); нужен только для реальной камеры с AR-метками |
+| `xarm_planner` | требует метапакет `moveit`, недоступный в Kilted; планирование даёт `xarm_moveit_config` |
+| `xarm_moveit_servo` | drift API `moveit_servo` между релизами MoveIt 2; джойстик-серво не нужно для grasp-симуляции |
+
+**Важно про `--packages-skip`:** флаг пропускает пакет только в текущем запуске,
+но colcon всё равно считает его по `package.xml`. Если у вас остались старые
+артефакты (`build/<pkg>`, `install/<pkg>`), colcon может ругаться или «наследовать»
+зависимости из них. Поэтому после `git pull` с этими фиксами сделайте чистую сборку:
+
+```bash
+cd ~/ros2k_ws
+git pull
+rm -rf build install log          # старые артефакты собранного workspace
+colcon build --symlink-install
+source install/setup.bash
+```
+
+Если же вы принципиально хотите собирать без `git pull` (например, старый коммит),
+пропустите все четыре пакета разом:
+
+```bash
+colcon build --symlink-install \
+  --packages-skip realsense_gazebo_plugin xarm_gazebo d435i_xarm_setup xarm_planner xarm_moveit_servo
+```
+
+Причина, по которой `Aborted <<< uf_ros_lib / xarm_api / xarm_moveit_servo / ...`
+в вашем логе — это НЕ ошибки этих пакетов: colcon при падении любого пакета
+прерывает всё, что собирается параллельно в этот момент. Реальная ошибка была одна
+(`realsense_gazebo_plugin` / отсутствующий `__init__.py`), остальные — collateral damage.
 
 ## 5. Сценарий B — рука на тележке r2_robot (quasi_cart)
 
