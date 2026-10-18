@@ -4,6 +4,8 @@
   <xacro:arg name="imu_visual"      default="false"/>
   <xacro:arg name="tof_visual"      default="false"/>
   <xacro:arg name="camera_visual" default="true"/>
+  <!-- false, если Sensors-система уже объявлена в world-файле (см. cart_with_arm) -->
+  <xacro:arg name="model_sensors_plugin" default="true"/>
 
   <gazebo>
     <plugin
@@ -44,11 +46,13 @@
   </gazebo>
 
   <gazebo>
-    <plugin
-      filename="ignition-gazebo-sensors-system"
-      name="ignition::gazebo::systems::Sensors">
-      <render_engine>ogre2</render_engine>
-    </plugin>
+    <xacro:if value="$(arg model_sensors_plugin)">
+      <plugin
+        filename="ignition-gazebo-sensors-system"
+        name="ignition::gazebo::systems::Sensors">
+        <render_engine>ogre2</render_engine>
+      </plugin>
+    </xacro:if>
     <plugin
       filename="ignition-gazebo-imu-system"
       name="ignition::gazebo::systems::Imu">

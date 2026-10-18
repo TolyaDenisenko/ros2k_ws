@@ -10,7 +10,7 @@ find_package(ament_cmake REQUIRED)
 # ВАЖНО: install(DIRECTORY ...) падает с ошибкой, если указанный каталог
 # пустой или отсутствует. Поэтому каждый каталог ставим отдельно и только
 # при наличии (если удалите worlds/ — сборка не сломается).
-foreach(dir launch config worlds scripts)
+foreach(dir launch config worlds)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${dir})
     file(GLOB _contents RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/${dir} ${dir}/*)
     if(_contents)
@@ -18,6 +18,13 @@ foreach(dir launch config worlds scripts)
     endif()
   endif()
 endforeach()
+
+# Исполняемые ноды — в lib/<pkg>, иначе launch Node(executable=...) их не найдёт
+# ("libexec directory .../lib/xarm_grasping does not exist").
+file(GLOB _scripts ${CMAKE_CURRENT_SOURCE_DIR}/scripts/*.py)
+if(_scripts)
+  install(PROGRAMS ${_scripts} DESTINATION lib/${PROJECT_NAME})
+endif()
 
 # python-пакет xarm_grasping (grasp_generator.py) — ament добавит его путь
 # в PYTHONPATH через package.sh, поэтому "from xarm_grasping..." работает

@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
+  <!-- Sensors-систему мира нужно грузить РОВНО ОДИН раз: каждая копия создаёт
+       рендер-сцену "scene", вторая падает ("Scene already exists with name: scene"
+       -> segfault в libgz-sim-sensors-system). Если её уже объявляет world-файл
+       (или другая часть модели), передайте model_sensors_plugin:=false.
+       Первое объявление xacro:arg побеждает, поэтому родительский xacro может
+       задать свой default до include этого файла. -->
+  <xacro:arg name="model_sensors_plugin" default="true"/>
+
   <xacro:macro name="realsense_gazebo" params="prefix:=''">
     <gazebo reference="${prefix}camera_depth_frame">
       <sensor name="${prefix}cameradepth" type="depth">
@@ -361,13 +369,15 @@
         <topic>${prefix}camera/infra2/image_raw</topic>
       </sensor>
     </gazebo>
-    <gazebo>
-      <plugin
-        filename="libgz-sim-sensors-system.so"
-        name="gz::sim::systems::Sensors">
-        <render_engine>ogre2</render_engine>
-      </plugin>
-    </gazebo>
+    <xacro:if value="$(arg model_sensors_plugin)">
+      <gazebo>
+        <plugin
+          filename="libgz-sim-sensors-system.so"
+          name="gz::sim::systems::Sensors">
+          <render_engine>ogre2</render_engine>
+        </plugin>
+      </gazebo>
+    </xacro:if>
   </xacro:macro>
 
 </robot>

@@ -64,7 +64,8 @@ class GraspAnalyzer(Node):
         super().__init__('grasp_analyzer')
 
         # ---------------- параметры ----------------
-        self.declare_parameter('use_sim_time', True)
+        # use_sim_time объявляет сам rclpy — повторный declare_parameter падает
+        # с ParameterAlreadyDeclaredException; задаётся из launch (-p use_sim_time:=true).
         self.declare_parameter('color_topic', '/camera/color/image_raw')
         self.declare_parameter('points_topic', '/camera/depth/color/points')
         self.declare_parameter('camera_frame', 'camera_color_optical_frame')

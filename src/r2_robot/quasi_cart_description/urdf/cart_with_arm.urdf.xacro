@@ -28,6 +28,12 @@
     <xacro:arg name="enable_camera_oak" default="false"/>
     <xacro:arg name="enable_camera_orbbec" default="false"/>
     <xacro:arg name="enable_pace_battery" default="true"/>
+    <!-- Sensors-система gz объявлена в мирах cart_xarm_bringup/worlds/*.world.
+         Дублирование в модели (cart-sensors.ign.xacro + realsense_gz руки)
+         давало 3 экземпляра -> "Scene already exists with name: scene" и
+         segfault в libgz-sim-sensors-system. Объявлено ДО include'ов, чтобы
+         этот default перекрыл default=true во вложенных файлах. -->
+    <xacro:arg name="model_sensors_plugin" default="false"/>
 
     <!-- Аргументы руки (пробрасываются в cart-arm.xacro) -->
     <xacro:arg name="arm_dof" default="6"/>

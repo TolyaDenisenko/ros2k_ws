@@ -45,16 +45,6 @@ def generate_launch_description():
     spawn_yaw_arg = DeclareLaunchArgument(
         'spawn_yaw', default_value='0.0',
         description='Ориентация тележки; стол находится при x=+1.7 в мире')
-    # Выбор движка рендеринга для Sensors-системы Gazebo.
-    # Почему это аргумент launch: на некоторых GPU/драйверах (особенно NVIDIA
-    # + Wayland или llvmpipe) 'ogre2' падает с "Scene already exists" /
-    # segfault в libgz-sim-sensors-system. Тогда помогает --render_engine ogre
-    # или headless-режим. По умолчанию оставляем проверенный ogre2.
-    render_engine_arg = DeclareLaunchArgument(
-        'render_engine', default_value='ogre2',
-        description="Движок рендеринга gz sim: ogre2 (по умолч.) | ogre | "
-                    "ptrade (headless, без камеры-рендера)")
-
     robot_model = LaunchConfiguration('robot_model', default='c2')
     use_moveit = LaunchConfiguration('use_moveit')
 
@@ -232,7 +222,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetParameter('use_sim_time', True),
-        world_arg, use_moveit_arg, render_engine_arg,
+        world_arg, use_moveit_arg,
         spawn_x_arg, spawn_y_arg, spawn_z_arg, spawn_yaw_arg,
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument('robot_model', default_value='c2'),
