@@ -262,6 +262,10 @@ def launch_setup(context, *args, **kwargs):
     # rviz with moveit configuration
     # rviz_config_file = PathJoinSubstitution([FindPackageShare(moveit_config_package_name), 'config', xarm_type, 'planner.rviz' if no_gui_ctrl.perform(context) == 'true' else 'moveit.rviz'])
     rviz_config_file = PathJoinSubstitution([FindPackageShare(moveit_config_package_name), 'rviz', 'planner.rviz' if no_gui_ctrl.perform(context) == 'true' else 'moveit.rviz'])
+    # свой конфиг RViz (например, тележка + MotionPlanning в одном окне)
+    custom_rviz_config = LaunchConfiguration('rviz_config', default='').perform(context)
+    if custom_rviz_config:
+        rviz_config_file = custom_rviz_config
     rviz2_node = Node(
         package='rviz2',
         executable='rviz2',

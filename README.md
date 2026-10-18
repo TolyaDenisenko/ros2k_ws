@@ -10,9 +10,9 @@
 
 | # | Что | Команда |
 |---|---|---|
-| B1 | Тележка + рука: Gazebo + RViz + grasp_analyzer | `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` |
-| B2 | То же, только Gazebo (без RViz) | `... cart_xarm6_gz.launch.py use_rviz:=false` |
-| B3 | То же + MoveIt (планирование в RViz) | `... cart_xarm6_gz.launch.py use_moveit:=true use_rviz:=false` |
+| B1 | Тележка + рука: Gazebo + RViz с MoveIt + grasp_analyzer | `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` |
+| B2 | Gazebo + обычный RViz, без MoveIt | `... cart_xarm6_gz.launch.py use_moveit:=false` |
+| B3 | Только Gazebo (без RViz и MoveIt) | `... cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false` |
 | B4 | Только RViz, без Gazebo (модель + ползунки суставов) | `ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py` |
 | A  | Рука отдельно на столе: Gazebo + MoveIt + RViz | `ros2 launch xarm_gz_bringup xarm6_gz.launch.py add_vacuum_gripper:=true` |
 | A2 | Рука отдельно, только RViz + MoveIt (фейковое железо) | `ros2 launch xarm_moveit_config xarm6_moveit_fake.launch.py add_vacuum_gripper:=true` |
@@ -150,38 +150,64 @@ cd ~/ros2k_ws && rm -rf build install log && colcon build --symlink-install
 
 ## 6. Сценарий B — рука на тележке
 
-### B1. Gazebo + RViz (основной запуск)
+### B1. Gazebo + RViz с MoveIt (основной запуск)
 
 ```bash
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
 ```
+
+Открываются Gazebo и одно окно RViz (`cart_xarm_moveit.rviz`). В нём модель
+тележки с рукой в той же позе, что и в Gazebo, панель **MotionPlanning**,
+маркеры захвата и изображение с камеры гриппера.
+
+Чтобы подвигать руку: перетащите интерактивный маркер на конце руки (или
+выберите Goal State во вкладке Planning) и нажмите **Plan & Execute**.
+Траектория уходит в `xarm6_traj_controller` в Gazebo, и рука двигается
+одновременно в Gazebo и RViz.
+
+- Модель MoveIt содержит **только руку**, тележки в ней нет: столкновения
+  руки с тележкой MoveIt не проверяет.
+- Кадр `world` MoveIt совпадает с `link_base` (основание руки), Fixed Frame
+  RViz — `base_link` тележки.
+- В логе `move_group` будут строки
+  `Could not find the planner configuration 'RRTConnect' on the param server`.
+  Это особенность upstream-конфига xArm, на работу не влияет: планирование идёт
+  через OMPL по умолчанию.
 
 Что поднимается (файл `src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py`):
 
 | t, с | Что |
 |---|---|
 | 0 | Gazebo с миром `cart_table_offline.world` (стол + цилиндрический блок, работает без интернета) |
-| 0 | `robot_state_publisher` с URDF `cart_with_arm.urdf.xacro`, `joint_state_merger`, `gz_bridge`, RViz |
+| 0 | `robot_state_publisher` с URDF `cart_with_arm.urdf.xacro`, `joint_state_merger`, `gz_bridge`, RViz (если `use_moveit:=false`) |
 | 4 | спавн модели `cart_xarm6` (рука сразу в начальной позе, см. раздел 8) |
 | 7 | контроллеры `joint_state_broadcaster` и `xarm6_traj_controller` |
 | 10 | `grasp_analyzer` |
-| 12 | MoveIt (только с `use_moveit:=true`) |
+| 12 | MoveIt: `move_group` + RViz с MotionPlanning (если `use_moveit:=true`, по умолчанию) |
 
 Аргументы launch-файла:
 
 | Аргумент | По умолчанию | Назначение |
 |---|---|---|
-| `use_rviz` | `true` | открыть RViz с конфигом `cart_xarm.rviz` |
-| `use_moveit` | `false` | запустить MoveIt (`move_group` + свой RViz) |
+| `use_moveit` | `true` | MoveIt и RViz `cart_xarm_moveit.rviz` (тележка + MotionPlanning + маркеры + камера) |
+| `use_rviz` | `true` | обычный RViz `cart_xarm.rviz`; открывается только при `use_moveit:=false` |
 | `arm_initial_positions` | `1.5708 -0.9 -1.3 0 1.0 0` | начальные углы joint1..joint6, рад |
 | `world` | `.../worlds/cart_table_offline.world` | мир; `cart_table.world` требует интернет (Fuel) |
 | `spawn_x`, `spawn_y`, `spawn_z`, `spawn_yaw` | `0`, `0`, `0.07`, `0` | поза спавна тележки (стол при x≈+1.7) |
 | `robot_model` | `c2` | модель тележки из `quasi_cart_description/urdf` |
 
-### B2. Только Gazebo
+### B2. Gazebo + обычный RViz, без MoveIt
 
 ```bash
-ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_rviz:=false
+ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false
+```
+
+Запускается легче. Рукой можно управлять напрямую через контроллер (раздел 10).
+
+### B3. Только Gazebo
+
+```bash
+ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false
 ```
 
 RViz потом можно открыть отдельно в другом терминале:
@@ -190,27 +216,6 @@ RViz потом можно открыть отдельно в другом те�
 ros2 run rviz2 rviz2 -d ~/ros2k_ws/install/cart_xarm_bringup/share/cart_xarm_bringup/rviz/cart_xarm.rviz \
   --ros-args -p use_sim_time:=true
 ```
-
-### B3. С MoveIt
-
-```bash
-ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=true use_rviz:=false
-```
-
-MoveIt открывает своё окно RViz с панелью **MotionPlanning**. `use_rviz:=false`
-отключает второй (обычный) RViz, чтобы не держать два окна. В панели
-перетащите интерактивный маркер на конце руки или выберите Goal State, затем
-нажмите **Plan & Execute**: траектория уходит в `xarm6_traj_controller` в
-Gazebo, и рука двигается.
-
-- Модель MoveIt содержит **только руку**, тележки в ней нет: столкновения
-  руки с тележкой MoveIt не проверяет.
-- Fixed Frame в RViz MoveIt — `world`. Он совпадает с `link_base` (основание
-  руки), а не с полом.
-- В логе `move_group` будут строки
-  `Could not find the planner configuration 'RRTConnect' on the param server`.
-  Это особенность upstream-конфига xArm, на работу не влияет: планирование идёт
-  через OMPL по умолчанию.
 
 ### B4. Только RViz (без Gazebo)
 
@@ -225,7 +230,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py
 
 ### Что смотреть в RViz
 
-Конфиг `cart_xarm.rviz` (Fixed Frame `base_link`):
+Конфиги `cart_xarm.rviz` и `cart_xarm_moveit.rviz` (Fixed Frame `base_link`):
 - **RobotModel** — тележка и рука по `/robot_description`;
 - **TF** — все кадры. Ни один не должен быть красным, включая `drive_wheel_*_link`;
 - **MarkerArray** `/xarm_grasping/grasp_markers` — варианты захвата;
@@ -336,7 +341,7 @@ ros2 topic pub --once /xarm6_traj_controller/joint_trajectory trajectory_msgs/ms
     points: [{positions: [1.5708, -0.6, -1.0, 0.0, 1.0, 0.0], time_from_start: {sec: 3}}]}"
 ```
 
-### Рука через MoveIt из терминала (нужен запуск с MoveIt)
+### Рука через MoveIt из терминала (запуск по умолчанию, с MoveIt)
 
 ```bash
 ros2 action send_goal /move_action moveit_msgs/action/MoveGroup "{request: {group_name: xarm6,
@@ -429,6 +434,7 @@ ros2 run tf2_tools view_frames   # создаст frames_*.pdf
 | Gazebo падает с `Scene already exists with name: scene` | Sensors-система подключена дважды: она должна быть только в world-файле, модель собирается с `model_sensors_plugin:=false` (уже так в `cart_with_arm.urdf.xacro`) |
 | Сценарий A: Gazebo сразу закрывается, `Unable to find uri[...]` | нет интернета для моделей Fuel при первом запуске |
 | RViz: `No transform from [drive_wheel_*]` | не запущен `joint_state_merger` или нет моста `/cart/wheel_joint_states`; проверьте `ros2 topic echo /cart/wheel_joint_states` |
+| Рука в RViz не в той позе, что в Gazebo | `robot_state_publisher` читает `/merger/joint_states` (рука + колёса); проверьте `ros2 topic echo --once /merger/joint_states` — там должны быть углы руки, а не нули |
 | MoveIt: `Robot model not loaded` | ошибка разбора URDF MoveIt, смотрите первые строки лога `move_group` |
 | MoveIt: `PATH_TOLERANCE_VIOLATED` | рука упирается в препятствие в Gazebo (MoveIt его не видит); смените начальную позу или цель |
 | `grasp_analyzer`: «Облако точек ещё не получено» | камера ещё не начала публиковать; если сообщение не пропадает, проверьте `ros2 topic hz /camera/depth/points` |
@@ -454,9 +460,10 @@ src/
 | Файл | Что внутри |
 |---|---|
 | `cart_xarm_bringup/launch/cart_xarm6_gz.launch.py` | запуск тележки с рукой в Gazebo (+MoveIt) |
+| `cart_xarm_bringup/rviz/cart_xarm_moveit.rviz` | RViz MoveIt: тележка + MotionPlanning + маркеры + камера |
 | `cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py` | запуск только в RViz |
 | `cart_xarm_bringup/config/gz_bridge.yaml` | мосты Gazebo ↔ ROS: clock, камера, колёса, cmd_vel, odom |
 | `cart_xarm_bringup/worlds/cart_table_offline.world` | мир (системные плагины gz, стол, блок) |
 | `quasi_cart_description/urdf/cart_with_arm.urdf.xacro` | верхний URDF тележки с рукой |
 | `xarm_description/urdf/xarm6/xarm6.ros2_control.xacro` | интерфейсы ros2_control руки + начальная поза |
-| `xarm_moveit_config/launch/_robot_moveit_common.launch.py` | move_group + RViz MoveIt (аргументы `use_sim_time`, `publish_attach_tf`) |
+| `xarm_moveit_config/launch/_robot_moveit_common.launch.py` | move_group + RViz MoveIt (аргументы `use_sim_time`, `publish_attach_tf`, `rviz_config`) |

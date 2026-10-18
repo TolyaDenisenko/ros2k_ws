@@ -10,7 +10,8 @@ URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
 
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
-  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=true use_rviz:=false
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false   # обычный RViz без MoveIt
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false  # только Gazebo
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm_initial_positions:="0 0 0 0 0 0"
 """
 import os
@@ -21,7 +22,7 @@ from launch.actions import (DeclareLaunchArgument, IncludeLaunchDescription,
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (Command, FindExecutable, LaunchConfiguration,
-                                  PathJoinSubstitution)
+                                  PathJoinSubstitution, PythonExpression)
 from launch_ros.actions import Node, SetParameter
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
@@ -38,8 +39,10 @@ def generate_launch_description():
         description='SDF-мир Gazebo (стол + цилиндрический блок). '
                     'Можно заменить на cart_table.world (нужен Fuel).')
     use_moveit_arg = DeclareLaunchArgument(
-        'use_moveit', default_value='false',
-        description='Запустить MoveIt (move_group + RViz) для руки на тележке')
+        'use_moveit', default_value='true',
+        description='MoveIt (move_group + RViz с панелью MotionPlanning, '
+                    'тележкой, маркерами захвата и камерой в одном окне). '
+                    'false — обычный RViz без MoveIt')
     spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='0.0')
     spawn_y_arg = DeclareLaunchArgument('spawn_y', default_value='0.0')
     spawn_z_arg = DeclareLaunchArgument('spawn_z', default_value='0.07')
@@ -88,19 +91,24 @@ def generate_launch_description():
     # ---------- 3. robot_state_publisher (тележка + рука) ----------
     # Суставы приходят из двух источников: рука — /joint_states
     # (joint_state_broadcaster), колёса — /cart/wheel_joint_states (Gazebo).
-    # joint_state_publisher сливает их в /robot_joint_states для rsp;
+    # joint_state_publisher сливает их в /merger/joint_states для rsp;
     # суставы без источника публикуются нулями. MoveIt и grasp-ноды
     # по-прежнему читают /joint_states.
+    # Нода в namespace merger: её выход joint_states -> /merger/joint_states.
+    # Ремапить 'joint_states' нельзя — ремап задевает и подписку на источник
+    # /joint_states, и нода слушала саму себя (рука в RViz стояла в нулях).
     jsp = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
         name='joint_state_merger',
+        namespace='merger',
         parameters=[{
             'source_list': ['/joint_states', '/cart/wheel_joint_states'],
             'rate': 50,
             'use_sim_time': True,
         }],
-        remappings=[('joint_states', '/robot_joint_states')],
+        # описание робота берём из корневого топика, а не /merger/robot_description
+        remappings=[('robot_description', '/robot_description')],
         output='screen',
     )
     rsp = Node(
@@ -108,7 +116,7 @@ def generate_launch_description():
         executable='robot_state_publisher',
         name='robot_state_publisher',
         parameters=[robot_description, {'use_sim_time': True}],
-        remappings=[('joint_states', '/robot_joint_states')],
+        remappings=[('joint_states', '/merger/joint_states')],
         output='screen',
     )
 
@@ -194,7 +202,10 @@ def generate_launch_description():
         arguments=['-d', rviz_config],
         parameters=[{'use_sim_time': True}],
         output='screen',
-        condition=IfCondition(use_rviz),
+        # С MoveIt открывается его RViz (cart_xarm_moveit.rviz: то же самое +
+        # MotionPlanning), второе окно не нужно.
+        condition=IfCondition(PythonExpression(
+            ["'", use_rviz, "' == 'true' and '", use_moveit, "' != 'true'"])),
     )
 
     # ---------- 9. MoveIt (опционально) ----------
@@ -222,6 +233,9 @@ def generate_launch_description():
             # link_base уже ребёнок arm_mount_link, два родителя ломают TF.
             # Кадр world публикуем ниже как link_base -> world (тождественно).
             'publish_attach_tf': 'false',
+            'rviz_config': os.path.join(
+                get_package_share_directory('cart_xarm_bringup'),
+                'rviz', 'cart_xarm_moveit.rviz'),
             'controllers_name': 'fake_controllers',
             'moveit_controller_manager_key': 'moveit_simple_controller_manager',
             'moveit_controller_manager_value':
