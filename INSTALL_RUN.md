@@ -171,6 +171,26 @@ colcon полностью пропускает этот пакет. Он **не 
 `camera/color/image_raw`, `camera/depth/...`, `camera/depth/color/points`
 публикует сам gz-sim, а `gz_bridge.yaml` мостит их в ROS 2.
 
+### Ошибка: `ament_python_install_package() ... doesn't contain an '__init__.py' file` (xarm_grasping)
+
+**Почему возникает на КАЗАЛОСЬ БЫ чистом клоне:** в старых коммитах рядом с
+`__init__.py` в git-индексе лежали артефакты `__pycache__/*.pyc`. На ROS 2
+Kilted проверка ament_cmake иногда сбоит, если в каталоге python-пакета есть
+подкаталоги `__pycache__`, и сообщает об отсутствии `__init__.py`, хотя файл
+на месте. Исправлено в коммите `6dc411b` (.pyc удалены из индекса, добавлен
+`__pycache__/` в `.gitignore`). Если ошибка осталась — значит у вас клон до
+этого коммита; обновитесь:
+
+```bash
+git pull origin main
+# либо ручная страховка прямо на месте:
+rm -rf src/xarm_grasping/xarm_grasping/__pycache__
+touch src/xarm_grasping/xarm_grasping/__init__.py   # файл уже должен быть в репо
+colcon build --symlink-install --packages-select xarm_grasping
+```
+
+### Ошибка: не найден пакет (например `gazebo_ros`) в легаси-пакетах
+
 Если вы убрали `COLCON_IGNORE` или клонируете старый коммит — просто удалите
 папку `src/xarm_ros2/thirdparty/realsense_gazebo_plugin` либо соберите выборочно:
 
