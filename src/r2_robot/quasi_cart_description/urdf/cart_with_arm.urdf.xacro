@@ -23,6 +23,11 @@
     <xacro:arg name="enable_floor_tofs" default="true" />
     <xacro:arg name="camera_roll_offset" default="0.0"/>
     <xacro:arg name="camera_pitch_offset" default="0.0"/>
+    <xacro:arg name="enable_extra_floor_tofs" default="false"/>
+    <xacro:arg name="enable_camera_realsense" default="false"/>
+    <xacro:arg name="enable_camera_oak" default="false"/>
+    <xacro:arg name="enable_camera_orbbec" default="false"/>
+    <xacro:arg name="enable_pace_battery" default="true"/>
 
     <!-- Аргументы руки (пробрасываются в cart-arm.xacro) -->
     <xacro:arg name="arm_dof" default="6"/>
@@ -33,6 +38,11 @@
     <xacro:arg name="arm_ros2_control_plugin" default="gz_ros2_control/GazeboSimSystem"/>
 
     <xacro:property name="var_simulator" value="$(arg simulator)"/>
+    <!-- property robot_model ОБЯЗАТЕЛЕН: cart-base.urdf.xacro использует
+         выражение ${robot_model.startswith('c2w')} (есть в cart.urdf.xacro,
+         но не в этом файле-обёртке — без него xacro падает с
+         "name 'robot_model' is not defined") -->
+    <xacro:property name="robot_model" value="$(arg robot_model)"/>
     <xacro:property name="drive" value="differential"/>
 
     <material name="white_pva"><color rgba="1 1 1 1"/></material>
