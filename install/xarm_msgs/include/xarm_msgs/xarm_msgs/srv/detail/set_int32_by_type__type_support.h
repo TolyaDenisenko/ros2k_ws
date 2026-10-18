@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_generator_c/xarm_msgs/srv/detail/set_int32_by_type__type_support.h

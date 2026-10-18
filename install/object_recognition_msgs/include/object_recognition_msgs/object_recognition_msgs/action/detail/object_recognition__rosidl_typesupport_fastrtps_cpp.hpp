@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_typesupport_fastrtps_cpp/object_recognition_msgs/action/detail/object_recognition__rosidl_typesupport_fastrtps_cpp.hpp

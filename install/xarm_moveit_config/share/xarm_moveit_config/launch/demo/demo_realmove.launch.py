@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_config/launch/demo/demo_realmove.launch.py

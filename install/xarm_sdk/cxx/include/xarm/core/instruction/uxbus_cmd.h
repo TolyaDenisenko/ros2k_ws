@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_sdk/cxx/include/xarm/core/instruction/uxbus_cmd.h

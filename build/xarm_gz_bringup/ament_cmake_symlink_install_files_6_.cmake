@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_gz_bringup" FILES "/home/anatoly/ros2k_ws/build/xarm_gz_bringup/ament_cmake_environment_hooks/local_setup.bash" "DESTINATION" "share/xarm_gz_bringup")

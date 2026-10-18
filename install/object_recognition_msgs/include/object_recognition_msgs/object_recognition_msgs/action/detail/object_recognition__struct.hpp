@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_generator_cpp/object_recognition_msgs/action/detail/object_recognition__struct.hpp

@@ -1,0 +1,28 @@
+# Параметры узла grasp_analyzer. Имена ТОЧНО совпадают с declare_parameter()
+# в scripts/grasp_analyzer.py — иначе ROS отклонит параметр (undeclared).
+#
+# Использование:
+#   ros2 run xarm_grasping grasp_analyzer.py --ros-args \
+#       --params-file src/xarm_grasping/config/grasp_params.yaml
+grasp_analyzer:
+  ros__parameters:
+    use_sim_time: true
+    # --- камеры гриппера D435i, опубликованные gz-sim-плагином ---
+    color_topic: /camera/color/image_raw
+    points_topic: /camera/depth/color/points
+    camera_frame: camera_color_optical_frame
+    base_frame: link_base            # TF-фрейм основания руки
+    # --- геометрия сцены (метрические значения в base_frame) ---
+    table_height: -0.28              # z столешницы относительно link_base
+    block_radius: 0.04               # ожидаемый радиус цилиндра (априори;
+    block_height: 0.09               #   реальные размеры находятся из облака точек)
+    block_x: 0.35                    # запасная позиция блока, если сегментация
+    block_y: -0.75                   #   ещё не нашла объект (см. worlds/cylinder_block.world)
+    # --- вакуумная присоска и подходы ---
+    suction_radius: 0.02             # r пятна присоски; боковой захват возможен
+                                     # только при R_блока >= ~2*r (ограничение генератора)
+    approach_offset: 0.10            # pre-grasp: отход вдоль оси подхода, м
+    # --- параметры сегментации облака точек ---
+    voxel_size: 0.01                 # дискретизация перед поиском кластеров
+    min_points: 150                  # минимум точек в кластере, чтобы считать блоком
+    analyze_period: 2.0              # период анализа, сек

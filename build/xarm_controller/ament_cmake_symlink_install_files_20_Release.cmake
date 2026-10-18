@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller" FILES "/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/package.xml" "DESTINATION" "share/xarm_controller")

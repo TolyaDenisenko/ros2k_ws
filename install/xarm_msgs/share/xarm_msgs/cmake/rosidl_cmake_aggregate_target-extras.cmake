@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/build/xarm_msgs/rosidl_cmake/rosidl_cmake_aggregate_target-extras.cmake

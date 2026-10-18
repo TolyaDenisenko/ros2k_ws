@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/launch/_dual_ros2_control.launch.py

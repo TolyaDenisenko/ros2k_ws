@@ -1,2 +1,0 @@
-/home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/libxarm_joystick_input.so
-/home/anatoly/ros2k_ws/install/xarm_moveit_servo/lib/xarm_moveit_servo/xarm_keyboard_input

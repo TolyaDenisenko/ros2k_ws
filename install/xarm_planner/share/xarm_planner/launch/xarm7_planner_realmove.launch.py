@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_planner/launch/xarm7_planner_realmove.launch.py

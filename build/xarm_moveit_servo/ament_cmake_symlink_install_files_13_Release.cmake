@@ -1,1 +1,0 @@
-ament_cmake_symlink_install_files("/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_moveit_servo" FILES "/home/anatoly/ros2k_ws/build/xarm_moveit_servo/ament_cmake_core/xarm_moveit_servoConfig.cmake" "/home/anatoly/ros2k_ws/build/xarm_moveit_servo/ament_cmake_core/xarm_moveit_servoConfig-version.cmake" "DESTINATION" "share/xarm_moveit_servo/cmake")

@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/xarm_ros2/xarm_controller/include/xarm_controller/hardware/bak_uf_robot_fake_system_hardware.h

@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/build/object_recognition_msgs/rosidl_generator_rs/object_recognition_msgs/rust/build.rs

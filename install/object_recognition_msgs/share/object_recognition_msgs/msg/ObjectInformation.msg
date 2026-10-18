@@ -1,1 +1,0 @@
-/home/anatoly/ros2k_ws/src/object_recognition_msgs/msg/ObjectInformation.msg
