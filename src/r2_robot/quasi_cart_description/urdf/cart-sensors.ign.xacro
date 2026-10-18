@@ -108,7 +108,8 @@
     <material>Gazebo/Grey</material>
   </gazebo>
 
-  <gazebo reference="tof1_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof1_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor1">
       <topic>/model/cart/tof_sensor1/scan</topic>
@@ -143,8 +144,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof2_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof2_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensocart">
       <topic>/model/cart/tof_sensor2/scan</topic>
@@ -179,8 +182,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof3_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof3_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor3">
       <topic>/model/cart/tof_sensor3/scan</topic>
@@ -215,8 +220,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof4_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof4_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor4">
       <topic>/model/cart/tof_sensor4/scan</topic>
@@ -251,8 +258,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof5_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof5_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor5">
       <topic>/model/cart/tof_sensor5/scan</topic>
@@ -287,8 +296,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof6_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof6_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor6">
       <topic>/model/cart/tof_sensor6/scan</topic>
@@ -323,8 +334,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof7_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof7_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor7">
       <topic>/model/cart/tof_sensor7/scan</topic>
@@ -359,8 +372,10 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
-  <gazebo reference="tof8_link">
+  <xacro:if value="$(arg enable_floor_tofs)">
+<gazebo reference="tof8_link">
     <material>Gazebo/FlatBlack</material>
     <sensor type="gpu_ray" name="tof_sensor8">
       <topic>/model/cart/tof_sensor8/scan</topic>
@@ -395,6 +410,7 @@
       </ray>
     </sensor>
   </gazebo>
+</xacro:if>
 
   <gazebo reference="lidar_link">
     <material>Gazebo/FlatBlack</material>
@@ -431,6 +447,11 @@
   <xacro:property name="var_camera_height" value="480"/>
   <xacro:property name="var_camera_fov" value="1.50098"/>
 
+  <!-- ФИКС: rgbd-сенсор корпуса ссылается на link camera_rgb_camera_frame,
+       который существует ТОЛЬКО при enable_camera_realsense:=true
+       (_d455.urdf.xacro в cart-base.urdf.xacro). Без условия gz-parser
+       отказывался импортировать всю модель (тележка не спавнилась). -->
+  <xacro:if value="$(arg enable_camera_realsense)">
   <gazebo reference="camera_rgb_camera_frame">
     <sensor type="rgbd_camera" name="realsense">
       <topic>/model/cart/realsense</topic>
@@ -473,5 +494,6 @@
       </camera>
     </sensor>
   </gazebo>
+  </xacro:if>  <!-- enable_camera_realsense -->
 
 </robot>

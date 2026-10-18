@@ -59,6 +59,32 @@
         <xacro:if value="${var_simulator == 'ignition'}">
             <xacro:include filename="cart.ign.xacro" />
             <xacro:property name="var_wheel_type" value="continuous"/>
+            <!--
+              ФИКС "модель тележки не загрузилась / рука наполовину":
+              cart-sensors.ign.xacro безусловно добавлял
+                  <gazebo reference="camera_rgb_camera_frame"> ... </gazebo>
+              (rgbd_camera-сенсор realsense), но link camera_rgb_camera_frame
+              существует ТОЛЬКО при enable_camera_realsense:=true (там подключается
+              _d455.urdf.xacro). gz-parser при спавне видит сенсор на несуществующем
+              звене и ОТКАЗЫВАЕТСЯ импортировать ВСЮ модель -> тележка не появляется,
+              а рука отображается частично (link'и без mesh видны как примитивы RViz,
+              mesh-звенья — нет).
+
+              Исправление сделано в двух местах:
+              1) cart-sensors.ign.xacro — блок камеры теперь обёрнут в
+                 <xacro:if value="$(arg enable_camera_realsense)">;
+              2) здесь, в cart_with_arm, include cart-sensors.ign.xacro выполняется
+                 ВСЕГДА при simulator==ignition (как в оригинальном cart.urdf.xacro):
+                 вместе с камерой возвращаются ОБЯЗАТЕЛЬные для симуляции плагины
+                 Sensors (render_engine ogre2) и Imu — без них rgbd-камера гриппера
+                 D435i не публиковала бы данные, и grasp_analyzer был бы слеп.
+                 Все остальные ссылки cart-sensors.ign.xacro (imu_link, lidar_link,
+                 tof1..8_link) легальны: эти link'и определены безусловно в
+                 cart-base.urdf.xacro.
+              Топики остаются /model/cart/* — launch cart_xarm_bringup использует
+              gz_bridge.yaml именно с этими именами (изменение namespace сломало бы
+              мосты clock/odom/camera).
+            -->
             <xacro:include filename="cart-sensors.ign.xacro" />
         </xacro:if>
     </xacro:if>
