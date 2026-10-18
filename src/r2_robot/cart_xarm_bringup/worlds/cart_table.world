@@ -57,10 +57,13 @@
     </physics>
 
     <!-- Системные плагины gz sim 9 (см. комментарии в cart_table_offline.world) -->
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <!-- Порядок важен: Physics подключается к сцене, созданной SceneBroadcaster.
+         Обратный порядок (SceneBroadcaster первым) вызывал segfault в
+         libgz-sim-sensors-system ("Scene already exists with name: scene"). -->
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
     <plugin filename="gz-sim-state-publisher-system" name="gz::sim::systems::StatePublisher"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>

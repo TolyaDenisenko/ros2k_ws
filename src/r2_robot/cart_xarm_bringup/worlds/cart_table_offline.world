@@ -81,10 +81,13 @@
       а ros_gz_bridge ждёт топики /clock и /world/.../pose, которые
       публикуют именно эти плагины.
     -->
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <!-- Порядок важен: Physics подключается к сцене, созданной SceneBroadcaster.
+         Обратный порядок (SceneBroadcaster первым) вызывал segfault в
+         libgz-sim-sensors-system ("Scene already exists with name: scene"). -->
     <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
     <plugin filename="gz-sim-state-publisher-system" name="gz::sim::systems::StatePublisher"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
     <!-- /clock для use_sim_time во всех ROS2-нодах -->
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
