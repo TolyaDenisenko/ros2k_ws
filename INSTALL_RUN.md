@@ -151,6 +151,34 @@ timeout 10 ros2 topic list | grep -E "clock|joint_states|grasp"
 
 ---
 
+
+### Почему `realsense_gazebo_plugin` не собирается и что с этим делать
+
+В `src/xarm_ros2/thirdparty/realsense_gazebo_plugin/` лежит легаси-плагин камеры
+для **Gazebo Classic** (зависимости `gazebo_ros`, `gazebo_dev`, путь к `/opt/ros/foxy`).
+В ROS 2 Jazzy/Kilted Gazebo Classic вырезан из дистрибутива, поэтому колон получает:
+
+```
+CMake Error: Could not find a package configuration file provided by "gazebo_ros"
+Failed <<< realsense_gazebo_plugin
+```
+
+Решение (уже в репозитории): в папке плагина лежит файл `COLCON_IGNORE` —
+colcon полностью пропускает этот пакет. Он **не нужен** для работы: симуляция
+камеры гриппера в новом Gazebo (gz-sim) идёт через макрос `realsense_gz`
+(`xarm_description/urdf/camera/realsense.gazebo.xacro`) — это нативный SDF-сенсор
+`rgbd_camera`/`camera`, никакие компилируемые плагины не требуются. Топики
+`camera/color/image_raw`, `camera/depth/...`, `camera/depth/color/points`
+публикует сам gz-sim, а `gz_bridge.yaml` мостит их в ROS 2.
+
+Если вы убрали `COLCON_IGNORE` или клонируете старый коммит — просто удалите
+папку `src/xarm_ros2/thirdparty/realsense_gazebo_plugin` либо соберите выборочно:
+
+```bash
+colcon build --symlink-install --packages-skip realsense_gazebo_plugin
+```
+
+
 ## 5. Сценарий B — рука на тележке r2_robot (quasi_cart)
 
 ### Как рука крепится к тележке (URDF)
