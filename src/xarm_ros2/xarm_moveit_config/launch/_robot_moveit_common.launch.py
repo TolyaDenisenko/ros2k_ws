@@ -16,6 +16,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 from launch.actions import RegisterEventHandler, EmitEvent
 from launch.event_handlers import OnProcessExit
+from launch.conditions import IfCondition
 from launch.events import Shutdown
 
 
@@ -60,6 +61,9 @@ def launch_setup(context, *args, **kwargs):
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default=False)
+    # false — не публиковать attach_to -> link_base (когда link_base уже есть
+    # в TF-дереве другого робота, например руки на тележке)
+    publish_attach_tf = LaunchConfiguration('publish_attach_tf', default='true')
 
     moveit_config_package_name = 'xarm_moveit_config'
     xarm_type = '{}{}'.format(robot_type.perform(context), dof.perform(context) if robot_type.perform(context) in ('xarm', 'lite') else '')
@@ -289,6 +293,7 @@ def launch_setup(context, *args, **kwargs):
         # arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'world', 'link_base'],
         arguments=args,
         parameters=[{'use_sim_time': use_sim_time}],
+        condition=IfCondition(publish_attach_tf),
     )
 
     return [

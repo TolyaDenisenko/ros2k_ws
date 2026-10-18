@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 import os
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node, SetParameter
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
 
 
 
@@ -58,7 +57,8 @@ def generate_launch_description():
             'prefix': prefix,
             'hw_ns': hw_ns,
             'ros2_control_plugin': 'gz_ros2_control/GazeboSimSystem',
-            'ros2_control_pausable': 'true'
+            'ros2_control_pausable': 'true',
+            'xarm_initial_positions': LaunchConfiguration('arm_initial_positions'),
         }.items()
     )
 
@@ -69,7 +69,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'xarm6',
             '-topic', 'robot_description',
-            '-x', '0', '-y', '-0.84', '-z', '1.0',
+            '-x', '0', '-y', '-0.84', '-z', '1.015',  # верх столешницы Fuel Table = 1.0 + 0.03/2; при 1.0 база была внутри стола и контакт расталкивал суставы
         ],
         parameters=[{'use_sim_time': True}],
         output='screen'
@@ -121,6 +121,9 @@ def generate_launch_description():
             'prefix': prefix,
             'hw_ns': hw_ns,
             'ros2_control_plugin': 'gz_ros2_control/GazeboSimSystem',
+            # _robot_moveit_common задаёт нодам use_sim_time явно (default False),
+            # перекрывая SetParameter — без этого нужен был ручной param set.
+            'use_sim_time': 'true',
             'controllers_name': 'fake_controllers',
             'moveit_controller_manager_key': 'moveit_simple_controller_manager',
             'moveit_controller_manager_value': 'moveit_simple_controller_manager/MoveItSimpleControllerManager',
@@ -137,34 +140,6 @@ def generate_launch_description():
         ]
     )
     moveit_delay = TimerAction(period=12.0, actions=[moveit_common])   # было 7.0
-        # Ноды из чужих include-ов (move_group, rviz2, robot_state_publisher)
-    # не получают use_sim_time при старте — принудительно выставляем его после запуска
-        # Надёжный фиксер: ждём появления move_group и проставляем use_sim_time всем нодам
-    fix_sim_time = TimerAction(
-        period=8.0,
-        actions=[
-            ExecuteProcess(
-                cmd=['bash', '-c', '''
-                    for attempt in 1 2 3 4 5 6 7 8; do
-                        # проверяем, есть ли move_group
-                        if ros2 node list --no-daemon 2>/dev/null | grep -q "/move_group"; then
-                            # ждём ещё 2 сек чтобы все ноды точно стартовали
-                            sleep 2
-                            for n in $(ros2 node list --no-daemon 2>/dev/null); do
-                                ros2 param set "$n" use_sim_time true >/dev/null 2>&1 || true
-                            done
-                            echo "[fix_sim_time] Applied use_sim_time=true to all nodes (attempt $attempt)"
-                            exit 0
-                        fi
-                        sleep 2
-                    done
-                    echo "[fix_sim_time] WARNING: move_group never appeared after 16s"
-                '''],
-                output='screen',
-            )
-        ],
-    )
-
     return LaunchDescription([
         # ГЛАВНОЕ: сим-время ВСЕМ нодам дерева (включая те, что внутри include-ов).
         # Без этого MoveIt считает состояния из Gazebo "протухшими" и не исполняет.
@@ -178,6 +153,14 @@ def generate_launch_description():
         DeclareLaunchArgument('add_bio_gripper', default_value='false'),
         DeclareLaunchArgument('prefix', default_value=''),
         DeclareLaunchArgument('hw_ns', default_value='xarm'),
+        # Нулевая поза: фланец в 0.112 м над основанием, присоска 0.126 м —
+        # кончик гриппера уходил под столешницу, контакт сбивал суставы и
+        # MoveIt-траектории прерывались с PATH_TOLERANCE_VIOLATED.
+        # По умолчанию: инструмент вертикально вниз, кончик в ~0.29 м над столом
+        # и ~0.31 м впереди основания (над цилиндрическим блоком).
+        DeclareLaunchArgument(
+            'arm_initial_positions', default_value='0 -0.6 -0.7 0 1.3 0',
+            description='Начальные углы joint1..joint6 (рад) через пробел'),
 
         # Сущности
         gz_sim,
@@ -186,5 +169,4 @@ def generate_launch_description():
         spawn_delay,
         controllers_delay,
         moveit_delay,
-        fix_sim_time,
     ])

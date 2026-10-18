@@ -10,13 +10,14 @@ URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
 
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
-  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=true
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=true use_rviz:=false
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm_initial_positions:="0 0 0 0 0 0"
 """
 import os
 
 from launch import LaunchDescription
-from launch.actions import (DeclareLaunchArgument, ExecuteProcess,
-                            IncludeLaunchDescription, TimerAction)
+from launch.actions import (DeclareLaunchArgument, IncludeLaunchDescription,
+                            TimerAction)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (Command, FindExecutable, LaunchConfiguration,
@@ -45,6 +46,14 @@ def generate_launch_description():
     spawn_yaw_arg = DeclareLaunchArgument(
         'spawn_yaw', default_value='0.0',
         description='Ориентация тележки; стол находится при x=+1.7 в мире')
+    # Начальная поза руки (рад, joint1..joint6) — задаётся через initial_value
+    # gz_ros2_control, рука сразу спавнится в ней, а xarm6_traj_controller при
+    # активации удерживает текущую позу. По умолчанию: рука развёрнута вбок
+    # (+Y тележки, стол — по +X), сложена над платформой, камера смотрит в сторону
+    # и ~20° вниз. Нулевая поза выносила гриппер вперёд к краю платформы.
+    arm_initial_positions_arg = DeclareLaunchArgument(
+        'arm_initial_positions', default_value='1.5708 -0.9 -1.3 0 1.0 0',
+        description='Начальные углы joint1..joint6 (рад) через пробел')
     robot_model = LaunchConfiguration('robot_model', default='c2')
     use_moveit = LaunchConfiguration('use_moveit')
 
@@ -58,6 +67,7 @@ def generate_launch_description():
         ' use_sim:=true',
         ' robot_model:=', robot_model,
         ' simulator:=ignition',
+        ' xarm_initial_positions:="', LaunchConfiguration('arm_initial_positions'), '"',
     ])
     robot_description = {
         'robot_description': ParameterValue(
@@ -76,11 +86,29 @@ def generate_launch_description():
     )
 
     # ---------- 3. robot_state_publisher (тележка + рука) ----------
+    # Суставы приходят из двух источников: рука — /joint_states
+    # (joint_state_broadcaster), колёса — /cart/wheel_joint_states (Gazebo).
+    # joint_state_publisher сливает их в /robot_joint_states для rsp;
+    # суставы без источника публикуются нулями. MoveIt и grasp-ноды
+    # по-прежнему читают /joint_states.
+    jsp = Node(
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_merger',
+        parameters=[{
+            'source_list': ['/joint_states', '/cart/wheel_joint_states'],
+            'rate': 50,
+            'use_sim_time': True,
+        }],
+        remappings=[('joint_states', '/robot_joint_states')],
+        output='screen',
+    )
     rsp = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
         name='robot_state_publisher',
         parameters=[robot_description, {'use_sim_time': True}],
+        remappings=[('joint_states', '/robot_joint_states')],
         output='screen',
     )
 
@@ -184,6 +212,16 @@ def generate_launch_description():
             'prefix': '',
             'hw_ns': 'xarm',
             'ros2_control_plugin': 'gz_ros2_control/GazeboSimSystem',
+            # _robot_moveit_common передаёт нодам {'use_sim_time': <arg>} ЯВНО
+            # (default False) — это перекрывает глобальный SetParameter, и
+            # move_group жил по системному времени: состояния из Gazebo считались
+            # устаревшими, траектории не исполнялись. Передаём true напрямую.
+            'use_sim_time': 'true',
+            # MoveIt строит модель только руки: world -> link_base. Его
+            # static_transform_publisher (world -> link_base) отключаем: у нас
+            # link_base уже ребёнок arm_mount_link, два родителя ломают TF.
+            # Кадр world публикуем ниже как link_base -> world (тождественно).
+            'publish_attach_tf': 'false',
             'controllers_name': 'fake_controllers',
             'moveit_controller_manager_key': 'moveit_simple_controller_manager',
             'moveit_controller_manager_value':
@@ -192,47 +230,38 @@ def generate_launch_description():
         condition=IfCondition(use_moveit),
     )
 
+    moveit_world_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='moveit_world_tf',
+        arguments=['--frame-id', 'link_base', '--child-frame-id', 'world'],
+        parameters=[{'use_sim_time': True}],
+        condition=IfCondition(use_moveit),
+    )
+
     # ---------- Тайминги ----------
     spawn_delay = TimerAction(period=4.0, actions=[spawn_robot])
     controllers_delay = TimerAction(
         period=7.0, actions=[spawner_jsb, spawner_traj])
     analyzer_delay = TimerAction(period=10.0, actions=[grasp_analyzer])
-
-    # Фиксер use_sim_time для нод внутри include-ов (MoveIt)
-    fix_sim_time = TimerAction(
-        period=12.0,
-        actions=[ExecuteProcess(
-            cmd=['bash', '-c', '''
-                for attempt in 1 2 3 4 5 6 7 8; do
-                    if ros2 node list --no-daemon 2>/dev/null | grep -q "/move_group"; then
-                        sleep 2
-                        for n in $(ros2 node list --no-daemon 2>/dev/null); do
-                            ros2 param set "$n" use_sim_time true >/dev/null 2>&1 || true
-                        done
-                        echo "[fix_sim_time] use_sim_time=true applied"
-                        exit 0
-                    fi
-                    sleep 2
-                done
-            '''],
-            output='screen',
-        )],
-        condition=IfCondition(use_moveit),
-    )
+    # MoveIt — после контроллеров: move_group сразу запрашивает состояние руки,
+    # а одновременный старт RViz MoveIt и GUI Gazebo (оба OpenGL) ронял GUI.
+    moveit_delay = TimerAction(period=12.0, actions=[moveit_common])
 
     return LaunchDescription([
         SetParameter('use_sim_time', True),
-        world_arg, use_moveit_arg,
+        world_arg, use_moveit_arg, arm_initial_positions_arg,
         spawn_x_arg, spawn_y_arg, spawn_z_arg, spawn_yaw_arg,
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument('robot_model', default_value='c2'),
         gz_sim,
+        jsp,
         rsp,
         gz_bridge,
         spawn_delay,
         controllers_delay,
         analyzer_delay,
         rviz_node,
-        moveit_common,
-        fix_sim_time,
+        moveit_world_tf,
+        moveit_delay,
     ])

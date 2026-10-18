@@ -57,6 +57,8 @@ def launch_setup(context, *args, **kwargs):
     kinematics_suffix = LaunchConfiguration('kinematics_suffix', default='')
     robot_description = LaunchConfiguration('robot_description', default='')
     gripper_version = LaunchConfiguration('gripper_version', default='G1')
+    # Начальная поза в симуляции (gz_ros2_control initial_value), см. xarm6.ros2_control.xacro
+    xarm_initial_positions = LaunchConfiguration('xarm_initial_positions', default='')
 
     if not robot_description.perform(context):
         # robot_description
@@ -97,6 +99,7 @@ def launch_setup(context, *args, **kwargs):
                 geometry_mesh_origin_rpy=geometry_mesh_origin_rpy,
                 geometry_mesh_tcp_xyz=geometry_mesh_tcp_xyz,
                 geometry_mesh_tcp_rpy=geometry_mesh_tcp_rpy,
+                xarm_initial_positions=xarm_initial_positions,
             )
         }
     else:

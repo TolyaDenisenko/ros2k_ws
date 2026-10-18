@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Начальная поза суставов в симуляции (gz_ros2_control: initial_value).
+       6 чисел через пробел (рад), joint1..joint6; пусто — все нули, как раньше.
+       Реальное железо (UFRobotSystemHardware) этот параметр игнорирует.
+       Первое объявление xacro:arg побеждает: родительский xacro может задать
+       свой default до include. -->
+  <xacro:arg name="xarm_initial_positions" default=""/>
+  <xacro:property name="xarm_init_pos" value="$(arg xarm_initial_positions)"/>
   <xacro:macro name="xarm6_ros2_control" params="prefix
     velocity_control:='false'
     ros2_control_plugin:='uf_robot_hardware/UFRobotSystemHardware'
@@ -45,7 +52,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[0])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>
@@ -58,7 +69,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[1])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>
@@ -71,7 +86,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[2])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>
@@ -84,7 +103,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[3])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>
@@ -97,7 +120,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[4])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>
@@ -110,7 +137,11 @@
           <param name="min">-3.14</param>
           <param name="max">3.14</param>
         </command_interface>
-        <state_interface name="position"/>
+        <state_interface name="position">
+          <xacro:if value="${xarm_init_pos != ''}">
+            <param name="initial_value">${float(xarm_init_pos.split()[5])}</param>
+          </xacro:if>
+        </state_interface>
         <state_interface name="velocity"/>
         <!-- <state_interface name="effort"/> -->
       </joint>

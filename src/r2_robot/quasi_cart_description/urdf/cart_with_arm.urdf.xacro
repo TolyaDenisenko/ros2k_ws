@@ -92,6 +92,20 @@
               мосты clock/odom/camera).
             -->
             <xacro:include filename="cart-sensors.ign.xacro" />
+            <!-- Состояние ведущих колёс: их не публикует ни ros2_control
+                 (joint_state_broadcaster знает только суставы руки), ни что-то
+                 ещё -> у drive_wheel_*_link не было TF ("No transform" в RViz).
+                 Gazebo публикует реальные углы колёс, gz_bridge отдаёт их в
+                 /cart/wheel_joint_states, joint_state_publisher в launch
+                 сливает их с /joint_states руки для robot_state_publisher. -->
+            <gazebo>
+              <plugin filename="gz-sim-joint-state-publisher-system"
+                      name="gz::sim::systems::JointStatePublisher">
+                <topic>/model/cart/wheel_joint_states</topic>
+                <joint_name>drive_wheel_left_joint</joint_name>
+                <joint_name>drive_wheel_right_joint</joint_name>
+              </plugin>
+            </gazebo>
         </xacro:if>
     </xacro:if>
 

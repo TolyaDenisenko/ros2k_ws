@@ -228,7 +228,7 @@ class GraspAnalyzer(Node):
             ps.header.frame_id = self.base_frame
             ps.header.stamp = self.get_clock().now().to_msg()
             x, y, z, r, p_, w = grasps[0]['pose']
-            ps.pose.position.x, ps.pose.position.y, ps.pose.position.z = x, y, z
+            ps.pose.position.x, ps.pose.position.y, ps.pose.position.z = map(float, (x, y, z))
             q = self._rpy_to_quat(r, p_, w)
             ps.pose.orientation = q
             self.pose_pub.publish(ps)
@@ -270,14 +270,18 @@ class GraspAnalyzer(Node):
         m.id = id_
         m.type = type_
         m.action = Marker.ADD
-        m.pose.position.x, m.pose.position.y, m.pose.position.z = pos
+        # rosidl принимает только float: int (scale=(0, 0, 0.03)) и numpy-типы
+        # дают assert в C-конвертере и abort всего процесса
+        m.pose.position.x, m.pose.position.y, m.pose.position.z = map(float, pos)
         if orient is None:
             m.pose.orientation.w = 1.0
         else:
             m.pose.orientation = orient
-        m.scale.x, m.scale.y, m.scale.z = scale
-        m.color.r, m.color.g, m.color.b, m.color.a = color
-        m.lifetime = rclpy.duration.Duration(seconds=lifetime_sec)
+        m.scale.x, m.scale.y, m.scale.z = map(float, scale)
+        m.color.r, m.color.g, m.color.b, m.color.a = map(float, color)
+        # поле msg — builtin_interfaces/Duration; rclpy.duration.Duration сюда
+        # нельзя (assert в rosidl -> abort процесса), нужен .to_msg()
+        m.lifetime = rclpy.duration.Duration(seconds=lifetime_sec).to_msg()
         return m
 
     def publish_markers(self, grasps, block_xy):
