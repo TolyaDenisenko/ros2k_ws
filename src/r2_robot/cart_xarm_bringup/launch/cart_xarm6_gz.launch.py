@@ -5,14 +5,16 @@ cart_xarm6_gz.launch.py — тележка quasi_cart (r2_robot) + xArm6 с ва
 гриппером и камерой D435i на ЭФ, симуляция в Gazebo Sim + RViz.
 
 URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
-  Рука закреплена ПО ЦЕНТРУ верхней плоской платформы тележки
-  (arm_mount_joint: base_link -> arm_mount_link, xyz="-0.0075 0 0.849").
+  Рука закреплена на верхней плоской платформе тележки
+  (arm_mount_joint: base_link -> arm_mount_link). Точка крепления зависит
+  от robot_model: c2 — центр (-0.0075 0 0.849), c2l-v3* — (-0.25 0.1295 0.849).
 
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false   # обычный RViz без MoveIt
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false  # только Gazebo
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm_initial_positions:="0 0 0 0 0 0"
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled
 """
 import os
 
@@ -71,6 +73,8 @@ def generate_launch_description():
         ' robot_model:=', robot_model,
         ' simulator:=ignition',
         ' xarm_initial_positions:="', LaunchConfiguration('arm_initial_positions'), '"',
+        ' arm_offset_xyz:="', LaunchConfiguration('arm_offset_xyz'), '"',
+        ' arm_offset_rpy:="', LaunchConfiguration('arm_offset_rpy'), '"',
     ])
     robot_description = {
         'robot_description': ParameterValue(
@@ -267,7 +271,16 @@ def generate_launch_description():
         world_arg, use_moveit_arg, arm_initial_positions_arg,
         spawn_x_arg, spawn_y_arg, spawn_z_arg, spawn_yaw_arg,
         DeclareLaunchArgument('use_rviz', default_value='true'),
-        DeclareLaunchArgument('robot_model', default_value='c2'),
+        DeclareLaunchArgument(
+            'robot_model', default_value='c2',
+            description='Тип тележки (файл quasi_cart_description/urdf/'
+                        '<robot_model>.urdf.xacro): c2 | c2l-v3-scaled'),
+        DeclareLaunchArgument(
+            'arm_offset_xyz', default_value='0 0 0',
+            description='Доп. смещение базы руки от точки крепления тележки, м'),
+        DeclareLaunchArgument(
+            'arm_offset_rpy', default_value='0 0 0',
+            description='Доп. поворот базы руки, рад'),
         gz_sim,
         jsp,
         rsp,

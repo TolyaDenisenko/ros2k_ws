@@ -8,6 +8,7 @@ cart_xarm6_rviz.launch.py — только RViz, без Gazebo: модель т�
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py
   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py use_gui:=false
+  ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scaled
 """
 import os
 
@@ -35,6 +36,8 @@ def generate_launch_description():
         FindExecutable(name='xacro'), ' ', cart_xacro,
         ' use_sim:=false',
         ' robot_model:=', robot_model,
+        ' arm_offset_xyz:="', LaunchConfiguration('arm_offset_xyz'), '"',
+        ' arm_offset_rpy:="', LaunchConfiguration('arm_offset_rpy'), '"',
     ]), value_type=str)}
 
     # 'zeros' — стартовые значения ползунков (несмотря на имя параметра)
@@ -43,7 +46,15 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('use_gui', default_value='true',
                               description='Окно с ползунками суставов'),
-        DeclareLaunchArgument('robot_model', default_value='c2'),
+        DeclareLaunchArgument(
+            'robot_model', default_value='c2',
+            description='Тип тележки: c2 | c2l-v3-scaled'),
+        DeclareLaunchArgument(
+            'arm_offset_xyz', default_value='0 0 0',
+            description='Доп. смещение базы руки от точки крепления тележки, м'),
+        DeclareLaunchArgument(
+            'arm_offset_rpy', default_value='0 0 0',
+            description='Доп. поворот базы руки, рад'),
         Node(package='robot_state_publisher', executable='robot_state_publisher',
              parameters=[robot_description], output='screen'),
         Node(package='joint_state_publisher_gui',

@@ -28,6 +28,12 @@
   <xacro:arg name="arm_ros2_control_plugin" default="gz_ros2_control/GazeboSimSystem"/>
 
   <!-- ==================== Фланец крепления на крыше тележки ==================== -->
+  <!-- Точка крепления зависит от тележки: файл модели (<robot_model>.urdf.xacro,
+       подключается раньше) может задать свойство arm_mount_xyz.
+       Default — центр платформы c2: x=-0.0075 (середина [-0.359..0.359]),
+       y=0, z=верх 0.849 -->
+  <xacro:property name="arm_mount_xyz" default="-0.0075 0.0 0.849"/>
+
   <xacro:macro name="arm_mount_link" params="">
     <!-- Фиктивный link-«фланец» на верхней плоской платформе тележки -->
     <link name="arm_mount_link"/>
@@ -35,8 +41,7 @@
     <joint name="arm_mount_joint" type="fixed">
       <parent link="base_link"/>
       <child link="arm_mount_link"/>
-      <!-- центр платформы: x=-0.0075 (середина [-0.359..0.359]), y=0, z=верх 0.849 -->
-      <origin xyz="-0.0075 0.0 0.849" rpy="0 0 0"/>
+      <origin xyz="${arm_mount_xyz}" rpy="0 0 0"/>
     </joint>
   </xacro:macro>
 

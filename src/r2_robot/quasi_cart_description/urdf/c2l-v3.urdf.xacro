@@ -2,6 +2,17 @@
 <robot name="quasi_c2l-v3" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:property name="cart_version" value="v3" />
 
+  <!-- Меш корпуса: default — только если не задан раньше
+       (c2l-v3-scaled.urdf.xacro подставляет масштабированный меш c2) -->
+  <xacro:property name="base_mesh" default="base_link_c2l-v3.stl" />
+  <xacro:property name="base_mesh_scale" default="1 1 1" />
+
+  <!-- Крепление руки (cart-arm.xacro), base_link: по CAD (C2R.000.000.000)
+       база руки смещена на 250 мм от центра к ручке (-X) и на 129.5 мм
+       к левому краю, если стоять у ручки лицом вперёд (+Y);
+       z — верх крыши, та же высота, что у c2 -->
+  <xacro:property name="arm_mount_xyz" default="-0.25 0.1295 0.849" />
+
   <link name="base_link">
     <inertial>
       <origin xyz="0.00894076039737802 -0.00354877955805936 0.344881471836739" rpy="0 0 0" />
@@ -12,7 +23,8 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find quasi_cart_description)/meshes/base_link_c2l-v3.stl" />
+        <mesh filename="file://$(find quasi_cart_description)/meshes/${base_mesh}"
+              scale="${base_mesh_scale}" />
       </geometry>
       <material name="">
         <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
@@ -21,7 +33,8 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find quasi_cart_description)/meshes/base_link_c2l-v3.stl" />
+        <mesh filename="file://$(find quasi_cart_description)/meshes/${base_mesh}"
+              scale="${base_mesh_scale}" />
       </geometry>
     </collision>
   </link>

@@ -194,7 +194,8 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
 | `arm_initial_positions` | `1.5708 -0.9 -1.3 0 1.0 0` | начальные углы joint1..joint6, рад |
 | `world` | `.../worlds/cart_table_offline.world` | мир; `cart_table.world` требует интернет (Fuel) |
 | `spawn_x`, `spawn_y`, `spawn_z`, `spawn_yaw` | `0`, `0`, `0.07`, `0` | поза спавна тележки (стол при x≈+1.7) |
-| `robot_model` | `c2` | модель тележки из `quasi_cart_description/urdf` |
+| `robot_model` | `c2` | модель тележки: `c2` или `c2l-v3-scaled` (см. [CART_MODELS.md](CART_MODELS.md)) |
+| `arm_offset_xyz`, `arm_offset_rpy` | `0 0 0` | доп. смещение/поворот базы руки от точки крепления тележки |
 
 ### B2. Gazebo + обычный RViz, без MoveIt
 
