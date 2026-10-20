@@ -56,6 +56,9 @@
 
 Формат: `дата — что — файлы`. Новые записи добавлять **сверху**.
 
+- **2026-10-20** — c2l: рука перенесена зеркально на другой край корпуса, `arm_mount_xyz` `-0.25 0.1295` → `-0.25 -0.1295` (`c2l-v3.urdf.xacro`).
+- **2026-10-20** — Тележка по умолчанию — `c2l-v3-scaled` (было `c2`) в `cart_xarm6_gz/rviz.launch.py` и `cart_with_arm.urdf.xacro`; `c2` — через `robot_model:=c2`.
+- **2026-10-20** — Фикс запуска: `vacuum_gripper_sim.py` не устанавливался (glob скриптов считался только при конфигурации CMake) → `CONFIGURE_DEPENDS` в `xarm_grasping/CMakeLists.txt`; в `cart_xarm_bringup/package.xml` добавлены `depth_image_proc`, `rclcpp_components` (ставить через rosdep/apt).
 - **2026-10-20** — Проверка на слабом ПК (Intel HD, RTF≈0.1, headless): камера, облако, `frame_id`, мосты, сцена, сервис вакуума — работают; подъём коробки не проверен (K9).
 - **2026-10-20** — Камера Orbbec Gemini 335Le на гриппере: пакет `quasi_camera_description` (макрос камеры, кронштейн, сенсор gz, yaml параметров), «крючок» `add_gripper_camera` в `xarm_device_macro.xacro`, аргументы `camera_model` / `gripper_camera_preview` в `cart-arm.xacro` и launch; мост `gz_bridge_gripper_camera.yaml`, облако через `depth_image_proc`; RViz: Image + PointCloud2 + глубина.
 - **2026-10-20** — Вакуум в симуляции: плагин DetachableJoint (+ PosePublisher) в `cart-arm.xacro`, нода `vacuum_gripper_sim.py` (сервис `/vacuum_gripper/set`, проверка касания 15 мм / 20°), утилита `arm_goto_tcp.py` (подвести TCP к точке без MoveIt).

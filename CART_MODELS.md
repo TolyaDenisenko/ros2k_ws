@@ -15,8 +15,8 @@
 | `robot_model` | Корпус (меш `base_link`) | Габарит корпуса в плане (X × Y) | Крепление руки (`base_link`) | Статус |
 |---|---|---|---|---|
 | `c2` *(по умолчанию)* | `base_link_c2-v3.stl` | ≈ 0.83 × 0.47 м | `-0.0075 0 0.849` — центр крыши | работает |
-| `c2l-v3-scaled` | `base_link_c2-v3.stl` × `1.278 1.319 1` | ≈ 1.06 × 0.62 м | `-0.25 0.1295 0.849` | работает |
-| `c2l-v3` | `base_link_c2l-v3.stl` | — | `-0.25 0.1295 0.849` | **меша нет в пакете**, корпус не отобразится |
+| `c2l-v3-scaled` | `base_link_c2-v3.stl` × `1.278 1.319 1` | ≈ 1.06 × 0.62 м | `-0.25 -0.1295 0.849` | работает |
+| `c2l-v3` | `base_link_c2l-v3.stl` | — | `-0.25 -0.1295 0.849` | **меша нет в пакете**, корпус не отобразится |
 
 Габарит по X включает ручку. Высота у всех моделей одинаковая: крыша на
 z = 0.849 м, ручка до ≈ 0.99 м.
@@ -79,7 +79,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scal
 
 | Аргумент | По умолчанию | Назначение |
 |---|---|---|
-| `robot_model` | `c2` | тип тележки (таблица в разделе 1) |
+| `robot_model` | `c2l-v3-scaled` | тип тележки (таблица в разделе 1) |
 | `arm_offset_xyz` | `0 0 0` | **доп.** смещение базы руки от точки крепления тележки, м |
 | `arm_offset_rpy` | `0 0 0` | доп. поворот базы руки (roll pitch yaw), рад |
 
@@ -99,7 +99,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scal
 
           +Y (влево, если стоять у ручки лицом вперёд)
            ^
-           |      * рука c2l: (-0.25, +0.1295)
+           |      * рука c2l: (-0.25, -0.1295)
    ручка   |                                       перед
    ведущие |             o base_link (0, 0)        поворотные
    колёса  |                                       колёса
@@ -128,8 +128,8 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scal
 
 Допущения, которые стоит проверить:
 
-1. **Сторона смещения вбок.** Взято +Y: левый край, если стоять у ручки
-   лицом вперёд. Если рука должна стоять у другого края, замените на `-0.1295`.
+1. **Сторона смещения вбок.** Взято −Y: правый край, если стоять у ручки
+   лицом вперёд. Если рука должна стоять у другого края, замените на `0.1295`.
 2. **Высота.** Взят верх крыши по мешу, 0.849. В CAD 855.3 мм отсчитаны от
    точки внизу тележки. Если эта точка совпадает с началом `base_link`,
    поставьте `0.855`.
@@ -158,7 +158,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 
 | Тележка | Файл | Что менять |
 |---|---|---|
-| `c2l-v3`, `c2l-v3-scaled` | `src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.25 0.1295 0.849" />` (в начале файла) |
+| `c2l-v3`, `c2l-v3-scaled` | `src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.25 -0.1295 0.849" />` (в начале файла) |
 | `c2` | `src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.0075 0.0 0.849"/>` — это значение по умолчанию для всех моделей, у которых нет своего |
 
 `c2l-v3-scaled` берёт крепление из `c2l-v3.urdf.xacro`, поэтому правка там
@@ -166,7 +166,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 добавьте в `c2l-v3-scaled.urdf.xacro` **перед** `<xacro:include .../>`:
 
 ```xml
-<xacro:property name="arm_mount_xyz" value="-0.25 0.1295 0.849" />
+<xacro:property name="arm_mount_xyz" value="-0.25 -0.1295 0.849" />
 ```
 
 > Почему так работает: в `c2l-v3.urdf.xacro` и `cart-arm.xacro` свойство
@@ -219,7 +219,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 # 1) масштаб корпуса в загруженном описании (для c2l-v3-scaled: scale="1.278 1.319 1")
 ros2 param get /robot_state_publisher robot_description | grep -o 'base_link_c2-v3.stl" scale="[^"]*"'
 
-# 2) положение базы руки относительно корпуса (для c2l: -0.25 0.1295 0.849)
+# 2) положение базы руки относительно корпуса (для c2l: -0.25 -0.1295 0.849)
 ros2 run tf2_ros tf2_echo base_link link_base
 
 # 3) колея ведущих колёс (для c2l: y = ±0.252, для c2: ±0.177)

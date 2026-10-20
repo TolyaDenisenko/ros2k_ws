@@ -10,7 +10,7 @@ DetachableJoint + нода vacuum_gripper_sim (сервис /vacuum_gripper/set)
 URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
   Рука закреплена на верхней плоской платформе тележки
   (arm_mount_joint: base_link -> arm_mount_link). Точка крепления зависит
-  от robot_model: c2 — центр (-0.0075 0 0.849), c2l-v3* — (-0.25 0.1295 0.849).
+  от robot_model: c2 — центр (-0.0075 0 0.849), c2l-v3* — (-0.25 -0.1295 0.849).
 
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
@@ -66,7 +66,7 @@ def generate_launch_description():
     arm_initial_positions_arg = DeclareLaunchArgument(
         'arm_initial_positions', default_value='1.5708 -0.9 -1.3 0 1.0 0',
         description='Начальные углы joint1..joint6 (рад) через пробел')
-    robot_model = LaunchConfiguration('robot_model', default='c2')
+    robot_model = LaunchConfiguration('robot_model', default='c2l-v3-scaled')
     use_moveit = LaunchConfiguration('use_moveit')
     camera_model = LaunchConfiguration('camera_model')
     # Условия «какая камера»: gemini335le (Orbbec, quasi_camera_description) или
@@ -363,7 +363,7 @@ def generate_launch_description():
             description='true — лёгкий режим камеры 640x400 вместо 1280x800 '
                         '(для отладки движений при низком RTF)'),
         DeclareLaunchArgument(
-            'robot_model', default_value='c2',
+            'robot_model', default_value='c2l-v3-scaled',
             description='Тип тележки (файл quasi_cart_description/urdf/'
                         '<robot_model>.urdf.xacro): c2 | c2l-v3-scaled'),
         DeclareLaunchArgument(

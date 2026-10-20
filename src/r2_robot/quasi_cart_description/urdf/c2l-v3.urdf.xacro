@@ -11,7 +11,7 @@
        база руки смещена на 250 мм от центра к ручке (-X) и на 129.5 мм
        к левому краю, если стоять у ручки лицом вперёд (+Y);
        z — верх крыши, та же высота, что у c2 -->
-  <xacro:property name="arm_mount_xyz" default="-0.25 0.1295 0.849" />
+  <xacro:property name="arm_mount_xyz" default="-0.25 -0.1295 0.849" />
 
   <link name="base_link">
     <inertial>

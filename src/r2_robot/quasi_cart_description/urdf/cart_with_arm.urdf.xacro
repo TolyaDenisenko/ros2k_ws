@@ -18,7 +18,7 @@
 
     <!-- ==================== Аргументы ==================== -->
     <xacro:arg name="use_sim" default="false" />
-    <xacro:arg name="robot_model" default="c2" />
+    <xacro:arg name="robot_model" default="c2l-v3-scaled" />
     <xacro:arg name="simulator" default="ignition" />
     <xacro:arg name="enable_floor_tofs" default="true" />
     <xacro:arg name="camera_roll_offset" default="0.0"/>

@@ -47,7 +47,7 @@ def generate_launch_description():
         DeclareLaunchArgument('use_gui', default_value='true',
                               description='Окно с ползунками суставов'),
         DeclareLaunchArgument(
-            'robot_model', default_value='c2',
+            'robot_model', default_value='c2l-v3-scaled',
             description='Тип тележки: c2 | c2l-v3-scaled'),
         DeclareLaunchArgument(
             'arm_offset_xyz', default_value='0 0 0',

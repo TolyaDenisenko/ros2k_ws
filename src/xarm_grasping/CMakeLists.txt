@@ -21,7 +21,7 @@ endforeach()
 
 # Исполняемые ноды — в lib/<pkg>, иначе launch Node(executable=...) их не найдёт
 # ("libexec directory .../lib/xarm_grasping does not exist").
-file(GLOB _scripts ${CMAKE_CURRENT_SOURCE_DIR}/scripts/*.py)
+file(GLOB _scripts CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/scripts/*.py)
 if(_scripts)
   install(PROGRAMS ${_scripts} DESTINATION lib/${PROJECT_NAME})
 endif()

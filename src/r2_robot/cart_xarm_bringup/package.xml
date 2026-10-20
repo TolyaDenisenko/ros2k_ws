@@ -29,6 +29,8 @@
   <exec_depend>xarm_controller</exec_depend>
   <exec_depend>xarm_moveit_config</exec_depend>
   <exec_depend>xarm_grasping</exec_depend>
+  <exec_depend>depth_image_proc</exec_depend>
+  <exec_depend>rclcpp_components</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

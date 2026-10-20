@@ -16,7 +16,7 @@ source install/setup.bash
 `--symlink-install` makes edits to xacro/launch/worlds/python live without rebuilding; **new** files still need a rebuild of their package. Clean build: `rm -rf build install log`.
 
 Main launches:
-- `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` — cart+arm in Gazebo, MoveIt RViz, grasp_analyzer. Args: `use_moveit`, `use_rviz`, `headless` (no Gazebo GUI), `camera_model` (`gemini335le` default | `d435i`), `gripper_camera_preview`, `robot_model` (c2 default, `c2l-v3-scaled`; see CART_MODELS.md), `spawn_x/y/z/yaw`, `arm_initial_positions`.
+- `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` — cart+arm in Gazebo, MoveIt RViz, grasp_analyzer. Args: `use_moveit`, `use_rviz`, `headless` (no Gazebo GUI), `camera_model` (`gemini335le` default | `d435i`), `gripper_camera_preview`, `robot_model` (`c2l-v3-scaled` default, `c2`; see CART_MODELS.md), `spawn_x/y/z/yaw`, `arm_initial_positions`.
 - `ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py` — URDF check in RViz only.
 - `ros2 launch xarm_gz_bringup xarm6_gz.launch.py add_vacuum_gripper:=true` — arm alone on a table.
 - `ros2 launch xarm_moveit_config xarm6_moveit_fake.launch.py add_vacuum_gripper:=true` — MoveIt with fake hardware.

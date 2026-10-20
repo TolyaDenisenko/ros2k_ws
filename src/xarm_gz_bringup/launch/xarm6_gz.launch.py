@@ -69,7 +69,7 @@ def generate_launch_description():
         arguments=[
             '-name', 'xarm6',
             '-topic', 'robot_description',
-            '-x', '0', '-y', '-0.84', '-z', '1.015',  # верх столешницы Fuel Table = 1.0 + 0.03/2; при 1.0 база была внутри стола и контакт расталкивал суставы
+            '-x', '0', '-y', '-0.84', '-z', '0',  # верх столешницы Fuel Table = 1.0 + 0.03/2; при 1.0 база была внутри стола и контакт расталкивал суставы
         ],
         parameters=[{'use_sim_time': True}],
         output='screen'
