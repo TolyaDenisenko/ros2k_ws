@@ -56,6 +56,7 @@
 
 Формат: `дата — что — файлы`. Новые записи добавлять **сверху**.
 
+- **2026-10-20** — Учебная книга `docs/book/` (главы 0–7: по пакетам + «Рецепты»); `CART_MODELS.md`: `c2l-v3-scaled` помечена как модель по умолчанию.
 - **2026-10-20** — c2l: рука перенесена зеркально на другой край корпуса, `arm_mount_xyz` `-0.25 0.1295` → `-0.25 -0.1295` (`c2l-v3.urdf.xacro`).
 - **2026-10-20** — Тележка по умолчанию — `c2l-v3-scaled` (было `c2`) в `cart_xarm6_gz/rviz.launch.py` и `cart_with_arm.urdf.xacro`; `c2` — через `robot_model:=c2`.
 - **2026-10-20** — Фикс запуска: `vacuum_gripper_sim.py` не устанавливался (glob скриптов считался только при конфигурации CMake) → `CONFIGURE_DEPENDS` в `xarm_grasping/CMakeLists.txt`; в `cart_xarm_bringup/package.xml` добавлены `depth_image_proc`, `rclcpp_components` (ставить через rosdep/apt).

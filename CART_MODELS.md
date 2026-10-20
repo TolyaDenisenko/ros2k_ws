@@ -14,8 +14,8 @@
 
 | `robot_model` | Корпус (меш `base_link`) | Габарит корпуса в плане (X × Y) | Крепление руки (`base_link`) | Статус |
 |---|---|---|---|---|
-| `c2` *(по умолчанию)* | `base_link_c2-v3.stl` | ≈ 0.83 × 0.47 м | `-0.0075 0 0.849` — центр крыши | работает |
-| `c2l-v3-scaled` | `base_link_c2-v3.stl` × `1.278 1.319 1` | ≈ 1.06 × 0.62 м | `-0.25 -0.1295 0.849` | работает |
+| `c2` | `base_link_c2-v3.stl` | ≈ 0.83 × 0.47 м | `-0.0075 0 0.849` — центр крыши | работает |
+| `c2l-v3-scaled` *(по умолчанию)* | `base_link_c2-v3.stl` × `1.278 1.319 1` | ≈ 1.06 × 0.62 м | `-0.25 -0.1295 0.849` | работает |
 | `c2l-v3` | `base_link_c2l-v3.stl` | — | `-0.25 -0.1295 0.849` | **меша нет в пакете**, корпус не отобразится |
 
 Габарит по X включает ручку. Высота у всех моделей одинаковая: крыша на
@@ -54,11 +54,11 @@ source install/setup.bash
 ### Gazebo + MoveIt (основной запуск)
 
 ```bash
-# тележка c2 (по умолчанию)
+# тележка c2l (масштабированный корпус) — по умолчанию
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
 
-# тележка c2l (масштабированный корпус)
-ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled
+# тележка c2
+ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2
 
 # c2l без MoveIt, обычный RViz
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled use_moveit:=false
