@@ -20,6 +20,11 @@
     load_gazebo_plugin:=false 
     add_realsense_d435i:=false
     add_d435i_links:=true
+    add_gripper_camera:=false
+    gripper_camera_model:='gemini335le'
+    gripper_camera_nominal:=true
+    gripper_camera_gz:=false
+    gripper_camera_preview:=false
     use_gazebo_camera:=false
     add_other_geometry:=false 
     geometry_type:='box'
@@ -237,6 +242,19 @@
     <xacro:unless value="${add_realsense_d435i}">
       <link name="${prefix}link_eef"/>
     </xacro:unless>
+
+    <!-- (quasi) Сменная камера на фланце: quasi_camera_description.
+         Взаимоисключается с add_realsense_d435i (у D435i меш камеры — это сам
+         link_eef). Фреймы: gripper_camera_link, gripper_camera_color_optical_frame...
+         См. docs/ в корне рабочего пространства. -->
+    <xacro:if value="${add_gripper_camera}">
+      <xacro:include filename="$(find quasi_camera_description)/urdf/gripper_camera.xacro" />
+      <xacro:gripper_camera camera_model="${gripper_camera_model}" parent="${prefix}link_eef"
+                            name="gripper_camera"
+                            use_nominal_extrinsics="${gripper_camera_nominal}"
+                            add_gz_sensor="${gripper_camera_gz}"
+                            preview="${gripper_camera_preview}" />
+    </xacro:if>
     <joint name="${prefix}joint_eef" type="fixed">
       <origin xyz="0 0 0" rpy="0 0 0" />
       <parent link="${prefix}link${dof}" />

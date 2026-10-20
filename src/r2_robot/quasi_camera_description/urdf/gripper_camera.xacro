@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+  gripper_camera.xacro — камера на фланце руки (eye-in-hand): кронштейн + камера.
+
+  Подключается «крючком» из xarm_description/urdf/xarm_device_macro.xacro
+  (параметры add_gripper_camera / gripper_camera_model / ...).
+
+  Геометрия (в фрейме link_eef, Z — по оси инструмента, присоска до z=0.1265,
+  TCP z=0.126, радиус присоски ~0.046 м):
+    mount_xyz = 0.075 0 0.030   — винт камеры на 75 мм от оси и 30 мм от фланца
+    mount_rpy = π -π/2 0        — ось X камеры (взгляд) = ось Z инструмента;
+                                  проверка: R·[1,0,0] = [0,0,1]
+  Камера смотрит туда же, куда присоска, но со смещением 89 мм от оси.
+  Присоска в кадр не попадает (край присоски под углом ~40° при VFOV ±32°),
+  объект на оси TCP на дистанции 0.4 м виден со смещением ~12° от центра.
+  Значения — стартовые, уточнить по CAD кронштейна и калибровке (документ 08).
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="gripper_camera"
+      params="camera_model parent:=link_eef name:=gripper_camera
+              mount_xyz:='0.075 0 0.030' mount_rpy:='${pi} ${-pi/2} 0'
+              use_nominal_extrinsics:=true add_gz_sensor:=false preview:=false">
+
+    <!-- Кронштейн: бокс-заглушка (до появления STL из CAD). Лежит рядом с
+         присоской (x ≥ 0.0375, присоска до x=0.0375), коллизий с ней нет. -->
+    <joint name="${name}_bracket_joint" type="fixed">
+      <origin xyz="0.05625 0 0.030" rpy="0 0 0"/>
+      <parent link="${parent}"/>
+      <child link="${name}_bracket_link"/>
+    </joint>
+    <link name="${name}_bracket_link">
+      <inertial>
+        <mass value="0.08"/>
+        <inertia ixx="3.0e-5" ixy="0" ixz="0" iyy="3.0e-5" iyz="0" izz="1.0e-5"/>
+      </inertial>
+      <visual>
+        <geometry><box size="0.0375 0.04 0.06"/></geometry>
+        <material name="${name}_bracket_mat"><color rgba="0.15 0.15 0.15 1"/></material>
+      </visual>
+      <collision>
+        <geometry><box size="0.0375 0.04 0.06"/></geometry>
+      </collision>
+    </link>
+
+    <xacro:if value="${camera_model == 'gemini335le'}">
+      <xacro:include filename="$(find quasi_camera_description)/urdf/cameras/gemini335le.xacro"/>
+      <xacro:camera_body_gemini335le name="${name}" parent="${parent}"
+                                     use_nominal_extrinsics="${use_nominal_extrinsics}">
+        <origin xyz="${mount_xyz}" rpy="${mount_rpy}"/>
+      </xacro:camera_body_gemini335le>
+    </xacro:if>
+    <!-- TODO(d555): макрос camera_body_d555 (документ 04, раздел 5) -->
+
+    <xacro:if value="${add_gz_sensor}">
+      <xacro:include filename="$(find quasi_camera_description)/urdf/gz/gz_rgbd_camera.xacro"/>
+      <xacro:gz_rgbd_camera name="${name}" model="${camera_model}" preview="${preview}"/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

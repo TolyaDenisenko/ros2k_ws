@@ -334,6 +334,9 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /xarm_grasping/grasp_markers
       Value: true
+    # ---- Камера гриппера (Orbbec Gemini 335Le; docs/STATUS.md, раздел «Камера») ----
+    # Живая картинка напрямую из драйвера/симуляции (не через grasp_analyzer).
+    # Reliability Best Effort — совместимо и с симуляцией, и с драйвером на железе.
     - Class: rviz_default_plugins/Image
       Enabled: true
       Max Value: 1
@@ -345,9 +348,59 @@ Visualization Manager:
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
-        Reliability Policy: Reliable
-        Value: /camera/image_display
+        Reliability Policy: Best Effort
+        Value: /gripper_camera/color/image_raw
       Value: true
+    # Цветное облако в мире (depth_image_proc в sim / драйвер на железе).
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz_default_plugins/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 0; 0; 0
+      Min Intensity: 0
+      Name: GripperPoints
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 2
+      Size (m): 0.01
+      Style: Points
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /gripper_camera/points
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    # Карта глубины (выкл. по умолчанию): включить для отладки; 32FC1, метры.
+    - Class: rviz_default_plugins/Image
+      Enabled: false
+      Max Value: 1.5
+      Median window: 5
+      Min Value: 0.25
+      Name: GripperDepth
+      Normalize Range: false
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /gripper_camera/aligned_depth/image_raw
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48

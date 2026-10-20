@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 """
 cart_xarm6_gz.launch.py — тележка quasi_cart (r2_robot) + xArm6 с вакуумным
-гриппером и камерой D435i на ЭФ, симуляция в Gazebo Sim + RViz.
+гриппером и камерой на ЭФ (по умолчанию Orbbec Gemini 335Le, camera_model:=d435i —
+старая RealSense), симуляция в Gazebo Sim + RViz. Вакуум в симуляции —
+DetachableJoint + нода vacuum_gripper_sim (сервис /vacuum_gripper/set).
+Документация и команды проверки: docs/STATUS.md.
 
 URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
   Рука закреплена на верхней плоской платформе тележки
@@ -15,6 +18,9 @@ URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false  # только Gazebo
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm_initial_positions:="0 0 0 0 0 0"
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py headless:=true                   # Gazebo без GUI
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py camera_model:=d435i               # старая камера
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py gripper_camera_preview:=true     # лёгкий режим 640x400
 """
 import os
 
@@ -25,7 +31,8 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (Command, FindExecutable, LaunchConfiguration,
                                   PathJoinSubstitution, PythonExpression)
-from launch_ros.actions import Node, SetParameter
+from launch_ros.actions import ComposableNodeContainer, Node, SetParameter
+from launch_ros.descriptions import ComposableNode
 from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
@@ -61,6 +68,11 @@ def generate_launch_description():
         description='Начальные углы joint1..joint6 (рад) через пробел')
     robot_model = LaunchConfiguration('robot_model', default='c2')
     use_moveit = LaunchConfiguration('use_moveit')
+    camera_model = LaunchConfiguration('camera_model')
+    # Условия «какая камера»: gemini335le (Orbbec, quasi_camera_description) или
+    # d435i (старая RealSense из xarm_description, топики /camera/...).
+    is_orbbec = IfCondition(PythonExpression(["'", camera_model, "' != 'd435i'"]))
+    is_d435i = IfCondition(PythonExpression(["'", camera_model, "' == 'd435i'"]))
 
     # ---------- 1. URDF тележки + руки (xacro) ----------
     cart_xacro = os.path.join(
@@ -70,6 +82,8 @@ def generate_launch_description():
     robot_description_content = Command([
         FindExecutable(name='xacro'), ' ', cart_xacro,
         ' use_sim:=true',
+        ' camera_model:=', camera_model,
+        ' gripper_camera_preview:=', LaunchConfiguration('gripper_camera_preview'),
         ' robot_model:=', robot_model,
         ' simulator:=ignition',
         ' xarm_initial_positions:="', LaunchConfiguration('arm_initial_positions'), '"',
@@ -87,7 +101,12 @@ def generate_launch_description():
                 FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])
         ]),
         launch_arguments={
-            'gz_args': ['-r -v 3 ', LaunchConfiguration('world')],
+            # headless:=true — только сервер Gazebo без GUI (-s) и рендер без окна
+            # (для проверок по SSH/CI; RViz при этом работает как обычно)
+            'gz_args': [PythonExpression(
+                ["'-r -v 3 -s --headless-rendering ' if '",
+                 LaunchConfiguration('headless'), "' == 'true' else '-r -v 3 '"]),
+                LaunchConfiguration('world')],
             'on_exit_shutdown': 'true',
         }.items()
     )
@@ -140,17 +159,72 @@ def generate_launch_description():
         output='screen',
     )
 
-    # ---------- 5. Мост Gazebo -> ROS 2 (clock, камера гриппера) ----------
+    # ---------- 5. Мосты Gazebo <-> ROS 2 ----------
+    # 5a. Общий: /clock, колёса, езда, вакуум (/vacuum/*), позы мира (/gz/world_poses).
+    bridge_cfg = lambda name: os.path.join(  # noqa: E731
+        get_package_share_directory('cart_xarm_bringup'), 'config', name)
     gz_bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         name='gz_bridge',
-        parameters=[{
-            'config_file': os.path.join(
-                get_package_share_directory('cart_xarm_bringup'),
-                'config', 'gz_bridge.yaml'),
-            'use_sim_time': True,
-        }],
+        parameters=[{'config_file': bridge_cfg('gz_bridge.yaml'),
+                     'use_sim_time': True}],
+        output='screen',
+    )
+    # 5b. Камера гриппера: Orbbec -> /gripper_camera/{color,aligned_depth}/...;
+    #     D435i -> /camera/... (отдельные yaml, чтобы не смешивать интерфейсы).
+    gz_bridge_orbbec = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        name='gz_bridge_gripper_camera',
+        parameters=[{'config_file': bridge_cfg('gz_bridge_gripper_camera.yaml'),
+                     'use_sim_time': True}],
+        output='screen',
+        condition=is_orbbec,
+    )
+    gz_bridge_d435i = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        name='gz_bridge_d435i',
+        parameters=[{'config_file': bridge_cfg('gz_bridge_d435i.yaml'),
+                     'use_sim_time': True}],
+        output='screen',
+        condition=is_d435i,
+    )
+
+    # 5c. Облако точек камеры Orbbec из цвета + выровненной глубины (как на железе
+    #     строит драйвер): /gripper_camera/points в gripper_camera_color_optical_frame.
+    #     gz-облако rgbd_camera не используем (его система координат зависит от
+    #     версии gz-sensors). Отбрасывает inf-точки вне [near, far] автоматически.
+    camera_points = ComposableNodeContainer(
+        name='gripper_camera_proc', namespace='',
+        package='rclcpp_components', executable='component_container_mt',
+        composable_node_descriptions=[ComposableNode(
+            package='depth_image_proc',
+            plugin='depth_image_proc::PointCloudXyzrgbNode',
+            name='gripper_camera_points',
+            remappings=[
+                ('rgb/image_rect_color', '/gripper_camera/color/image_raw'),
+                ('rgb/camera_info', '/gripper_camera/color/camera_info'),
+                ('depth_registered/image_rect', '/gripper_camera/aligned_depth/image_raw'),
+                ('points', '/gripper_camera/points'),
+            ],
+            parameters=[{'use_sim_time': True, 'queue_size': 5}],
+        )],
+        output='screen',
+        condition=is_orbbec,
+    )
+
+    # 5d. Вакуум в симуляции: сервис /vacuum_gripper/set (SetBool) проверяет касание
+    #     присоски с объектом и шлёт attach/detach в плагин DetachableJoint.
+    vacuum_sim = Node(
+        package='xarm_grasping',
+        executable='vacuum_gripper_sim.py',
+        name='vacuum_gripper_sim',
+        parameters=[{'use_sim_time': True,
+                     'robot_model_name': 'cart_xarm6',
+                     'object_model_name': 'pick_box',
+                     'object_size': [0.10, 0.05, 0.05]}],
         output='screen',
     )
 
@@ -184,9 +258,16 @@ def generate_launch_description():
         name='grasp_analyzer',
         parameters=[
             {'use_sim_time': True},
-            {'color_topic': '/camera/color/image_raw'},
-            {'points_topic': '/camera/depth/points'},
-            {'camera_frame': 'camera_color_optical_frame'},
+            # Топики/фрейм зависят от камеры (Orbbec — единый интерфейс docs/01 §5)
+            {'color_topic': PythonExpression(
+                ["'/camera/color/image_raw' if '", camera_model, "' == 'd435i' "
+                 "else '/gripper_camera/color/image_raw'"])},
+            {'points_topic': PythonExpression(
+                ["'/camera/depth/points' if '", camera_model, "' == 'd435i' "
+                 "else '/gripper_camera/points'"])},
+            {'camera_frame': PythonExpression(
+                ["'camera_color_optical_frame' if '", camera_model, "' == 'd435i' "
+                 "else 'gripper_camera_color_optical_frame'"])},
             {'base_frame': 'link_base'},
             {'analyze_period': 2.0},
         ],
@@ -272,6 +353,16 @@ def generate_launch_description():
         spawn_x_arg, spawn_y_arg, spawn_z_arg, spawn_yaw_arg,
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument(
+            'headless', default_value='false',
+            description='true — Gazebo без GUI (только сервер, для проверок/CI)'),
+        DeclareLaunchArgument(
+            'camera_model', default_value='gemini335le',
+            description='Камера на фланце: gemini335le (Orbbec 335Le) | d435i (старая)'),
+        DeclareLaunchArgument(
+            'gripper_camera_preview', default_value='false',
+            description='true — лёгкий режим камеры 640x400 вместо 1280x800 '
+                        '(для отладки движений при низком RTF)'),
+        DeclareLaunchArgument(
             'robot_model', default_value='c2',
             description='Тип тележки (файл quasi_cart_description/urdf/'
                         '<robot_model>.urdf.xacro): c2 | c2l-v3-scaled'),
@@ -285,6 +376,10 @@ def generate_launch_description():
         jsp,
         rsp,
         gz_bridge,
+        gz_bridge_orbbec,
+        gz_bridge_d435i,
+        camera_points,
+        vacuum_sim,
         spawn_delay,
         controllers_delay,
         analyzer_delay,

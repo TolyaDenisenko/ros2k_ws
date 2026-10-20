@@ -26,6 +26,13 @@
   <xacro:arg name="arm_offset_rpy" default="0 0 0"/>
   <!-- ros2_control плагин: для Gazebo Sim используйте gz_ros2_control/GazeboSimSystem -->
   <xacro:arg name="arm_ros2_control_plugin" default="gz_ros2_control/GazeboSimSystem"/>
+  <!-- Камера на фланце: gemini335le (Orbbec, quasi_camera_description) | d435i (старая
+       RealSense из xarm_description). use_sim=true -> номинальные фреймы + gz-сенсор. -->
+  <xacro:arg name="camera_model" default="gemini335le"/>
+  <xacro:arg name="gripper_camera_preview" default="false"/>
+  <!-- Модель Gazebo, которую присоска может «приварить» (DetachableJoint).
+       Должна совпадать с именем модели в мире (cart_table_offline.world: pick_box). -->
+  <xacro:arg name="vacuum_target_model" default="pick_box"/>
 
   <!-- ==================== Фланец крепления на крыше тележки ==================== -->
   <!-- Точка крепления зависит от тележки: файл модели (<robot_model>.urdf.xacro,
@@ -72,8 +79,13 @@
       add_gripper="false"
       add_vacuum_gripper="true"
       add_bio_gripper="false"
-      add_realsense_d435i="true"
+      add_realsense_d435i="${'$(arg camera_model)' == 'd435i'}"
       add_d435i_links="true"
+      add_gripper_camera="${'$(arg camera_model)' != 'd435i'}"
+      gripper_camera_model="$(arg camera_model)"
+      gripper_camera_nominal="$(arg use_sim)"
+      gripper_camera_gz="$(arg use_sim)"
+      gripper_camera_preview="$(arg gripper_camera_preview)"
       ros2_control_plugin="$(arg arm_ros2_control_plugin)"
       ros2_control_params="$(find xarm_controller)/config/xarm6_controllers.yaml"
       load_gazebo_plugin="true"
@@ -81,6 +93,45 @@
       attach_xyz="$(arg arm_offset_xyz)"
       attach_rpy="$(arg arm_offset_rpy)"
     />
+
+    <!--
+      Симуляция вакуума (use_sim=true): логическая присоска на DetachableJoint.
+      Физической присоски в gz нет, поэтому «вакуум» = жёсткое соединение
+      (fixed joint) между звеном руки и объектом:
+        /vacuum/attach (Empty) -> соединение создаётся с ТЕКУЩИМ взаимным
+                                  положением (объект не телепортируется);
+        /vacuum/detach (Empty) -> соединение удаляется, объект падает;
+        /vacuum/state (String) <- "attached" / "detached".
+      parent_link = link6: в SDF fixed-суставы URDF схлопываются, и присоска
+      (xarm_vacuum_gripper_link), link_eef, камера лежат внутри звена link6
+      (проверено: gz sdf -p на сгенерированном URDF).
+      Когда слать attach — решает нода vacuum_gripper_sim (проверяет касание).
+    -->
+    <xacro:if value="$(arg use_sim)">
+      <gazebo>
+        <plugin filename="gz-sim-detachable-joint-system"
+                name="gz::sim::systems::DetachableJoint">
+          <parent_link>link6</parent_link>
+          <child_model>$(arg vacuum_target_model)</child_model>
+          <child_link>link</child_link>
+          <attach_topic>/vacuum/attach</attach_topic>
+          <detach_topic>/vacuum/detach</detach_topic>
+          <output_topic>/vacuum/state</output_topic>
+          <suppress_child_warning>true</suppress_child_warning>
+        </plugin>
+        <!-- Поза модели робота в мире (10 Гц) — для проверки касания присоской -->
+        <plugin filename="gz-sim-pose-publisher-system"
+                name="gz::sim::systems::PosePublisher">
+          <publish_model_pose>true</publish_model_pose>
+          <publish_link_pose>false</publish_link_pose>
+          <publish_collision_pose>false</publish_collision_pose>
+          <publish_visual_pose>false</publish_visual_pose>
+          <publish_sensor_pose>false</publish_sensor_pose>
+          <use_pose_vector_msg>true</use_pose_vector_msg>
+          <update_frequency>10</update_frequency>
+        </plugin>
+      </gazebo>
+    </xacro:if>
 
   </xacro:macro>
 

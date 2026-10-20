@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+  gz_rgbd_camera.xacro — сенсор rgbd_camera Gazebo Sim для камеры ${name}.
+
+  Один сенсор на фрейме цвета отдаёт цвет и глубину ОДНОГО разрешения и FOV,
+  попиксельно совмещённые — это эквивалент режима выравнивания реального
+  драйвера (depth_registration у Orbbec). Облако в ROS строит
+  depth_image_proc (одинаково в симуляции и на железе), поэтому gz-облако
+  /points не мостим.
+
+  Топики gz (topic=${name}/gz): .../image, .../depth_image, .../camera_info
+  (имена проверены: gz topic -l | grep gripper_camera). cart_xarm_bringup/
+  config/gz_bridge_gripper_camera.yaml отдаёт их в ROS как
+  /${name}/color/image_raw, /${name}/aligned_depth/image_raw,
+  /${name}/color/camera_info.
+
+  ВАЖНО: Sensors-систему здесь НЕ объявляем — она есть в мире (иначе
+  "Scene already exists" и segfault, см. README/CLAUDE.md).
+
+  frame_id (в gz < 8 назывался gz_frame_id): без него frame_id сообщений = служебное имя склеенного звена
+  (fixed-суставы сливаются), и TF до облака не находится.
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="gz_rgbd_camera" params="name model preview:=false">
+    <xacro:property name="cfg_all"
+      value="${xacro.load_yaml('$(find quasi_camera_description)/config/' + model + '.yaml')}"/>
+    <xacro:property name="cfg" value="${cfg_all['sim_preview'] if preview else cfg_all['sim']}"/>
+
+    <gazebo reference="${name}_color_frame">
+      <sensor name="${name}_rgbd" type="rgbd_camera">
+        <frame_id>${name}_color_optical_frame</frame_id>
+        <topic>${name}/gz</topic>
+        <update_rate>${cfg['rate']}</update_rate>
+        <always_on>1</always_on>
+        <visualize>0</visualize>
+        <camera name="${name}">
+          <optical_frame_id>${name}_color_optical_frame</optical_frame_id>
+          <horizontal_fov>${cfg['hfov']}</horizontal_fov>
+          <image>
+            <width>${cfg['width']}</width>
+            <height>${cfg['height']}</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>${cfg['near']}</near>
+            <far>${cfg['far']}</far>
+          </clip>
+          <depth_camera>
+            <clip>
+              <near>${cfg['near']}</near>
+              <far>${cfg['far']}</far>
+            </clip>
+          </depth_camera>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>${cfg['color_noise_std']}</stddev>
+          </noise>
+        </camera>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

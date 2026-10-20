@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!--
+  gemini335le.xacro — макрос тела камеры Orbbec Gemini 335Le с префиксом имён.
+
+  Зачем свой макрос: URDF из orbbec_description (gemini_335_Le.urdf.xacro) —
+  плоский файл без макроса и префикса (фреймы camera_*), его нельзя поставить
+  рядом с другой камерой. Числа (смещения сенсоров) и меш взяты оттуда же
+  (форк quasi-robotics/OrbbecSDK_ROS2, ветка v2-main).
+
+  Цепочка фреймов (имена совпадают с драйвером при camera_name:=${name}):
+
+    <parent> -> ${name}_mount_link        (нижний винт 1/4-20; поза = параметр *origin)
+    ${name}_mount_link -> ${name}_link    (паспортное смещение; начало глубины = левый ИК)
+    если use_nominal_extrinsics (симуляция):
+      ${name}_link -> ${name}_depth_frame -> ${name}_depth_optical_frame
+      ${name}_link -> ${name}_color_frame -> ${name}_color_optical_frame
+      ${name}_link -> ${name}_left_ir_frame / ${name}_right_ir_frame
+
+  На железе use_nominal_extrinsics:=false: URDF кончается на ${name}_link, а всё
+  остальное публикует драйвер (publish_tf:=true). Двух издателей одного фрейма
+  быть не должно.
+
+  Оси ${name}_link/${name}_*_frame — REP-103 (X вперёд, Y влево, Z вверх);
+  оптические — REP-103 для изображений (Z вперёд, X вправо, Y вниз).
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="camera_body_gemini335le"
+               params="name parent *origin use_nominal_extrinsics:=true">
+
+    <!-- Точка крепления: нижний винт. Меш base_Link.STL нарисован в ЭТОМ фрейме
+         (bbox: x -12..38 мм, y ±62 мм, z 0..29 мм — тело стоит «над» винтом). -->
+    <joint name="${name}_mount_joint" type="fixed">
+      <xacro:insert_block name="origin"/>
+      <parent link="${parent}"/>
+      <child link="${name}_mount_link"/>
+    </joint>
+    <link name="${name}_mount_link"/>
+
+    <!-- От винта к началу глубины. Значения = обратный base_joint из URDF Orbbec
+         (там camera_link -> bottom_screw = -0.034005 -0.0475 -0.014048). -->
+    <joint name="${name}_link_joint" type="fixed">
+      <origin xyz="0.034005 0.0475 0.014048" rpy="0 0 0"/>
+      <parent link="${name}_mount_link"/>
+      <child link="${name}_link"/>
+    </joint>
+    <link name="${name}_link">
+      <inertial>
+        <!-- паспорт 220 г (в URDF Orbbec 0.043 — для динамики берём паспорт);
+             инерция — бокс 124x50x29 мм -->
+        <origin xyz="0.01235 -0.0020872 0.013243" rpy="0 0 0"/>
+        <mass value="0.220"/>
+        <inertia ixx="4.0e-4" ixy="0" ixz="0" iyy="1.0e-4" iyz="0" izz="4.4e-4"/>
+      </inertial>
+      <!-- file:// + $(find): gz не резолвит package:// для наших пакетов (так же сделаны меши тележки) -->
+      <visual>
+        <origin xyz="-0.034005 -0.0475 -0.014048" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find quasi_camera_description)/meshes/gemini335Le/base_Link.STL"/>
+        </geometry>
+        <material name="${name}_grey"><color rgba="0.35 0.35 0.38 1"/></material>
+      </visual>
+      <collision>
+        <!-- Упрощённый бокс вместо меша (3 МБ) — физике и MoveIt хватает.
+             Центр бокса в ${name}_link: bbox меша в mount-фрейме
+             x[-0.012..0.038] y[-0.062..0.062] z[0..0.0286] минус смещение link. -->
+        <origin xyz="-0.021 -0.0475 0.0003" rpy="0 0 0"/>
+        <geometry><box size="0.050 0.124 0.0286"/></geometry>
+      </collision>
+    </link>
+
+    <xacro:if value="${use_nominal_extrinsics}">
+      <!-- Глубина: совпадает с ${name}_link -->
+      <joint name="${name}_depth_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${name}_link"/><child link="${name}_depth_frame"/>
+      </joint>
+      <link name="${name}_depth_frame"/>
+      <joint name="${name}_depth_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+        <parent link="${name}_depth_frame"/><child link="${name}_depth_optical_frame"/>
+      </joint>
+      <link name="${name}_depth_optical_frame"/>
+
+      <!-- Цвет: смещён на -23.75 мм по Y (между ИК и RGB) -->
+      <joint name="${name}_color_joint" type="fixed">
+        <origin xyz="0.000009 -0.02375 0" rpy="0 0 0"/>
+        <parent link="${name}_link"/><child link="${name}_color_frame"/>
+      </joint>
+      <link name="${name}_color_frame"/>
+      <joint name="${name}_color_optical_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+        <parent link="${name}_color_frame"/><child link="${name}_color_optical_frame"/>
+      </joint>
+      <link name="${name}_color_optical_frame"/>
+
+      <!-- ИК-камеры: база стерео 95 мм -->
+      <joint name="${name}_left_ir_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <parent link="${name}_link"/><child link="${name}_left_ir_frame"/>
+      </joint>
+      <link name="${name}_left_ir_frame"/>
+      <joint name="${name}_right_ir_joint" type="fixed">
+        <origin xyz="0 -0.095 0" rpy="0 0 0"/>
+        <parent link="${name}_link"/><child link="${name}_right_ir_frame"/>
+      </joint>
+      <link name="${name}_right_ir_frame"/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

@@ -1,5 +1,5 @@
 ---
-# gz_bridge для cart_xarm_bringup: тележка + xArm6 (камера на ЭФ) -> ROS 2
+# gz_bridge для cart_xarm_bringup: тележка + xArm6 -> ROS 2 (общая часть: clock, колёса, езда, вакуум)
 # /clock из Gazebo
 - ros_topic_name: "/clock"
   gz_topic_name: "/clock"
@@ -17,32 +17,49 @@
   gz_type_name: "gz.msgs.Model"
   direction: GZ_TO_ROS
 
-# ---------- Камера гриппера (Realsense D435i, realsense_gz из xarm_description) ----------
-# Цветное изображение
-- ros_topic_name: "/camera/color/image_raw"
-  gz_topic_name: "/camera/color/image_raw"
-  ros_type_name: "sensor_msgs/msg/Image"
-  gz_type_name: "gz.msgs.Image"
+# Камера гриппера вынесена в gz_bridge_gripper_camera.yaml (Orbbec Gemini 335Le,
+# топики /gripper_camera/...) и gz_bridge_d435i.yaml (старая RealSense D435i,
+# топики /camera/...). Какой из них поднимать, решает launch по camera_model.
+
+# ---------- Вакуумный гриппер (симуляция, DetachableJoint) ----------
+# Плагин gz::sim::systems::DetachableJoint объявлен в cart-arm.xacro (внутри модели
+# робота). Команда "attach" жёстко сваривает pick_box со звеном link6 (там лежит
+# присоска), "detach" отпускает. Эти топики дёргает нода vacuum_gripper_sim
+# (xarm_grasping), напрямую их дёргать только для отладки (docs/STATUS.md).
+- ros_topic_name: "/vacuum/attach"
+  gz_topic_name: "/vacuum/attach"
+  ros_type_name: "std_msgs/msg/Empty"
+  gz_type_name: "gz.msgs.Empty"
+  direction: ROS_TO_GZ
+
+- ros_topic_name: "/vacuum/detach"
+  gz_topic_name: "/vacuum/detach"
+  ros_type_name: "std_msgs/msg/Empty"
+  gz_type_name: "gz.msgs.Empty"
+  direction: ROS_TO_GZ
+
+# Состояние соединения: плагин пишет строку "attached" / "detached"
+- ros_topic_name: "/vacuum/state"
+  gz_topic_name: "/vacuum/state"
+  ros_type_name: "std_msgs/msg/String"
+  gz_type_name: "gz.msgs.StringMsg"
   direction: GZ_TO_ROS
 
-- ros_topic_name: "/camera/color/camera_info"
-  gz_topic_name: "/camera/color/camera_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
+# Позы модели робота и объекта в мире (10 Гц, плагин PosePublisher в модели) ->
+# tf2_msgs/TFMessage, имя модели в child_frame_id. vacuum_gripper_sim берёт из них
+# мировую позу TCP и бокса, чтобы проверить касание присоской перед "attach".
+# НЕ /tf: это не TF-дерево робота. (Полный /world/.../pose/info не мостим: сотни
+# поз на каждом шаге — это 70% CPU у приёмника.)
+- ros_topic_name: "/gz/robot_pose"
+  gz_topic_name: "/cart_xarm6/pose"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
 
-# Глубина
-- ros_topic_name: "/camera/depth/depth_info"
-  gz_topic_name: "/camera/depth/depth_info"
-  ros_type_name: "sensor_msgs/msg/CameraInfo"
-  gz_type_name: "gz.msgs.CameraInfo"
-  direction: GZ_TO_ROS
-
-# Облако точек RGBD-сенсора (rgbd_camera сам публикует points в Gazebo Harmonic)
-- ros_topic_name: "/camera/depth/points"
-  gz_topic_name: "/camera/depth/points"
-  ros_type_name: "sensor_msgs/msg/PointCloud2"
-  gz_type_name: "gz.msgs.PointCloudPacked"
+- ros_topic_name: "/gz/object_pose"
+  gz_topic_name: "/model/pick_box/pose"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
   direction: GZ_TO_ROS
 
 # ---------- Езда тележки (VelocityControl / OdometryPublisher из cart-sensors.ign.xacro) ----------
