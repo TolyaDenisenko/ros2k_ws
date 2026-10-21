@@ -52,7 +52,7 @@ arm_goto_tcp.py ─► /xarm6_traj_controller/follow_joint_trajectory (gz_ros2_c
 - Обе ноды запускаются из главного launch
   [`cart_xarm6_gz.launch.py`](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py):
   `vacuum_sim` — [строки 218–229](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L218-L229),
-  `grasp_analyzer` — [строки 249–275](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L249-L275).
+  `grasp_analyzer` — [строки 249–280](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L249-L280).
 - Подробности о камере, мосте и плагине вакуума — в [`docs/CAMERA_VACUUM_SIM.md`](../CAMERA_VACUUM_SIM.md).
 
 ---
@@ -109,11 +109,10 @@ src/xarm_grasping/
   (после `source install/setup.bash`).
 
 [`package.xml`](../../src/xarm_grasping/package.xml) перечисляет `rclpy`, `sensor_msgs`, `geometry_msgs`,
-`visualization_msgs`, `tf2_ros`, `cv_bridge`, `python3-numpy` и др.
-
-> ⚠️ **Обрати внимание:** в `package.xml` не указаны `std_srvs`, `tf2_msgs`, `control_msgs`,
-> `trajectory_msgs` и `python3-scipy`, хотя скрипты их импортируют. На машине с полной установкой
-> ROS это не мешает, но `rosdep install` их сам не поставит.
+`visualization_msgs`, `tf2_ros`, `cv_bridge`, `python3-numpy` и др. Там же
+([строки 21–26](../../src/xarm_grasping/package.xml#L21-L26)) указаны зависимости, которые
+импортируют скрипты вакуума и `arm_goto_tcp.py`: `std_srvs`, `tf2_msgs`, `control_msgs`,
+`trajectory_msgs`, `builtin_interfaces`, `python3-scipy`. Поэтому `rosdep install` поставит всё нужное сам.
 
 ---
 
@@ -146,10 +145,10 @@ src/xarm_grasping/
 | `points_topic` | `/camera/depth/color/points` | `/gripper_camera/points` (Orbbec) / `/camera/depth/points` (d435i) | облако точек |
 | `camera_frame` | `camera_color_optical_frame` | `gripper_camera_color_optical_frame` (Orbbec) | фрейм камеры (в коде фактически не используется для TF, см. ниже) |
 | `base_frame` | `link_base` | `link_base` | фрейм, в котором считаются захваты |
-| `table_height` | `1.0` | **не передаётся** | z столешницы в `base_frame`, м |
+| `table_height` | `1.0` | `0.015` | z столешницы в `base_frame`, м |
 | `block_radius` | `0.04` | — | радиус цилиндра (априори), м |
 | `block_height` | `0.09` | — | высота цилиндра, м |
-| `block_x`, `block_y` | `0.35`, `-0.75` | — | запасная (априорная) позиция объекта в `base_frame` |
+| `block_x`, `block_y` | `0.35`, `-0.75` | `1.14`, `0.135` | запасная (априорная) позиция объекта в `base_frame` |
 | `suction_radius` | `0.02` | — | радиус пятна присоски, м |
 | `approach_offset` | `0.10` | — | отход pre-grasp вдоль оси подхода, м |
 | `analyze_period` | `2.0` | `2.0` | период анализа, с |
@@ -207,11 +206,13 @@ src/xarm_grasping/
 > ⚠️ **Обрати внимание (известные ограничения):**
 > - Пайплайн **предполагает цилиндр**. Реальный объект в сцене — коробка `pick_box` 0.10×0.05×0.05 м,
 >   но варианты строятся для цилиндра `block_radius`/`block_height`.
-> - Если TF или сегментация не сработали, нода **молча** берёт априорную позу `block_x/block_y`
->   (`0.35, -0.75` — это от старой сцены `cylinder_block`, а не `pick_box` на x≈0.6).
-> - `table_height` **не передаётся** из `cart_xarm6_gz.launch.py`, поэтому действует дефолт `1.0`
->   (в `link_base` верх стола на самом деле ≈ `+0.006`). В `config/grasp_params.yaml` стоит `-0.28` —
->   но этот YAML читает только `grasp_analyzer.launch.py`, не главный launch.
+> - Если TF или сегментация не сработали, нода **молча** берёт априорную позу `block_x/block_y`.
+>   Главный launch передаёт `1.14, 0.135` — это `pick_box` (0.60, 0 в мире) в `link_base`.
+>   Дефолт в коде (`0.35, -0.75`) — от старой сцены `cylinder_block`.
+> - `table_height=0.015` и `block_x/y` в главном launch
+>   ([строки 250–256 и 275–277](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L250-L277)) посчитаны для дефолтной сцены по измеренной
+>   позе `link_base` в мире ≈ (-0.54, -0.135, 0.910): 0.925 − 0.910 = 0.015,
+>   0.60 − (−0.54) = 1.14, 0 − (−0.135) = 0.135. Другая тележка или спавн — пересчитать вручную.
 > - Поиск стола предполагает, что камера **смотрит вниз** (стол перпендикулярен оптической оси).
 > - Параметр `camera_frame` в TF не участвует — используется `frame_id` из самого облака
 >   ([строки 150–152](../../src/xarm_grasping/scripts/grasp_analyzer.py#L150-L152)).
@@ -389,6 +390,9 @@ TOP выигрывал, — меняйте веса в этих строках.
 Полезные числа из docstring ([строки 21–26](../../src/xarm_grasping/scripts/arm_goto_tcp.py#L21-L26)) для
 `cart_table_offline.world` при spawn 0,0: `link_base` в мире = (−0.0075, 0, 0.919); верх стола в
 `link_base` z = +0.006; `pick_box` в центре (0.6075, 0, 0.031), его верх z = +0.056.
+Эти числа посчитаны для руки в центре крыши (как у `c2`). Для дефолтной тележки
+`c2l-v3-scaled` `link_base` стоит у края, и цифры другие — см. параметры `grasp_analyzer` в
+главном launch (`table_height=0.015`, `pick_box` в `link_base` ≈ (1.14, 0.135)).
 
 ---
 
@@ -420,10 +424,14 @@ Node(
 [`grasp_params.yaml`](../../src/xarm_grasping/config/grasp_params.yaml): верхний ключ `grasp_analyzer:` должен
 совпадать с `name` ноды, имена параметров — с `declare_parameter()`.
 
-> ⚠️ **Обрати внимание:** YAML устарел относительно текущей сцены: топики D435i
-> (`/camera/...`), `table_height: -0.28`, `block_x/y` от сцены с цилиндром. С камерой Orbbec
-> (по умолчанию) этот launch получит не те топики — переопределяйте их (см. ниже). Главный launch
-> `cart_xarm6_gz.launch.py` этот YAML **не использует**.
+YAML написан под текущую дефолтную сцену (тележка `c2l-v3-scaled`, спавн (-0.3, 0), камера
+Orbbec Gemini 335Le, мир `cart_table_offline.world`): топики `/gripper_camera/color/image_raw`
+и `/gripper_camera/points`, фрейм `gripper_camera_color_optical_frame`, `table_height: 0.015`,
+`block_x: 1.14`, `block_y: 0.135` — те же числа, что в главном launch.
+
+> ⚠️ **Обрати внимание:** главный launch `cart_xarm6_gz.launch.py` этот YAML **не читает** —
+> он задаёт параметры сам. YAML нужен для ручного запуска `grasp_analyzer.launch.py` рядом с
+> работающей симуляцией. Меняешь числа — меняй в обоих местах.
 
 ---
 
@@ -431,9 +439,9 @@ Node(
 
 | Хочу… | Файл:строка | Параметр | Пример |
 |---|---|---|---|
-| задать реальную высоту стола для grasp_analyzer | [cart_xarm6_gz.launch.py:255–275](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L255-L275) (добавить словарь) / [grasp_analyzer.py:73](../../src/xarm_grasping/scripts/grasp_analyzer.py#L73) | `table_height` | в launch: `{'table_height': 0.006}`; CLI: `ros2 run xarm_grasping grasp_analyzer.py --ros-args -p use_sim_time:=true -p table_height:=0.006` |
+| задать высоту стола для grasp_analyzer | [cart_xarm6_gz.launch.py:275](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L275) / [grasp_analyzer.py:73](../../src/xarm_grasping/scripts/grasp_analyzer.py#L73) | `table_height` | в launch: `{'table_height': 0.015}`; CLI: `ros2 run xarm_grasping grasp_analyzer.py --ros-args -p use_sim_time:=true -p table_height:=0.015` |
 | размеры объекта для генератора | [grasp_analyzer.py:74–75](../../src/xarm_grasping/scripts/grasp_analyzer.py#L74-L75) | `block_radius`, `block_height` | `-p block_radius:=0.025 -p block_height:=0.05` |
-| запасную позицию объекта | [grasp_analyzer.py:95–96](../../src/xarm_grasping/scripts/grasp_analyzer.py#L95-L96) | `block_x`, `block_y` | `-p block_x:=0.6075 -p block_y:=0.0` |
+| запасную позицию объекта | [cart_xarm6_gz.launch.py:276–277](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L276-L277) / [grasp_analyzer.py:95–96](../../src/xarm_grasping/scripts/grasp_analyzer.py#L95-L96) | `block_x`, `block_y` | `-p block_x:=1.14 -p block_y:=0.135` |
 | другие топики камеры | [grasp_analyzer.py:69–71](../../src/xarm_grasping/scripts/grasp_analyzer.py#L69-L71) | `color_topic`, `points_topic`, `camera_frame` | `-p points_topic:=/gripper_camera/points -p color_topic:=/gripper_camera/color/image_raw` |
 | анализ чаще/реже | [grasp_analyzer.py:78](../../src/xarm_grasping/scripts/grasp_analyzer.py#L78) | `analyze_period` | `-p analyze_period:=0.5` (читается один раз при старте) |
 | чувствительность сегментации | [grasp_analyzer.py:79–80](../../src/xarm_grasping/scripts/grasp_analyzer.py#L79-L80), допуск стола [172](../../src/xarm_grasping/scripts/grasp_analyzer.py#L172) | `voxel_size`, `min_points`; ±0.02 м — в коде | `-p voxel_size:=0.005 -p min_points:=80` |
@@ -454,7 +462,7 @@ Node(
 grasp_analyzer = Node(
     package='xarm_grasping', executable='grasp_analyzer.py', name='grasp_analyzer',
     parameters=[{'use_sim_time': True},
-                {'table_height': 0.006, 'block_x': 0.6075, 'block_y': 0.0}],
+                {'table_height': 0.015, 'block_x': 1.14, 'block_y': 0.135}],
 )
 ```
 
@@ -470,8 +478,8 @@ grasp_analyzer = Node(
 | `No executable found` / `libexec directory ... does not exist` | новый скрипт без сборки, без `chmod +x` или без shebang | `chmod +x`, shebang в 1-й строке, `colcon build --symlink-install --packages-select xarm_grasping` |
 | `ModuleNotFoundError: xarm_grasping` | не выполнен `source install/setup.bash` | `source ~/ros2k_ws/install/setup.bash` |
 | `Облако точек ещё не получено (ждём камеру из Gazebo)...` | не тот `points_topic`, Gazebo не запущен или симуляция на паузе | `ros2 topic list | grep points`; сверить с параметром |
-| Захваты всегда у `(0.350, -0.750)` | TF/сегментация не сработали → априорная поза | `--ros-args --log-level grasp_analyzer:=debug`, проверить TF |
-| Маркеры висят над/под столом | `table_height=1.0` по умолчанию | передать `table_height` |
+| Захваты всегда у `(1.140, 0.135)` (или `(0.350, -0.750)` при ручном запуске без параметров) | TF/сегментация не сработали → априорная поза | `--ros-args --log-level grasp_analyzer:=debug`, проверить TF |
+| Маркеры висят над/под столом | `table_height` не соответствует сцене (другая тележка/спавн или ручной запуск с дефолтом 1.0) | пересчитать и передать `table_height` |
 | `ParameterAlreadyDeclaredException: use_sim_time` | добавили `declare_parameter('use_sim_time')` | не объявлять, rclpy делает это сам |
 | Процесс падает с assert в rosidl при публикации маркера | в поле сообщения передали `int`/numpy/`rclpy.duration.Duration` | приводить к `float`, `Duration(...).to_msg()` |
 | `/vacuum_gripper/set` → `отказ: нет касания — расстояние ... мм` | TCP дальше 15 мм или угол > 20° | подвести `arm_goto_tcp.py`, смотреть `/vacuum_gripper/status` |
@@ -499,7 +507,7 @@ cd ~/ros2k_ws/src/xarm_grasping && python3 -m xarm_grasping.grasp_generator | ta
 
 ```bash
 ros2 node info /grasp_analyzer
-ros2 param get /grasp_analyzer table_height                 # 1.0 — дефолт!
+ros2 param get /grasp_analyzer table_height                 # 0.015 — из главного launch
 ros2 topic echo /xarm_grasping/best_grasp_pose --once       # geometry_msgs/msg/PoseStamped, frame_id: link_base
 ros2 topic echo /xarm_grasping/grasp_candidates --once --full-length   # JSON
 ros2 topic hz /xarm_grasping/best_grasp_pose                # ~0.5 Гц при analyze_period=2.0
@@ -512,7 +520,7 @@ ros2 topic hz /xarm_grasping/best_grasp_pose                # ~0.5 Гц при a
 ```bash
 ros2 run xarm_grasping grasp_analyzer.py --ros-args -r __node:=grasp_test \
   -p use_sim_time:=true -p points_topic:=/gripper_camera/points \
-  -p color_topic:=/gripper_camera/color/image_raw -p table_height:=0.006
+  -p color_topic:=/gripper_camera/color/image_raw -p table_height:=0.015
 ```
 
 **Вакуум:**

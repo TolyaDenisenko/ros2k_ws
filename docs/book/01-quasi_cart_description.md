@@ -21,7 +21,7 @@
 | Кто | Как использует |
 |---|---|
 | [cart_xarm6_gz.launch.py:79-91](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L79) | запускает `xacro cart_with_arm.urdf.xacro use_sim:=true robot_model:=… …`, результат уходит в `robot_description` (его читают `robot_state_publisher` и Gazebo) |
-| [cart_xarm6_rviz.launch.py:33](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L33) | то же, но без симуляции — только просмотр модели в RViz |
+| [cart_xarm6_rviz.launch.py:49](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L49) | то же, но без симуляции — только просмотр модели в RViz |
 | `xarm_description` (пакет из `src/xarm_ros2`) | наоборот, **используется этим пакетом**: макрос `xarm_device` рисует саму руку, присоску и камеру |
 | [vacuum_gripper_sim.py](../../src/xarm_grasping/scripts/vacuum_gripper_sim.py) | управляет плагином DetachableJoint, объявленным здесь, в `cart-arm.xacro` |
 
@@ -210,10 +210,6 @@ property). `drive` выбирает файл привода — **жёстко**
 `include cart-arm.xacro` + вызов макроса `<xacro:mount_xarm6_on_cart/>`.
 
 > ⚠️ Обрати внимание:
-> - Комментарий в шапке ([строка 7](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L7))
->   говорит «рука по центру, xyz=-0.0075 0 0.849» — это верно только для `c2`.
->   Для c2l-v3* точка другая (см. 4.3). Также «D435i camera» в строке 12 устарело —
->   по умолчанию камера Gemini 335Le.
 > - В отличие от `cart.urdf.xacro`, здесь **нет** блоков `ros2_control` батареи и
 >   Dynamixel (ToF реального железа). Аргумент `enable_pace_battery` объявлен, но ни на что не влияет.
 > - `var_wheel_type` (строка 67) нигде не читается — остаток оригинала.
@@ -357,7 +353,7 @@ differential, 0.07 для mecanum.
 
 ### 4.6 `cart-arm.xacro` — рука на тележке и вакуум
 
-**Аргументы** ([строки 21-35](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L21)):
+**Аргументы** ([строки 23-37](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L23)):
 `arm_dof`, `arm_prefix`, `arm_hw_ns`, `arm_offset_xyz`, `arm_offset_rpy`,
 `arm_ros2_control_plugin` (дублируют `cart_with_arm`; работают значения оттуда), плюс:
 
@@ -367,7 +363,7 @@ differential, 0.07 для mecanum.
 | `gripper_camera_preview` | `false` | облегчённый режим камеры (640x400) |
 | `vacuum_target_model` | `pick_box` | имя gz-модели, которую может «приварить» присоска |
 
-**Точка крепления** — [строки 42-53](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L42):
+**Точка крепления** — [строки 44-55](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L44):
 
 ```xml
 <xacro:property name="arm_mount_xyz" default="-0.0075 0.0 0.849"/>
@@ -386,7 +382,7 @@ differential, 0.07 для mecanum.
 - `c2l-v3`, `c2l-v3-scaled` → `-0.25 -0.1295 0.849` (из `c2l-v3.urdf.xacro:14`);
 - `c2` и остальные → `-0.0075 0.0 0.849` (default здесь).
 
-**Подключение руки** — [строки 71-95](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L71):
+**Подключение руки** — [строки 73-97](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L73):
 
 ```xml
 <xacro:xarm_device
@@ -415,7 +411,7 @@ differential, 0.07 для mecanum.
 [xarm6.ros2_control.xacro:8](../../src/xarm_ros2/xarm_description/urdf/xarm6/xarm6.ros2_control.xacro#L8)
 как `initial_value` для gz_ros2_control. Пустая строка — все нули.
 
-**Симуляция вакуума** — [строки 110-134](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L110), только при `use_sim=true`:
+**Симуляция вакуума** — [строки 112-136](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L112), только при `use_sim=true`:
 
 ```xml
 <plugin filename="gz-sim-detachable-joint-system"
@@ -440,11 +436,12 @@ differential, 0.07 для mecanum.
 - Плагин приваривает объект при загрузке; нода `vacuum_gripper_sim` сразу делает
   detach и дальше решает, когда слать attach (проверяет касание).
 
-Рядом `PosePublisher` ([строки 123-132](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L123))
+Рядом `PosePublisher` ([строки 125-134](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L125))
 публикует позу модели робота 10 Гц — для той же проверки касания.
 
-> ⚠️ Обрати внимание: комментарии в шапке (строки 4-9) и в строках 63-69 описывают
-> D435i и «центр платформы» — устарело, см. выше.
+Шапка файла ([строки 3-11](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L3))
+кратко повторяет то же: точка крепления берётся из `arm_mount_xyz` (своя у
+c2l-v3*, иначе центр крыши c2), доводка — через `arm_offset_xyz/rpy`.
 
 ### 4.7 `cart.ign.xacro` и `cart-sensors.ign.xacro` — плагины Gazebo
 
@@ -495,13 +492,13 @@ differential, 0.07 для mecanum.
 | Хочу… | Файл:строка | Параметр | Пример |
 |---|---|---|---|
 | Выбрать тележку при запуске | launch-аргумент / [cart_with_arm.urdf.xacro:21](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L21) | `robot_model` | `robot_model:=c2` |
-| Сменить тележку по умолчанию | [cart_with_arm.urdf.xacro:21](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L21) + [cart_xarm6_gz.launch.py:366](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L366) | `default` | launch перекрывает xacro — менять в обоих |
+| Сменить тележку по умолчанию | [cart_with_arm.urdf.xacro:21](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L21) + [cart_xarm6_gz.launch.py:371](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L371) | `default` | launch перекрывает xacro — менять в обоих |
 | Сдвинуть посадочное место руки на c2l | [c2l-v3.urdf.xacro:14](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L14) | `arm_mount_xyz` | `default="-0.20 -0.1295 0.849"` |
-| То же для c2 (и моделей без своего значения) | [cart-arm.xacro:42](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L42) | `arm_mount_xyz` | `default="0.05 0.0 0.849"` |
-| Быстро подвинуть/повернуть руку без правки xacro | launch-аргументы → [cart-arm.xacro:93-94](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L93) | `arm_offset_xyz`, `arm_offset_rpy` | `arm_offset_rpy:="0 0 3.1416"` |
+| То же для c2 (и моделей без своего значения) | [cart-arm.xacro:44](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L44) | `arm_mount_xyz` | `default="0.05 0.0 0.849"` |
+| Быстро подвинуть/повернуть руку без правки xacro | launch-аргументы → [cart-arm.xacro:95-96](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L95) | `arm_offset_xyz`, `arm_offset_rpy` | `arm_offset_rpy:="0 0 3.1416"` |
 | Начальная поза руки в Gazebo | [cart_xarm6_gz.launch.py:67](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L67) | `arm_initial_positions` | `arm_initial_positions:="0 0 0 0 0 0"` |
-| Сменить камеру на руке | [cart-arm.xacro:31](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L31) | `camera_model` | `camera_model:=d435i` |
-| Присоска хватает другой объект | [cart-arm.xacro:35](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L35), [:116](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L116) | `vacuum_target_model`, `child_link` | `vacuum_target_model:=my_box` |
+| Сменить камеру на руке | [cart-arm.xacro:33](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L33) | `camera_model` | `camera_model:=d435i` |
+| Присоска хватает другой объект | [cart-arm.xacro:37](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L37), [:118](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L118) | `vacuum_target_model`, `child_link` | `vacuum_target_model:=my_box` |
 | Масштаб корпуса c2l-scaled | [c2l-v3-scaled.urdf.xacro:18](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3-scaled.urdf.xacro#L18) | `base_mesh_scale` | `"1.278 1.319 1"` |
 | Включить доп. напольные ToF | [cart_with_arm.urdf.xacro:26](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L26) | `enable_extra_floor_tofs` | `xacro … enable_extra_floor_tofs:=true` |
 | Позиция навигационной камеры c2l | [c2l-v3.urdf.xacro:354-377](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L354) | `camera_offset_*`, `camera_pitch` | `camera_pitch value="-0.1"` |

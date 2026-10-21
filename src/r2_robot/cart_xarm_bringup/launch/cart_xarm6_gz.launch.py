@@ -52,12 +52,12 @@ def generate_launch_description():
         description='MoveIt (move_group + RViz с панелью MotionPlanning, '
                     'тележкой, маркерами захвата и камерой в одном окне). '
                     'false — обычный RViz без MoveIt')
-    spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='0.0')
+    spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='-0.3')
     spawn_y_arg = DeclareLaunchArgument('spawn_y', default_value='0.0')
     spawn_z_arg = DeclareLaunchArgument('spawn_z', default_value='0.07')
     spawn_yaw_arg = DeclareLaunchArgument(
         'spawn_yaw', default_value='0.0',
-        description='Ориентация тележки; стол находится при x=+1.7 в мире')
+        description='Ориентация тележки, рад; стол в мире при x=1.05 (верх z=0.925)')
     # Начальная поза руки (рад, joint1..joint6) — задаётся через initial_value
     # gz_ros2_control, рука сразу спавнится в ней, а xarm6_traj_controller при
     # активации удерживает текущую позу. По умолчанию: рука развёрнута вбок
@@ -247,11 +247,13 @@ def generate_launch_description():
     )
 
     # ---------- 7. grasp_analyzer (камера гриппера -> варианты захвата) ----------
-    # Столешница в frame link_base руки: база руки на z=0.919 (карт),
-    # стол в мире на z~0.95 => table_height ~ 0.03 относительно link_base?
-    # Нет: grasp_analyzer работает в base_frame=link_base руки, но у нас
-    # подвижная база (тележка) — используем map-независимый режим: блокируем
-    # параметры позы блока из world-файла (block_x/block_y задаются в link_base).
+    # grasp_analyzer работает в base_frame=link_base. Значения ниже — для
+    # дефолтной сцены: c2l-v3-scaled, спавн (-0.3,0), тележка оседает до z≈0.061
+    # => link_base в мире ≈ (-0.54, -0.135, 0.910) (замер /gz/robot_pose + TF).
+    #   table_height = 0.925 (верх стола) - 0.910 = 0.015
+    #   block_x/y    = pick_box (0.60, 0) - link_base  = (1.14, 0.135)
+    # При другой тележке/спавне пересчитать (block_* — только запасная поза,
+    # если облако точек не дало объект).
     grasp_analyzer = Node(
         package='xarm_grasping',
         executable='grasp_analyzer.py',
@@ -270,6 +272,9 @@ def generate_launch_description():
                  "else 'gripper_camera_color_optical_frame'"])},
             {'base_frame': 'link_base'},
             {'analyze_period': 2.0},
+            {'table_height': 0.015},
+            {'block_x': 1.14},
+            {'block_y': 0.135},
         ],
         output='screen',
     )

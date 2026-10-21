@@ -68,9 +68,9 @@ cart_xarm_bringup/
 папки `launch config worlds rviz` в `install/share/cart_xarm_bringup`. Именно оттуда их
 находит `get_package_share_directory('cart_xarm_bringup')`. В
 [package.xml](../../src/r2_robot/cart_xarm_bringup/package.xml) перечислены `exec_depend`
-(всё, что запускается из launch). ⚠️ Обрати внимание: описание в
-[package.xml:5](../../src/r2_robot/cart_xarm_bringup/package.xml#L5) всё ещё говорит
-«камерой D435i», хотя по умолчанию сейчас Orbbec Gemini 335Le.
+(всё, что запускается из launch). В описании пакета
+([package.xml:8](../../src/r2_robot/cart_xarm_bringup/package.xml#L8)) указаны обе камеры:
+Orbbec Gemini 335Le (по умолчанию) или D435i.
 
 **Про `--symlink-install`.** Если собирать `colcon build --symlink-install`, то в `install/`
 лежат *ссылки* на файлы из `src/`. Значит правки существующих launch/world/yaml/rviz
@@ -109,21 +109,20 @@ Launch-файл обязан содержать функцию `generate_launch_
 Пример из файла ([строки 55–68](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L55)):
 
 ```python
-spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='0.0')
+spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='-0.3')
 spawn_y_arg = DeclareLaunchArgument('spawn_y', default_value='0.0')
 spawn_z_arg = DeclareLaunchArgument('spawn_z', default_value='0.07')
 spawn_yaw_arg = DeclareLaunchArgument(
     'spawn_yaw', default_value='0.0',
-    description='Ориентация тележки; стол находится при x=+1.7 в мире')
+    description='Ориентация тележки, рад; стол в мире при x=1.05 (верх z=0.925)')
 ...
 arm_initial_positions_arg = DeclareLaunchArgument(
     'arm_initial_positions', default_value='1.5708 -0.9 -1.3 0 1.0 0',
     description='Начальные углы joint1..joint6 (рад) через пробел')
 ```
 
-⚠️ Обрати внимание: в описании `spawn_yaw` ([строка 60](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L60))
-написано «стол при x=+1.7» — это про старый мир `cart_table.world`. В мире по умолчанию
-стол стоит при x=1.05.
+Описание `spawn_yaw` ([строка 60](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L60))
+напоминает, где стоит стол в мире по умолчанию: x=1.05, верх столешницы z=0.925.
 
 Условия выбора камеры ([строки 74–75](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L74)):
 
@@ -141,22 +140,22 @@ is_d435i = IfCondition(PythonExpression(["'", camera_model, "' == 'd435i'"]))
 |---|---|---|---|---|
 | `world` | `<share>/worlds/cart_table_offline.world` | [L43](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L43) | SDF-мир Gazebo (полный путь) | `world:=$(ros2 pkg prefix cart_xarm_bringup)/share/cart_xarm_bringup/worlds/cart_table.world` |
 | `use_moveit` | `true` | [L50](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L50) | поднять MoveIt и его RViz | `use_moveit:=false` |
-| `use_rviz` | `true` | [L354](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L354) | обычный RViz (работает только при `use_moveit:=false`) | `use_moveit:=false use_rviz:=false` |
-| `headless` | `false` | [L356](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L356) | Gazebo без окна (только сервер) | `headless:=true` |
-| `camera_model` | `gemini335le` | [L359](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L359) | камера на фланце: `gemini335le` \| `d435i` | `camera_model:=d435i` |
-| `gripper_camera_preview` | `false` | [L362](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L362) | лёгкий режим камеры 640x400 вместо 1280x800 | `gripper_camera_preview:=true` |
-| `robot_model` | `c2l-v3-scaled` | [L366](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L366) | тип тележки (`<robot_model>.urdf.xacro`) | `robot_model:=c2` |
-| `spawn_x` | `0.0` | [L55](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L55) | X тележки в мире, м | `spawn_x:=-0.3` |
+| `use_rviz` | `true` | [L359](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L359) | обычный RViz (работает только при `use_moveit:=false`) | `use_moveit:=false use_rviz:=false` |
+| `headless` | `false` | [L361](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L361) | Gazebo без окна (только сервер) | `headless:=true` |
+| `camera_model` | `gemini335le` | [L364](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L364) | камера на фланце: `gemini335le` \| `d435i` | `camera_model:=d435i` |
+| `gripper_camera_preview` | `false` | [L367](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L367) | лёгкий режим камеры 640x400 вместо 1280x800 | `gripper_camera_preview:=true` |
+| `robot_model` | `c2l-v3-scaled` | [L371](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L371) | тип тележки (`<robot_model>.urdf.xacro`) | `robot_model:=c2` |
+| `spawn_x` | `-0.3` | [L55](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L55) | X тележки в мире, м | `spawn_x:=-0.3` |
 | `spawn_y` | `0.0` | [L56](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L56) | Y тележки в мире, м | `spawn_y:=0.2` |
 | `spawn_z` | `0.07` | [L57](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L57) | высота спавна (чтобы колёса не провалились в пол) | `spawn_z:=0.1` |
 | `spawn_yaw` | `0.0` | [L58](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L58) | поворот тележки вокруг Z, рад | `spawn_yaw:=1.5708` |
 | `arm_initial_positions` | `1.5708 -0.9 -1.3 0 1.0 0` | [L66](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L66) | стартовые углы joint1..joint6, рад | `arm_initial_positions:="0 0 0 0 0 0"` |
-| `arm_offset_xyz` | `0 0 0` | [L370](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L370) | доп. смещение базы руки от точки крепления, м | `arm_offset_xyz:="0.1 0 0"` |
-| `arm_offset_rpy` | `0 0 0` | [L373](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L373) | доп. поворот базы руки, рад | `arm_offset_rpy:="0 0 3.1416"` |
+| `arm_offset_xyz` | `0 0 0` | [L375](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L375) | доп. смещение базы руки от точки крепления, м | `arm_offset_xyz:="0.1 0 0"` |
+| `arm_offset_rpy` | `0 0 0` | [L378](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L378) | доп. поворот базы руки, рад | `arm_offset_rpy:="0 0 3.1416"` |
 
 По умолчанию `robot_model` — **`c2l-v3-scaled`**: так задано и в
 [L69](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L69), и в
-[L366](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L366), и в
+[L371](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L371), и в
 `cart_xarm6_rviz.launch.py`. Старую тележку запускают через `robot_model:=c2`.
 
 Посмотреть список аргументов можно без запуска:
@@ -191,9 +190,9 @@ robot_description_content = Command([
 
 ### 3.4. Порядок запуска
 
-Всё возвращается в `LaunchDescription` на [L350–389](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L350).
+Всё возвращается в `LaunchDescription` на [L355–394](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L355).
 Часть действий обёрнута в `TimerAction` — запуск с задержкой
-([L342–348](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L342)):
+([L347–353](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L347)):
 
 ```python
 spawn_delay = TimerAction(period=4.0, actions=[spawn_robot])
@@ -207,19 +206,19 @@ moveit_delay = TimerAction(period=12.0, actions=[moveit_common])
 
 | t, с | Что стартует | Строки | Условие |
 |---|---|---|---|
-| 0 | `SetParameter('use_sim_time', True)` — глобально для всех нод | [L351](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L351) | — |
+| 0 | `SetParameter('use_sim_time', True)` — глобально для всех нод | [L356](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L356) | — |
 | 0 | Gazebo Sim с миром | [L98](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L98) | — |
 | 0 | `joint_state_merger` + `robot_state_publisher` | [L123](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L123), [L137](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L137) | — |
 | 0 | мост `gz_bridge` (общий) | [L166](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L166) | — |
 | 0 | мост камеры Orbbec **или** D435i | [L176](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L176), [L185](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L185) | `camera_model` |
 | 0 | `depth_image_proc` → облако `/gripper_camera/points` | [L199](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L199) | только Orbbec |
 | 0 | `vacuum_gripper_sim` | [L220](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L220) | — |
-| 0 | RViz без MoveIt | [L283](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L283) | `use_rviz==true` и `use_moveit!=true` |
-| 0 | статический TF `link_base → world` | [L332](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L332) | `use_moveit` |
+| 0 | RViz без MoveIt | [L288](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L288) | `use_rviz==true` и `use_moveit!=true` |
+| 0 | статический TF `link_base → world` | [L337](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L337) | `use_moveit` |
 | 4 | спавн робота `ros_gz_sim create` | [L147](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L147) | — |
 | 7 | спаунеры `joint_state_broadcaster`, `xarm6_traj_controller` | [L232](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L232) | — |
-| 10 | `grasp_analyzer` | [L255](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L255) | — |
-| 12 | MoveIt (`_robot_moveit_common.launch.py`) + его RViz | [L297](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L297) | `use_moveit` |
+| 10 | `grasp_analyzer` | [L257](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L257) | — |
+| 12 | MoveIt (`_robot_moveit_common.launch.py`) + его RViz | [L302](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L302) | `use_moveit` |
 
 Задержки подобраны «на глаз»: на медленной машине Gazebo может не успеть подняться за 4 с,
 и спавн/контроллеры упадут. Тогда увеличь `period` в этих строках.
@@ -357,7 +356,7 @@ vacuum_sim = Node(
 - `joint_state_broadcaster` — публикует `/joint_states` руки;
 - `xarm6_traj_controller` — исполняет траектории суставов (их шлёт MoveIt).
 
-### 3.12. grasp_analyzer ([L255–275](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L255))
+### 3.12. grasp_analyzer ([L257–280](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L257))
 
 Топики и кадр камеры выбираются по `camera_model`:
 
@@ -367,13 +366,27 @@ vacuum_sim = Node(
 | `points_topic` | `/gripper_camera/points` | `/camera/depth/points` |
 | `camera_frame` | `gripper_camera_color_optical_frame` | `camera_color_optical_frame` |
 
-Плюс `base_frame: link_base`, `analyze_period: 2.0` (с).
+Плюс `base_frame: link_base`, `analyze_period: 2.0` (с) и параметры сцены
+([L275–277](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L275)):
 
-⚠️ Обрати внимание: комментарий на [L250–254](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L250)
-рассуждает про `table_height` и `block_x/block_y`, но эти параметры в ноду **не передаются**
-(у `grasp_analyzer` остаётся свой default `table_height=1.0`, см. «Known issues» в CLAUDE.md).
+| Параметр | Значение | Смысл |
+|---|---|---|
+| `table_height` | `0.015` | высота столешницы относительно `link_base`, м |
+| `block_x`, `block_y` | `1.14`, `0.135` | запасная поза объекта в `link_base`, если облако не дало объект |
 
-### 3.13. RViz и MoveIt ([L277–339](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L277))
+Откуда эти числа — объясняет комментарий над нодой
+([L250–256](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L250)).
+В дефолтной сцене (тележка `c2l-v3-scaled`, спавн в (-0.3, 0)) `link_base` руки в мире
+находится примерно в точке (-0.54, -0.135, 0.910) — это **измерено** по `/gz/robot_pose` и TF.
+Дальше простое вычитание:
+
+- `table_height` = 0.925 (верх стола) − 0.910 = 0.015;
+- `block_x/y` = позиция `pick_box` (0.60, 0) − (−0.54, −0.135) = (1.14, 0.135).
+
+⚠️ Обрати внимание: числа верны только для дефолтной сцены. Если меняешь тележку,
+точку спавна или крепление руки — пересчитай их.
+
+### 3.13. RViz и MoveIt ([L282–344](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L282))
 
 Одновременно открывается **только одно** окно RViz:
 
@@ -386,14 +399,14 @@ condition=IfCondition(PythonExpression(
 - `use_moveit:=false` — обычный RViz с `cart_xarm.rviz`.
 
 MoveIt включается из `xarm_moveit_config/launch/_robot_moveit_common.launch.py`
-([L297–330](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L297)).
+([L302–335](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L302)).
 Ключевые аргументы:
 
 - `use_sim_time: 'true'` — передаётся **явно**. Иначе общий launch ставит нодам `False`,
   move_group живёт по системным часам и не исполняет траектории (комментарий L311–314).
 - `publish_attach_tf: 'false'` — MoveIt знает только руку (`world → link_base`). У нас
   `link_base` уже ребёнок тележки; второй родитель сломал бы TF. Вместо этого публикуется
-  статический `link_base → world` (нода `moveit_world_tf`, [L332](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L332)).
+  статический `link_base → world` (нода `moveit_world_tf`, [L337](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L337)).
 - `add_vacuum_gripper: 'true'`, `dof: '6'`, `ros2_control_plugin: 'gz_ros2_control/GazeboSimSystem'`.
 
 ⚠️ Обрати внимание: модель для MoveIt собирается отдельно (`uf_ros_lib/moveit_configs_builder.py`)
@@ -415,7 +428,7 @@ MoveIt включается из `xarm_moveit_config/launch/_robot_moveit_common
 | `cylinder_block` | [L144](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L144) | `0.80 -0.28 0.9705` | r=0.04, h=0.09, `static` |
 | `physics` | [L156](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L156) | — | шаг 1 мс, RTF 1 |
 
-Стол с центром x=1.05 и шириной 1.2 м: ближний край на x=0.45 — у носа тележки при спавне в 0,0.
+Стол с центром x=1.05 и шириной 1.2 м: ближний край на x=0.45 — при спавне в 0,0 корпус c2l-v3-scaled в него упирается, поэтому по умолчанию `spawn_x=-0.3`.
 Высоты объектов посчитаны «верх стола + половина высоты»: `pick_box` 0.925+0.025+0.0005,
 цилиндр 0.925+0.045+0.0005.
 
@@ -453,10 +466,9 @@ MoveIt включается из `xarm_moveit_config/launch/_robot_moveit_common
   Модель собирается с `model_sensors_plugin:=false`; второй экземпляр Sensors даёт
   `Scene already exists` и segfault (комментарий [L169–171](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L169)).
 
-⚠️ Обрати внимание: комментарий [L175](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L175)
-«/clock для use_sim_time» стоит над Sensors, но `/clock` в gz публикует сам сервер
-симуляции, а не плагин Sensors. И на [L163](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L163)
-написано «gz sim 9 (Harmonic)» — Harmonic это gz-sim 8, gz-sim 9 называется Ionic.
+Комментарий над Sensors ([L175](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L175))
+напоминает: `/clock` публикует сам сервер gz sim, а не этот плагин. Версия симулятора —
+gz sim 9 (Ionic), см. [L163](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L163).
 
 **`cart_table.world`** — старый вариант: пол, солнце и стол тянутся из Gazebo Fuel по
 URL (нужен интернет), стол при x=1.7, `cylinder_block` при `1.85 0.10 1.00`, нет `pick_box`.
@@ -512,13 +524,23 @@ gz и ROS совпадают. Оставлен для обратной совм�
 Запускает только `robot_state_publisher`, `joint_state_publisher_gui` (окно с ползунками
 суставов) и RViz с `cart_xarm.rviz`. Удобно проверять крепление руки и TF за секунды.
 
-- xacro вызывается с `use_sim:=false` ([L37](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L37)).
-- Аргументы: `use_gui` (`true`), `robot_model` (`c2l-v3-scaled`), `arm_offset_xyz`, `arm_offset_rpy` (`0 0 0`).
-- Начальная поза ползунков — константа `ARM_SIDE_POSE` ([L24–25](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L24)),
-  передаётся параметром `zeros` (несмотря на имя — это стартовые значения).
+- xacro вызывается с `use_sim:=false` ([L51](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L51)).
+- Аргументы: `use_gui` (`true`), `robot_model` (`c2l-v3-scaled`), `arm_offset_xyz`, `arm_offset_rpy` (`0 0 0`),
+  `arm_initial_positions` ([L71–73](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L71)) —
+  тот же аргумент, что и в gz-launch: шесть углов joint1…joint6 через пробел, рад.
+- Его дефолт — константа `ARM_INITIAL_POSITIONS = '1.5708 -0.9 -1.3 0 1.0 0'`
+  ([L25](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L25)).
+- Ноды `joint_state_publisher(_gui)` создаются в функции `_joint_state_publishers`
+  ([L28–40](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L28)), которую
+  запускает `OpaqueFunction`. Зачем так: строку аргумента нужно разрезать на числа
+  (`.perform(context).split()`), а это возможно только в момент запуска, когда значение
+  уже известно. Углы передаются параметром `zeros` в виде `{'joint1': …, …}`
+  (несмотря на имя — это стартовые значения).
 
-⚠️ Обрати внимание: `ARM_SIDE_POSE` — **копия** дефолта `arm_initial_positions` из gz-launch.
-Меняешь одно — поменяй и другое, иначе RViz-проверка и Gazebo разойдутся.
+Пример: `ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py arm_initial_positions:="0 0 0 0 0 0"`.
+
+⚠️ Обрати внимание: дефолт `ARM_INITIAL_POSITIONS` **дублирует** дефолт `arm_initial_positions`
+из gz-launch. Меняешь один — поменяй и второй, иначе RViz-проверка и Gazebo разойдутся.
 Аргумента `camera_model` здесь нет — используется значение по умолчанию из xacro.
 
 ## 7. Конфиги RViz
@@ -540,16 +562,17 @@ gz и ROS совпадают. Оставлен для обратной совм�
 | Поставить тележку в другое место (разово) | командная строка | `spawn_x/y/z/yaw` | `spawn_x:=-0.2 spawn_yaw:=0.3` |
 | Поменять точку спавна по умолчанию | [cart_xarm6_gz.launch.py:55](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L55) | `default_value` у `spawn_*` | `'-0.2'` |
 | Другая стартовая поза руки | [cart_xarm6_gz.launch.py:67](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L67) | `arm_initial_positions` | `'0 0 0 0 0 0'` |
-| То же для RViz-проверки | [cart_xarm6_rviz.launch.py:24](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L24) | `ARM_SIDE_POSE` | `{'joint1': 0.0, ...}` |
-| Другая камера | [cart_xarm6_gz.launch.py:359](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L359) | `camera_model` | `camera_model:=d435i` |
-| Ускорить камеру при низком RTF | [cart_xarm6_gz.launch.py:362](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L362) | `gripper_camera_preview` | `gripper_camera_preview:=true` |
-| Gazebo без окна (SSH/CI) | [cart_xarm6_gz.launch.py:356](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L356) | `headless` | `headless:=true` |
-| Другая тележка | [cart_xarm6_gz.launch.py:366](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L366) | `robot_model` | `robot_model:=c2` |
-| Сдвинуть базу руки на тележке | [cart_xarm6_gz.launch.py:370](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L370) | `arm_offset_xyz/rpy` | `arm_offset_xyz:="0.05 0 0"` |
+| То же для RViz-проверки | [cart_xarm6_rviz.launch.py:25](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py#L25) | `ARM_INITIAL_POSITIONS` / аргумент `arm_initial_positions` | `arm_initial_positions:="0 0 0 0 0 0"` |
+| Другая камера | [cart_xarm6_gz.launch.py:364](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L364) | `camera_model` | `camera_model:=d435i` |
+| Ускорить камеру при низком RTF | [cart_xarm6_gz.launch.py:367](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L367) | `gripper_camera_preview` | `gripper_camera_preview:=true` |
+| Gazebo без окна (SSH/CI) | [cart_xarm6_gz.launch.py:361](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L361) | `headless` | `headless:=true` |
+| Другая тележка | [cart_xarm6_gz.launch.py:371](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L371) | `robot_model` | `robot_model:=c2` |
+| Сдвинуть базу руки на тележке | [cart_xarm6_gz.launch.py:375](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L375) | `arm_offset_xyz/rpy` | `arm_offset_xyz:="0.05 0 0"` |
 | Другой мир | [cart_xarm6_gz.launch.py:43](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L43) | `world` | `world:=/abs/path/my.world` |
 | Без MoveIt / без RViz | [cart_xarm6_gz.launch.py:50](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L50) | `use_moveit`, `use_rviz` | `use_moveit:=false use_rviz:=false` |
-| Увеличить задержки старта | [cart_xarm6_gz.launch.py:342](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L342) | `period=` у `TimerAction` | `period=8.0` |
-| Частота анализа захвата | [cart_xarm6_gz.launch.py:272](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L272) | `analyze_period` | `1.0` |
+| Увеличить задержки старта | [cart_xarm6_gz.launch.py:347](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L347) | `period=` у `TimerAction` | `period=8.0` |
+| Высота стола / запасная поза объекта для grasp_analyzer | [cart_xarm6_gz.launch.py:275](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L275) | `table_height`, `block_x`, `block_y` | пересчитать при другой тележке/спавне |
+| Частота анализа захвата | [cart_xarm6_gz.launch.py:274](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L274) | `analyze_period` | `1.0` |
 | Передвинуть стол | [cart_table_offline.world:42](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L42) | `<pose>` модели `table_simple` | `1.10 0.0 0 0 0 0` |
 | Передвинуть коробку | [cart_table_offline.world:107](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L107) | `<pose>` `pick_box` | `0.65 0.1 0.9505 0 0 0` |
 | Изменить размер коробки | [cart_table_offline.world:130](../../src/r2_robot/cart_xarm_bringup/worlds/cart_table_offline.world#L130) + [launch:227](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L227) | `<size>` (visual+collision), `object_size`, инерция | синхронно в обоих файлах |

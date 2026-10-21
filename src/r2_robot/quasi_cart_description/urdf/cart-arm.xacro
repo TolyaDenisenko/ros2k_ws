@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <!--
   cart-arm.xacro — интеграция манипулятора xArm6 с вакуумным гриппером
-  и камерой на ЭФ (Realsense D435i) в URDF тележки quasi_cart (r2_robot).
+  и камерой на ЭФ (camera_model: gemini335le по умолчанию | d435i) в URDF
+  тележки quasi_cart (r2_robot).
 
-  Манипулятор ставится СТРОГО ПО ЦЕНТРУ верхней плоской платформы тележки.
-  Координаты верхнего листа base_link (по мешу base_link_c2-v3.stl):
-      z_top = 0.849 м,  x[-0.359 .. 0.359], y[-0.235 .. 0.235]
-  Центр платформы в base_link: (-0.0075, 0.0) — сюда крепится база руки.
+  Точка крепления базы руки — свойство arm_mount_xyz (в base_link):
+    - модель тележки может задать своё (c2l-v3*: -0.25 -0.1295 0.849, у края);
+    - иначе дефолт ниже — центр крыши c2 (-0.0075 0 0.849), меш
+      base_link_c2-v3.stl: z_top = 0.849 м, x[-0.359 .. 0.359], y[-0.235 .. 0.235].
+  Доп. смещение/поворот — аргументы arm_offset_xyz / arm_offset_rpy.
 
   Использование (из cart_with_arm.urdf.xacro):
       <xacro:include filename="cart-arm.xacro"/>
@@ -63,10 +65,10 @@
     <!--
       attach_to="arm_mount_link" — рука ЖЁСТКО вшита в URDF тележки;
       add_vacuum_gripper=true   — вакуумная присоска на link_eef;
-      add_realsense_d435i=true  — камера гриппера: топики camera/color/image_raw,
-                                  camera/color/camera_info, camera/depth/points
-                                  публикуются из Gazebo (realsense_gz при
-                                  ros2_control_plugin=gz_ros2_control/GazeboSimSystem).
+      камера гриппера по camera_model: gemini335le -> add_gripper_camera
+                                  (топики /gripper_camera/..., quasi_camera_description);
+                                  d435i -> add_realsense_d435i (старые /camera/...,
+                                  realsense_gz). gz-сенсор включается при use_sim.
     -->
     <xacro:xarm_device
       prefix="$(arg arm_prefix)"

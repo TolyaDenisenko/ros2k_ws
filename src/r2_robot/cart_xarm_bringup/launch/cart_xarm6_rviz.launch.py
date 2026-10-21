@@ -13,20 +13,34 @@ cart_xarm6_rviz.launch.py — только RViz, без Gazebo: модель т�
 import os
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 from ament_index_python.packages import get_package_share_directory
 
-# Та же начальная поза, что и в cart_xarm6_gz.launch.py (рука развёрнута вбок)
-ARM_SIDE_POSE = {'joint1': 1.5708, 'joint2': -0.9, 'joint3': -1.3,
-                 'joint4': 0.0, 'joint5': 1.0, 'joint6': 0.0}
+# Дефолт = arm_initial_positions из cart_xarm6_gz.launch.py (рука развёрнута вбок);
+# менять синхронно.
+ARM_INITIAL_POSITIONS = '1.5708 -0.9 -1.3 0 1.0 0'
+
+
+def _joint_state_publishers(context):
+    # 'zeros' — стартовые значения суставов (несмотря на имя параметра)
+    values = [float(v) for v in
+              LaunchConfiguration('arm_initial_positions').perform(context).split()]
+    jsp_params = [{'zeros': {f'joint{i + 1}': v for i, v in enumerate(values)}}]
+    use_gui = LaunchConfiguration('use_gui')
+    return [
+        Node(package='joint_state_publisher_gui',
+             executable='joint_state_publisher_gui',
+             parameters=jsp_params, condition=IfCondition(use_gui)),
+        Node(package='joint_state_publisher', executable='joint_state_publisher',
+             parameters=jsp_params, condition=UnlessCondition(use_gui)),
+    ]
 
 
 def generate_launch_description():
-    use_gui = LaunchConfiguration('use_gui')
     robot_model = LaunchConfiguration('robot_model')
 
     cart_xacro = os.path.join(
@@ -39,9 +53,6 @@ def generate_launch_description():
         ' arm_offset_xyz:="', LaunchConfiguration('arm_offset_xyz'), '"',
         ' arm_offset_rpy:="', LaunchConfiguration('arm_offset_rpy'), '"',
     ]), value_type=str)}
-
-    # 'zeros' — стартовые значения ползунков (несмотря на имя параметра)
-    jsp_params = [{'zeros': ARM_SIDE_POSE}]
 
     return LaunchDescription([
         DeclareLaunchArgument('use_gui', default_value='true',
@@ -57,11 +68,10 @@ def generate_launch_description():
             description='Доп. поворот базы руки, рад'),
         Node(package='robot_state_publisher', executable='robot_state_publisher',
              parameters=[robot_description], output='screen'),
-        Node(package='joint_state_publisher_gui',
-             executable='joint_state_publisher_gui',
-             parameters=jsp_params, condition=IfCondition(use_gui)),
-        Node(package='joint_state_publisher', executable='joint_state_publisher',
-             parameters=jsp_params, condition=UnlessCondition(use_gui)),
+        DeclareLaunchArgument(
+            'arm_initial_positions', default_value=ARM_INITIAL_POSITIONS,
+            description='Начальные углы joint1..joint6, рад (как в cart_xarm6_gz)'),
+        OpaqueFunction(function=_joint_state_publishers),
         Node(package='rviz2', executable='rviz2', output='screen',
              arguments=['-d', os.path.join(
                  get_package_share_directory('cart_xarm_bringup'),

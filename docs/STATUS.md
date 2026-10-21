@@ -56,6 +56,8 @@
 
 Формат: `дата — что — файлы`. Новые записи добавлять **сверху**.
 
+- **2026-10-21** — Спавн тележки по умолчанию `spawn_x=-0.3` (было 0): корпус c2l-v3-scaled больше не пересекает стол; `block_x` в launch и `grasp_params.yaml` пересчитан → 1.14. Коробка вне досягаемости руки — компоновку сцены ещё править.
+- **2026-10-21** — Исправления по итогам разбора: `grasp_analyzer` получает из launch `table_height=0.015`, `block_x/y=0.84/0.135` (замер для c2l-v3-scaled, спавн 0,0); `grasp_params.yaml` переписан под Orbbec и текущую сцену; кронштейн камеры следует за `mount_xyz`; `cart_xarm6_rviz.launch.py` — аргумент `arm_initial_positions`; `xarm6_gz.launch.py` (рука на столе) — снова `-z 1.015`; зависимости `xarm_grasping/package.xml` (std_srvs, control_msgs, trajectory_msgs, tf2_msgs, scipy); устаревшие комментарии (Ionic, крепление руки, D435i).
 - **2026-10-20** — Учебная книга `docs/book/` (главы 0–7: по пакетам + «Рецепты»); `CART_MODELS.md`: `c2l-v3-scaled` помечена как модель по умолчанию.
 - **2026-10-20** — c2l: рука перенесена зеркально на другой край корпуса, `arm_mount_xyz` `-0.25 0.1295` → `-0.25 -0.1295` (`c2l-v3.urdf.xacro`).
 - **2026-10-20** — Тележка по умолчанию — `c2l-v3-scaled` (было `c2`) в `cart_xarm6_gz/rviz.launch.py` и `cart_with_arm.urdf.xacro`; `c2` — через `robot_model:=c2`.

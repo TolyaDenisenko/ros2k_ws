@@ -5,7 +5,7 @@
   <version>0.1.0</version>
   <description>
     Bringup: тележка quasi_cart (r2_robot) + манипулятор xArm6 с вакуумным
-    гриппером и камерой D435i на ЭФ. Симуляция в Gazebo Sim + RViz,
+    гриппером и камерой на ЭФ (Orbbec Gemini 335Le | D435i). Симуляция в Gazebo Sim + RViz,
     интеграция с grasp_analyzer из пакета xarm_grasping.
   </description>
   <maintainer email="user@todo.todo">user</maintainer>

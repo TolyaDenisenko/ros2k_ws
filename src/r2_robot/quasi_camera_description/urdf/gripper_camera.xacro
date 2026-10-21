@@ -21,10 +21,12 @@
               mount_xyz:='0.075 0 0.030' mount_rpy:='${pi} ${-pi/2} 0'
               use_nominal_extrinsics:=true add_gz_sensor:=false preview:=false">
 
-    <!-- Кронштейн: бокс-заглушка (до появления STL из CAD). Лежит рядом с
-         присоской (x ≥ 0.0375, присоска до x=0.0375), коллизий с ней нет. -->
+    <!-- Кронштейн: бокс-заглушка (до появления STL из CAD). Привязан к mount_xyz:
+         центр на 18.75 мм (полтолщины бокса) ближе к оси, чем винт камеры;
+         при дефолте 0.075 → x=0.05625, рядом с присоской (до x=0.0375). -->
+    <xacro:property name="_m" value="${[float(v) for v in mount_xyz.split()]}"/>
     <joint name="${name}_bracket_joint" type="fixed">
-      <origin xyz="0.05625 0 0.030" rpy="0 0 0"/>
+      <origin xyz="${_m[0] - 0.01875} ${_m[1]} ${_m[2]}" rpy="0 0 0"/>
       <parent link="${parent}"/>
       <child link="${name}_bracket_link"/>
     </joint>

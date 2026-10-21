@@ -89,7 +89,7 @@ src/r2_robot/quasi_camera_description/
 
 | Параметр | Дефолт | Смысл |
 |---|---|---|
-| `camera_model` | — (обязателен) | `gemini335le`; другие модели пока не реализованы (TODO d555, [L52](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L52)) |
+| `camera_model` | — (обязателен) | `gemini335le`; другие модели пока не реализованы (TODO d555, [L54](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L54)) |
 | `parent` | `link_eef` | к какому звену крепим (фланец/конец руки) |
 | `name` | `gripper_camera` | префикс всех фреймов и топиков |
 | `mount_xyz` | `0.075 0 0.030` | где винт камеры относительно `link_eef`, м: 75 мм вбок от оси, 30 мм от фланца |
@@ -103,22 +103,26 @@ src/r2_robot/quasi_camera_description/
 объясняет: камера смотрит туда же, куда присоска, но смещена на ~89 мм от оси; сама
 присоска в кадр не попадает. Значения — **стартовые**, их надо уточнить по CAD и калибровке.
 
-Кронштейн ([L26-L43](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L26-L43))
+Кронштейн ([L24-L45](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L24-L45))
 — пока «бокс-заглушка» 37.5×40×60 мм, массой 80 г:
 
 ```xml
+<xacro:property name="_m" value="${[float(v) for v in mount_xyz.split()]}"/>
 <joint name="${name}_bracket_joint" type="fixed">
-  <origin xyz="0.05625 0 0.030" rpy="0 0 0"/>
+  <origin xyz="${_m[0] - 0.01875} ${_m[1]} ${_m[2]}" rpy="0 0 0"/>
   <parent link="${parent}"/>
   <child link="${name}_bracket_link"/>
 </joint>
 ```
 
-> ⚠️ Обрати внимание: позиция кронштейна (`0.05625 0 0.030`) **захардкожена** и
-> не зависит от `mount_xyz`. Если сдвинуть камеру через `mount_xyz`, кронштейн
-> останется на месте — его надо двигать отдельно (строка 27).
+Позиция кронштейна **вычисляется из `mount_xyz`** ([L27-L29](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L27-L29)).
+Строка `mount_xyz` разбивается на три числа (`_m`), и центр бокса ставится на
+18.75 мм (половина его толщины 37.5 мм) ближе к оси инструмента, чем винт камеры:
+`x = mount_x − 0.01875`, `y` и `z` — как у камеры. При дефолте `0.075 0 0.030`
+получается `0.05625 0 0.030` — рядом с присоской (она доходит до x=0.0375), без
+пересечения. Значит, если сдвинуть камеру через `mount_xyz`, кронштейн поедет вместе с ней.
 
-Дальше выбор модели и сенсора ([L45-L57](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L45-L57)):
+Дальше выбор модели и сенсора ([L47-L59](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L47-L59)):
 
 ```xml
 <xacro:if value="${camera_model == 'gemini335le'}">
@@ -295,7 +299,7 @@ link_eef
 `realsense_d435i.urdf.xacro` (меш камеры — это и есть `link_eef`), а без неё —
 пустым звеном (строки 243–244).
 
-А значения туда передаёт [cart-arm.xacro#L82-L88](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L82-L88):
+А значения туда передаёт [cart-arm.xacro#L84-L90](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L84-L90):
 
 ```xml
 add_realsense_d435i="${'$(arg camera_model)' == 'd435i'}"
@@ -308,7 +312,7 @@ gripper_camera_preview="$(arg gripper_camera_preview)"
 ```
 
 Аргументы `camera_model` (дефолт `gemini335le`) и `gripper_camera_preview`
-(дефолт `false`) объявлены там же ([L31-L32](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L31-L32)).
+(дефолт `false`) объявлены там же ([L33-L34](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L33-L34)).
 При `use_sim:=false` (просто RViz, железо) камера рисуется без оптических фреймов и без gz-сенсора.
 
 > ⚠️ Обрати внимание: MoveIt собирает **свою** модель руки через
@@ -358,9 +362,9 @@ gz сенсор gripper_camera_rgbd  (15 Гц, 1280×800)
   [cart_xarm6_gz.launch.py#L194-L215](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L194-L215).
   Облако из gz не используется специально: так в симуляции и на железе
   конвейер одинаковый, а система координат gz-облака зависит от версии gz-sensors.
-- Выбор топиков для `grasp_analyzer` по `camera_model` — [launch#L263-L270](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L263-L270).
-- Аргументы launch: `camera_model` ([L359](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L359)),
-  `gripper_camera_preview` ([L362](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L362)),
+- Выбор топиков для `grasp_analyzer` по `camera_model` — [launch#L264-L272](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L264-L272).
+- Аргументы launch: `camera_model` ([L364](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L364)),
+  `gripper_camera_preview` ([L367](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L367)),
   условия `is_orbbec`/`is_d435i` ([L74-L75](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L74-L75)).
 
 ## 5. Что здесь можно менять
@@ -369,8 +373,8 @@ gz сенсор gripper_camera_rgbd  (15 Гц, 1280×800)
 |---|---|---|---|
 | Сдвинуть камеру | [gripper_camera.xacro:21](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L21) | `mount_xyz` | `'0.080 0 0.040'` |
 | Повернуть/наклонить камеру | [gripper_camera.xacro:21](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L21) | `mount_rpy` | `'${pi} ${-pi/2+0.17} 0'` (~10°) |
-| Сдвинуть кронштейн вслед за камерой | [gripper_camera.xacro:27](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L27) | `origin xyz` | `0.06125 0 0.040` |
-| Изменить размер кронштейна | [gripper_camera.xacro:37,41](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L37) | `box size` | `0.04 0.05 0.06` |
+| Сместить кронштейн относительно камеры | [gripper_camera.xacro:29](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L29) | `origin xyz` (`_m[0] - 0.01875`) | обычно не нужно: кронштейн сам следует за `mount_xyz` |
+| Изменить размер кронштейна | [gripper_camera.xacro:39,43](../../src/r2_robot/quasi_camera_description/urdf/gripper_camera.xacro#L39) | `box size` | `0.04 0.05 0.06` |
 | Поменять разрешение | [gemini335le.yaml:7-8](../../src/r2_robot/quasi_camera_description/config/gemini335le.yaml#L7) | `width`, `height` | `848`, `530` |
 | Поменять FOV | [gemini335le.yaml:6](../../src/r2_robot/quasi_camera_description/config/gemini335le.yaml#L6) | `hfov` (рад) | `1.64` (94°) |
 | Поменять частоту | [gemini335le.yaml:9](../../src/r2_robot/quasi_camera_description/config/gemini335le.yaml#L9) | `rate` | `30.0` |
@@ -392,7 +396,7 @@ gz сенсор gripper_camera_rgbd  (15 Гц, 1280×800)
 3. **Облако «смотрит» не туда / повёрнуто на 90°.** Перепутали обычный и оптический
    фрейм (точки в optical-фрейме интерпретируют как в REP-103).
 4. **Нет точек вблизи.** Объект ближе `near = 0.25` м — это мёртвая зона, как у реальной камеры.
-5. **Сдвинул камеру, а кронштейн висит в воздухе** — см. ⚠️ в 3.1.
+5. **Повернул камеру через `mount_rpy`, а кронштейн не повернулся** — кронштейн следует только за `mount_xyz` (сдвиг), поворот на него не влияет; при сильном наклоне проверь, что бокс не торчит сквозь камеру (см. 3.1).
 6. **Добавил `camera_model:=d555`** — xacro падает: модели и yaml ещё нет.
 7. **Новый yaml/меш «не находится»** — нужна пересборка пакета (`colcon build --packages-select quasi_camera_description`).
 8. **Тормозит GPU/мост** — используй `gripper_camera_preview:=true`.

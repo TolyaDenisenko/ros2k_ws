@@ -3,13 +3,13 @@
   cart_with_arm.urdf.xacro — тележка quasi_cart (репозиторий r2_robot)
   + манипулятор xArm6 с вакуумным гриппером и камерой на ЭФ.
 
-  Рука расположена ПО ЦЕНТРУ верхней плоской платформы тележки:
-  joint arm_mount_joint (base_link -> arm_mount_link, xyz="-0.0075 0 0.849"),
+  Рука стоит на крыше тележки: joint arm_mount_joint (base_link -> arm_mount_link,
+  xyz = arm_mount_xyz: для c2 центр -0.0075 0 0.849, для c2l-v3* -0.25 -0.1295 0.849),
   затем world_joint руки (arm_mount_link -> link_base).
 
   Этот URDF имеет ПРЯМУЮ ссылку на добавленный манипулятор:
       <xacro:include filename="cart-arm.xacro"/>
-      <xacro:mount_xarm6_on_cart/>   # xArm6 + add_vacuum_gripper + D435i camera
+      <xacro:mount_xarm6_on_cart/>   # xArm6 + add_vacuum_gripper + камера (camera_model)
 
   Проверка генерации:
       xacro cart_with_arm.urdf.xacro use_sim:=true
@@ -112,7 +112,7 @@
     <!-- ==================== МАНИПУЛЯТОР НА ТЕЛЕЖКЕ ==================== -->
     <!-- Ссылка на руку: include + вызов макроса mount_xarm6_on_cart.
          Внутри: xArm6 dof=$(arg arm_dof) + add_vacuum_gripper=true
-         + add_realsense_d435i=true (камера гриппера для grasp_analyzer). -->
+         + камера гриппера по camera_model (для grasp_analyzer). -->
     <xacro:include filename="cart-arm.xacro"/>
     <xacro:mount_xarm6_on_cart/>
 

@@ -4,8 +4,8 @@
   <name>xarm_grasping</name>
   <version>0.1.0</version>
   <description>
-    Grasping для xArm6 с вакуумным гриппером: камера на ЭФ (Realsense D435i),
-    поиск цилиндрического блока на столе, генерация и визуализация вариантов
+    Grasping для xArm6 с вакуумным гриппером: камера на ЭФ (Orbbec Gemini 335Le
+    или Realsense D435i), симуляция вакуума (DetachableJoint), поиск цилиндрического блока на столе, генерация и визуализация вариантов
     захвата (top-down / боковые подходы) в RViz + изображение камеры.
   </description>
   <maintainer email="user@todo.todo">user</maintainer>
@@ -18,6 +18,12 @@
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+  <exec_depend>control_msgs</exec_depend>
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>builtin_interfaces</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
   <exec_depend>tf2_ros</exec_depend>
   <exec_depend>python3-numpy</exec_depend>
   <exec_depend>cv_bridge</exec_depend>
