@@ -4,7 +4,7 @@
   + манипулятор xArm6 с вакуумным гриппером и камерой на ЭФ.
 
   Рука стоит на крыше тележки: joint arm_mount_joint (base_link -> arm_mount_link,
-  xyz = arm_mount_xyz: для c2 центр -0.0075 0 0.849, для c2l-v3* -0.25 -0.1295 0.849),
+  xyz = arm_mount_xyz: для c2 центр -0.0075 0 0.849, для c2l-v3 -0.25 -0.1295 0.849),
   затем world_joint руки (arm_mount_link -> link_base).
 
   Этот URDF имеет ПРЯМУЮ ссылку на добавленный манипулятор:
@@ -18,7 +18,7 @@
 
     <!-- ==================== Аргументы ==================== -->
     <xacro:arg name="use_sim" default="false" />
-    <xacro:arg name="robot_model" default="c2l-v3-scaled" />
+    <xacro:arg name="robot_model" default="c2l-v3" />
     <xacro:arg name="simulator" default="ignition" />
     <xacro:arg name="enable_floor_tofs" default="true" />
     <xacro:arg name="camera_roll_offset" default="0.0"/>
@@ -27,6 +27,8 @@
     <xacro:arg name="enable_camera_realsense" default="false"/>
     <xacro:arg name="enable_camera_oak" default="false"/>
     <xacro:arg name="enable_camera_orbbec" default="false"/>
+    <!-- Передняя камера Orbbec Gemini 335Le (cart-front-camera.xacro), /front_camera/... -->
+    <xacro:arg name="front_camera" default="true"/>
     <xacro:arg name="enable_pace_battery" default="true"/>
     <!-- Sensors-система gz объявлена в мирах cart_xarm_bringup/worlds/*.world.
          Дублирование в модели (cart-sensors.ign.xacro + realsense_gz руки)
@@ -60,6 +62,10 @@
     <xacro:include filename="$(arg robot_model).urdf.xacro"/>
     <xacro:include filename="cart-drive-${drive}.urdf.xacro"/>
     <xacro:include filename="cart-base.urdf.xacro"/>
+    <xacro:if value="$(arg front_camera)">
+        <xacro:include filename="cart-front-camera.xacro"/>
+        <xacro:cart_front_camera add_gz_sensor="$(arg use_sim)"/>
+    </xacro:if>
 
     <xacro:if value="$(arg use_sim)">
         <xacro:if value="${var_simulator == 'ignition'}">

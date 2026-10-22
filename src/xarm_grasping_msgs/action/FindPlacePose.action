@@ -1,0 +1,13 @@
+# Найти свободное место в зоне для объекта (scene_manager).
+# id объекта из /objects (размер берётся из него)
+string object_id
+# Имя зоны из config/place_zones.yaml; пусто — зона по правилам для класса объекта
+string zone
+---
+bool success
+string message
+string zone
+# Поза ЦЕНТРА объекта на месте установки (дно на столе)
+geometry_msgs/PoseStamped place_pose
+---
+string stage

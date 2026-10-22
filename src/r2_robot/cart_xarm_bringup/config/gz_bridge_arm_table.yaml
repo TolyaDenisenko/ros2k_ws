@@ -1,0 +1,45 @@
+# СГЕНЕРИРОВАНО tools/gen_arm_table_scene.py из config/arm_table_objects.yaml — не править руками.
+# gz_bridge сценария «рука на столе»: /clock, поза руки, вакуум и поза каждого объекта.
+# Камера гриппера — gz_bridge_gripper_camera.yaml (общий с тележкой).
+- {ros_topic_name: "/clock", gz_topic_name: "/clock", ros_type_name: "rosgraph_msgs/msg/Clock", gz_type_name: "gz.msgs.Clock", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/robot_pose", gz_topic_name: "/xarm6_table/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# pick_box
+- {ros_topic_name: "/vacuum/pick_box/attach", gz_topic_name: "/vacuum/pick_box/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/pick_box/detach", gz_topic_name: "/vacuum/pick_box/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/pick_box/state", gz_topic_name: "/vacuum/pick_box/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/pick_box/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# box_small
+- {ros_topic_name: "/vacuum/box_small/attach", gz_topic_name: "/vacuum/box_small/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_small/detach", gz_topic_name: "/vacuum/box_small/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_small/state", gz_topic_name: "/vacuum/box_small/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_small/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# box_tall
+- {ros_topic_name: "/vacuum/box_tall/attach", gz_topic_name: "/vacuum/box_tall/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_tall/detach", gz_topic_name: "/vacuum/box_tall/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_tall/state", gz_topic_name: "/vacuum/box_tall/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_tall/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# box_flat
+- {ros_topic_name: "/vacuum/box_flat/attach", gz_topic_name: "/vacuum/box_flat/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_flat/detach", gz_topic_name: "/vacuum/box_flat/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/box_flat/state", gz_topic_name: "/vacuum/box_flat/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_flat/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cylinder_block
+- {ros_topic_name: "/vacuum/cylinder_block/attach", gz_topic_name: "/vacuum/cylinder_block/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cylinder_block/detach", gz_topic_name: "/vacuum/cylinder_block/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cylinder_block/state", gz_topic_name: "/vacuum/cylinder_block/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cylinder_block/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cyl_small
+- {ros_topic_name: "/vacuum/cyl_small/attach", gz_topic_name: "/vacuum/cyl_small/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_small/detach", gz_topic_name: "/vacuum/cyl_small/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_small/state", gz_topic_name: "/vacuum/cyl_small/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_small/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cyl_wide
+- {ros_topic_name: "/vacuum/cyl_wide/attach", gz_topic_name: "/vacuum/cyl_wide/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_wide/detach", gz_topic_name: "/vacuum/cyl_wide/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_wide/state", gz_topic_name: "/vacuum/cyl_wide/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_wide/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cyl_tall
+- {ros_topic_name: "/vacuum/cyl_tall/attach", gz_topic_name: "/vacuum/cyl_tall/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_tall/detach", gz_topic_name: "/vacuum/cyl_tall/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cyl_tall/state", gz_topic_name: "/vacuum/cyl_tall/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_tall/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}

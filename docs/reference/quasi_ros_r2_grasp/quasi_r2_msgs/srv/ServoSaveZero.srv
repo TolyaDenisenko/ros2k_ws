@@ -1,0 +1,6 @@
+# Used for saving the current servo's position as the zero position
+
+string link_name
+---
+bool success   # indicate successful run of triggered service
+string message # informational, e.g. for error messages

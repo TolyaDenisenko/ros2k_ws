@@ -5,7 +5,7 @@
   тележки quasi_cart (r2_robot).
 
   Точка крепления базы руки — свойство arm_mount_xyz (в base_link):
-    - модель тележки может задать своё (c2l-v3*: -0.25 -0.1295 0.849, у края);
+    - модель тележки может задать своё (c2l-v3: -0.25 -0.1295 0.849, у края);
     - иначе дефолт ниже — центр крыши c2 (-0.0075 0 0.849), меш
       base_link_c2-v3.stl: z_top = 0.849 м, x[-0.359 .. 0.359], y[-0.235 .. 0.235].
   Доп. смещение/поворот — аргументы arm_offset_xyz / arm_offset_rpy.
@@ -32,9 +32,30 @@
        RealSense из xarm_description). use_sim=true -> номинальные фреймы + gz-сенсор. -->
   <xacro:arg name="camera_model" default="gemini335le"/>
   <xacro:arg name="gripper_camera_preview" default="false"/>
-  <!-- Модель Gazebo, которую присоска может «приварить» (DetachableJoint).
-       Должна совпадать с именем модели в мире (cart_table_offline.world: pick_box). -->
-  <xacro:arg name="vacuum_target_model" default="pick_box"/>
+  <!-- Модели Gazebo, которые присоска может «приварить» (DetachableJoint), через
+       пробел. Имена = имена моделей в мире, у каждой link «link», модели НЕ static.
+       На каждую — свой плагин и топики /vacuum/<модель>/{attach,detach,state}. -->
+  <xacro:arg name="vacuum_targets" default="pick_box"/>
+
+  <!-- Плагин DetachableJoint на каждую модель из списка (xacro без циклов —
+       рекурсия по списку) -->
+  <xacro:macro name="vacuum_joints" params="targets">
+    <xacro:if value="${len(targets) > 0}">
+      <gazebo>
+        <plugin filename="gz-sim-detachable-joint-system"
+                name="gz::sim::systems::DetachableJoint">
+          <parent_link>link6</parent_link>
+          <child_model>${targets[0]}</child_model>
+          <child_link>link</child_link>
+          <attach_topic>/vacuum/${targets[0]}/attach</attach_topic>
+          <detach_topic>/vacuum/${targets[0]}/detach</detach_topic>
+          <output_topic>/vacuum/${targets[0]}/state</output_topic>
+          <suppress_child_warning>true</suppress_child_warning>
+        </plugin>
+      </gazebo>
+      <xacro:vacuum_joints targets="${targets[1:]}"/>
+    </xacro:if>
+  </xacro:macro>
 
   <!-- ==================== Фланец крепления на крыше тележки ==================== -->
   <!-- Точка крепления зависит от тележки: файл модели (<robot_model>.urdf.xacro,
@@ -89,7 +110,7 @@
       gripper_camera_gz="$(arg use_sim)"
       gripper_camera_preview="$(arg gripper_camera_preview)"
       ros2_control_plugin="$(arg arm_ros2_control_plugin)"
-      ros2_control_params="$(find xarm_controller)/config/xarm6_controllers.yaml"
+      ros2_control_params="$(find quasi_cart_description)/config/xarm6_controllers_sim.yaml"
       load_gazebo_plugin="true"
       attach_to="arm_mount_link"
       attach_xyz="$(arg arm_offset_xyz)"
@@ -100,27 +121,18 @@
       Симуляция вакуума (use_sim=true): логическая присоска на DetachableJoint.
       Физической присоски в gz нет, поэтому «вакуум» = жёсткое соединение
       (fixed joint) между звеном руки и объектом:
-        /vacuum/attach (Empty) -> соединение создаётся с ТЕКУЩИМ взаимным
+        /vacuum/<модель>/attach (Empty) -> соединение создаётся с ТЕКУЩИМ взаимным
                                   положением (объект не телепортируется);
-        /vacuum/detach (Empty) -> соединение удаляется, объект падает;
-        /vacuum/state (String) <- "attached" / "detached".
+        /vacuum/<модель>/detach (Empty) -> соединение удаляется, объект падает;
+        /vacuum/<модель>/state (String) <- "attached" / "detached".
       parent_link = link6: в SDF fixed-суставы URDF схлопываются, и присоска
       (xarm_vacuum_gripper_link), link_eef, камера лежат внутри звена link6
       (проверено: gz sdf -p на сгенерированном URDF).
       Когда слать attach — решает нода vacuum_gripper_sim (проверяет касание).
     -->
     <xacro:if value="$(arg use_sim)">
+      <xacro:vacuum_joints targets="${'$(arg vacuum_targets)'.split()}"/>
       <gazebo>
-        <plugin filename="gz-sim-detachable-joint-system"
-                name="gz::sim::systems::DetachableJoint">
-          <parent_link>link6</parent_link>
-          <child_model>$(arg vacuum_target_model)</child_model>
-          <child_link>link</child_link>
-          <attach_topic>/vacuum/attach</attach_topic>
-          <detach_topic>/vacuum/detach</detach_topic>
-          <output_topic>/vacuum/state</output_topic>
-          <suppress_child_warning>true</suppress_child_warning>
-        </plugin>
         <!-- Поза модели робота в мире (10 Гц) — для проверки касания присоской -->
         <plugin filename="gz-sim-pose-publisher-system"
                 name="gz::sim::systems::PosePublisher">

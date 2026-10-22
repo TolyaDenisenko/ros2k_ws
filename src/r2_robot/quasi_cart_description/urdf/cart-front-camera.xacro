@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--
+  cart-front-camera.xacro — передняя (навигационная) камера тележки:
+  Orbbec Gemini 335Le на base_link, топики/фреймы /front_camera/...
+
+  Тело камеры — общий макрос quasi_camera_description (тот же, что у камеры
+  гриппера), поэтому имена совпадают с драйвером Orbbec при camera_name:=front_camera.
+  Сенсор gz — в облегчённом режиме sim_preview (640x400): камера нужна для
+  препятствий/OctoMap, а не для захвата, и не должна грузить GPU наравне с гриппером.
+
+  Поза — свойства модели тележки (задаются в <robot_model>.urdf.xacro раньше):
+    front_camera_xyz / front_camera_rpy — нижний винт камеры в base_link.
+  Исходные значения — репозиторий тележки quasi_ros_c1 (c2-v3, enable_camera_orbbec):
+  камера висит под передним краем крыши вверх ногами (roll = -pi) и смотрит
+  вперёд с наклоном 0.041 рад. Default ниже — поза c2.
+
+  Использование (cart_with_arm.urdf.xacro):
+      <xacro:include filename="cart-front-camera.xacro"/>
+      <xacro:cart_front_camera add_gz_sensor="true"/>
+-->
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:property name="front_camera_xyz" default="0.309124 0.0 0.839651"/>
+  <xacro:property name="front_camera_rpy" default="${-pi} 0.041 0.0"/>
+
+  <xacro:macro name="cart_front_camera" params="add_gz_sensor:=false name:=front_camera">
+    <xacro:include filename="$(find quasi_camera_description)/urdf/cameras/gemini335le.xacro"/>
+    <xacro:camera_body_gemini335le name="${name}" parent="base_link" use_nominal_extrinsics="true">
+      <origin xyz="${front_camera_xyz}" rpy="${front_camera_rpy}"/>
+    </xacro:camera_body_gemini335le>
+
+    <xacro:if value="${add_gz_sensor}">
+      <xacro:include filename="$(find quasi_camera_description)/urdf/gz/gz_rgbd_camera.xacro"/>
+      <xacro:gz_rgbd_camera name="${name}" model="gemini335le" preview="true"/>
+    </xacro:if>
+  </xacro:macro>
+</robot>

@@ -1,0 +1,8 @@
+object_recognition_test:
+  ros__parameters:
+    model_ss: 0.003
+    scene_ss: 0.004
+    descr_rad: 0.033
+    rf_rad: 0.03
+    cg_size: 0.2
+    cg_thresh: 40.0

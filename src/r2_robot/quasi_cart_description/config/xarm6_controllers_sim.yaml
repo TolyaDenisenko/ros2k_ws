@@ -1,0 +1,58 @@
+# Контроллеры xArm6 для симуляции на тележке (gz_ros2_control), подключаются
+# из cart-arm.xacro. Копия xarm_controller/config/xarm6_controllers.yaml
+# (тот остаётся для железа) с двумя отличиями:
+#
+# 1) command_interfaces: только position (было position + velocity).
+#    Если JTC захватывает оба интерфейса, gz_ros2_control исполняет ТОЛЬКО
+#    velocity, а JTC без PID-gains шлёт туда лишь скорость траектории (при
+#    удержании — 0): позиционной обратной связи нет. Рывки тележки
+#    (VelocityControl) сдвигали суставы, и рука не возвращалась —
+#    joint2 доезжал до предела, MoveIt: «Start state out of bounds».
+# 2) gz_ros_control.position_proportional_gain: 1.0 (дефолт 0.1)
+#    В position-режиме gz_ros2_control задаёт суставу скорость
+#    gain * (цель - текущая); при 0.1 ошибка 1 рад выбиралась бы со скоростью
+#    0.1 рад/с, т.е. рука почти не держала бы позу. При 3 и 10 — тремор в
+#    покое (автоколебания, скорость суставов до предела 3.14 рад/с); при 1 —
+#    рука неподвижна и в покое, и при езде тележки (проверено headless-сим).
+
+gz_ros_control:
+  ros__parameters:
+    position_proportional_gain: 1.0
+
+controller_manager:
+  ros__parameters:
+    update_rate: 150  # Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    xarm6_traj_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+xarm6_traj_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.0
+      joint1: {trajectory: 1.0, goal: 0.01}
+      joint2: {trajectory: 1.0, goal: 0.01}
+      joint3: {trajectory: 1.0, goal: 0.01}
+      joint4: {trajectory: 1.0, goal: 0.01}
+      joint5: {trajectory: 1.0, goal: 0.01}
+      joint6: {trajectory: 1.0, goal: 0.01}
+    interface_name: position
+    state_publish_rate: 25.0
+    action_monitor_rate: 10.0
+    open_loop_control: true

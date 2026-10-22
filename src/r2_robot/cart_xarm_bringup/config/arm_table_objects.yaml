@@ -1,0 +1,22 @@
+# Объекты сцены «рука на столе» — ЕДИНСТВЕННЫЙ источник списка.
+# Отсюда читает arm_table_gz.launch.py (vacuum_targets, vacuum_gripper_sim,
+# scene_markers), а мир (worlds/arm_table.world) и мост
+# (config/gz_bridge_arm_table.yaml) генерирует tools/gen_arm_table_scene.py:
+#   python3 src/r2_robot/cart_xarm_bringup/tools/gen_arm_table_scene.py
+# После правки — запустить генератор и пересобрать (новые файлы не нужны,
+# --symlink-install подхватит).
+#
+# name  — имя модели в Gazebo = класс в xarm_grasping/config/objects.yaml
+# shape — box | cylinder
+# size  — box: [X, Y, Z]; cylinder: [радиус, высота], м
+# xy    — центр на столе в link_base (верх стола z=0), м; yaw — рад
+# mass  — кг
+objects:
+  - {name: pick_box,       shape: box,      size: [0.10, 0.05, 0.05], xy: [0.40, 0.10],  yaw: 0.0, mass: 0.10}
+  - {name: box_small,      shape: box,      size: [0.06, 0.06, 0.04], xy: [0.50, 0.00],  yaw: 0.3, mass: 0.08}
+  - {name: box_tall,       shape: box,      size: [0.07, 0.05, 0.10], xy: [0.52, 0.15],  yaw: 0.0, mass: 0.15}
+  - {name: box_flat,       shape: box,      size: [0.12, 0.08, 0.03], xy: [0.27, 0.17],  yaw: 0.0, mass: 0.12}
+  - {name: cylinder_block, shape: cylinder, size: [0.04, 0.09],       xy: [0.35, -0.20], yaw: 0.0, mass: 0.10}
+  - {name: cyl_small,      shape: cylinder, size: [0.025, 0.06],      xy: [0.50, -0.15], yaw: 0.0, mass: 0.05}
+  - {name: cyl_wide,       shape: cylinder, size: [0.05, 0.05],       xy: [0.27, -0.08], yaw: 0.0, mass: 0.12}
+  - {name: cyl_tall,       shape: cylinder, size: [0.035, 0.13],      xy: [0.40, -0.05], yaw: 0.0, mass: 0.12}

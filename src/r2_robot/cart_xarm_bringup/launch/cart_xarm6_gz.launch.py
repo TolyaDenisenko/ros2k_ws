@@ -10,14 +10,14 @@ DetachableJoint + нода vacuum_gripper_sim (сервис /vacuum_gripper/set)
 URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
   Рука закреплена на верхней плоской платформе тележки
   (arm_mount_joint: base_link -> arm_mount_link). Точка крепления зависит
-  от robot_model: c2 — центр (-0.0075 0 0.849), c2l-v3* — (-0.25 -0.1295 0.849).
+  от robot_model: c2 — центр (-0.0075 0 0.849), c2l-v3 — (-0.25 -0.1295 0.849).
 
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false   # обычный RViz без MoveIt
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py use_moveit:=false use_rviz:=false  # только Gazebo
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm_initial_positions:="0 0 0 0 0 0"
-  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled
+  ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py headless:=true                   # Gazebo без GUI
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py camera_model:=d435i               # старая камера
   ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py gripper_camera_preview:=true     # лёгкий режим 640x400
@@ -52,7 +52,7 @@ def generate_launch_description():
         description='MoveIt (move_group + RViz с панелью MotionPlanning, '
                     'тележкой, маркерами захвата и камерой в одном окне). '
                     'false — обычный RViz без MoveIt')
-    spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='-0.3')
+    spawn_x_arg = DeclareLaunchArgument('spawn_x', default_value='-0.5')
     spawn_y_arg = DeclareLaunchArgument('spawn_y', default_value='0.0')
     spawn_z_arg = DeclareLaunchArgument('spawn_z', default_value='0.07')
     spawn_yaw_arg = DeclareLaunchArgument(
@@ -66,13 +66,14 @@ def generate_launch_description():
     arm_initial_positions_arg = DeclareLaunchArgument(
         'arm_initial_positions', default_value='1.5708 -0.9 -1.3 0 1.0 0',
         description='Начальные углы joint1..joint6 (рад) через пробел')
-    robot_model = LaunchConfiguration('robot_model', default='c2l-v3-scaled')
+    robot_model = LaunchConfiguration('robot_model', default='c2l-v3')
     use_moveit = LaunchConfiguration('use_moveit')
     camera_model = LaunchConfiguration('camera_model')
     # Условия «какая камера»: gemini335le (Orbbec, quasi_camera_description) или
     # d435i (старая RealSense из xarm_description, топики /camera/...).
     is_orbbec = IfCondition(PythonExpression(["'", camera_model, "' != 'd435i'"]))
     is_d435i = IfCondition(PythonExpression(["'", camera_model, "' == 'd435i'"]))
+    front_camera = LaunchConfiguration('front_camera')
 
     # ---------- 1. URDF тележки + руки (xacro) ----------
     cart_xacro = os.path.join(
@@ -85,6 +86,7 @@ def generate_launch_description():
         ' camera_model:=', camera_model,
         ' gripper_camera_preview:=', LaunchConfiguration('gripper_camera_preview'),
         ' robot_model:=', robot_model,
+        ' front_camera:=', front_camera,
         ' simulator:=ignition',
         ' xarm_initial_positions:="', LaunchConfiguration('arm_initial_positions'), '"',
         ' arm_offset_xyz:="', LaunchConfiguration('arm_offset_xyz'), '"',
@@ -215,16 +217,87 @@ def generate_launch_description():
         condition=is_orbbec,
     )
 
+    # 5e. Навигационные датчики тележки: лидар /scan, ToF /rangeN_pcl
+    #     (gz_bridge_cart_sensors.yaml) и передняя камера /front_camera/...
+    #     (облако /front_camera/points — тем же depth_image_proc, что у гриппера).
+    gz_bridge_cart_sensors = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        name='gz_bridge_cart_sensors',
+        parameters=[{'config_file': bridge_cfg('gz_bridge_cart_sensors.yaml'),
+                     'use_sim_time': True}],
+        output='screen',
+    )
+    gz_bridge_front_camera = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        name='gz_bridge_front_camera',
+        parameters=[{'config_file': bridge_cfg('gz_bridge_front_camera.yaml'),
+                     'use_sim_time': True}],
+        output='screen',
+        condition=IfCondition(front_camera),
+    )
+    front_camera_points = ComposableNodeContainer(
+        name='front_camera_proc', namespace='',
+        package='rclcpp_components', executable='component_container_mt',
+        composable_node_descriptions=[ComposableNode(
+            package='depth_image_proc',
+            plugin='depth_image_proc::PointCloudXyzrgbNode',
+            name='front_camera_points',
+            remappings=[
+                ('rgb/image_rect_color', '/front_camera/color/image_raw'),
+                ('rgb/camera_info', '/front_camera/color/camera_info'),
+                ('depth_registered/image_rect', '/front_camera/aligned_depth/image_raw'),
+                ('points', '/front_camera/points'),
+            ],
+            parameters=[{'use_sim_time': True, 'queue_size': 5}],
+        )],
+        output='screen',
+        condition=IfCondition(front_camera),
+    )
+
+    # 5h. Кнопка вакуума в RViz (интерактивный маркер у присоски, /vacuum_button)
+    vacuum_button = Node(
+        package='xarm_grasping',
+        executable='vacuum_rviz_button.py',
+        name='vacuum_rviz_button',
+        parameters=[{'use_sim_time': True}],
+        output='screen',
+    )
+
+    # 5f. Истинная сцена Gazebo в RViz (/scene_markers): стол, pick_box,
+    #     cylinder_block — для сравнения с маркерами grasp_analyzer.
+    scene_markers = Node(
+        package='xarm_grasping',
+        executable='scene_markers.py',
+        name='scene_markers',
+        parameters=[{'use_sim_time': True}],
+        output='screen',
+    )
+
+    # 5g. Парковка руки (имитация тормозов): пока тележка едет (/cmd_vel != 0),
+    #     траекторный контроллер выключен — рука держит позу, команды движения
+    #     отклоняются. Вручную: сервис /arm_parking/set (SetBool).
+    arm_parking = Node(
+        package='xarm_grasping',
+        executable='arm_parking.py',
+        name='arm_parking',
+        parameters=[{'use_sim_time': True}],
+        output='screen',
+    )
+
     # 5d. Вакуум в симуляции: сервис /vacuum_gripper/set (SetBool) проверяет касание
     #     присоски с объектом и шлёт attach/detach в плагин DetachableJoint.
     vacuum_sim = Node(
         package='xarm_grasping',
         executable='vacuum_gripper_sim.py',
         name='vacuum_gripper_sim',
+        # если всё же завершится — перезапустить (кнопка RViz без неё не работает)
+        respawn=True, respawn_delay=2.0,
         parameters=[{'use_sim_time': True,
                      'robot_model_name': 'cart_xarm6',
-                     'object_model_name': 'pick_box',
-                     'object_size': [0.10, 0.05, 0.05]}],
+                     'object_names': ['pick_box'],
+                     'object_sizes': [0.10, 0.05, 0.05]}],
         output='screen',
     )
 
@@ -248,7 +321,7 @@ def generate_launch_description():
 
     # ---------- 7. grasp_analyzer (камера гриппера -> варианты захвата) ----------
     # grasp_analyzer работает в base_frame=link_base. Значения ниже — для
-    # дефолтной сцены: c2l-v3-scaled, спавн (-0.3,0), тележка оседает до z≈0.061
+    # дефолтной сцены: c2l-v3, спавн (-0.3,0), тележка оседает до z≈0.061
     # => link_base в мире ≈ (-0.54, -0.135, 0.910) (замер /gz/robot_pose + TF).
     #   table_height = 0.925 (верх стола) - 0.910 = 0.015
     #   block_x/y    = pick_box (0.60, 0) - link_base  = (1.14, 0.135)
@@ -347,6 +420,8 @@ def generate_launch_description():
     spawn_delay = TimerAction(period=4.0, actions=[spawn_robot])
     controllers_delay = TimerAction(
         period=7.0, actions=[spawner_jsb, spawner_traj])
+    # после спавна контроллеров (иначе нечего выключать)
+    parking_delay = TimerAction(period=9.0, actions=[arm_parking])
     analyzer_delay = TimerAction(period=10.0, actions=[grasp_analyzer])
     # MoveIt — после контроллеров: move_group сразу запрашивает состояние руки,
     # а одновременный старт RViz MoveIt и GUI Gazebo (оба OpenGL) ронял GUI.
@@ -368,9 +443,13 @@ def generate_launch_description():
             description='true — лёгкий режим камеры 640x400 вместо 1280x800 '
                         '(для отладки движений при низком RTF)'),
         DeclareLaunchArgument(
-            'robot_model', default_value='c2l-v3-scaled',
+            'robot_model', default_value='c2l-v3',
             description='Тип тележки (файл quasi_cart_description/urdf/'
-                        '<robot_model>.urdf.xacro): c2 | c2l-v3-scaled'),
+                        '<robot_model>.urdf.xacro): c2 | c2l-v3'),
+        DeclareLaunchArgument(
+            'front_camera', default_value='true',
+            description='Передняя камера тележки Orbbec 335Le (/front_camera/..., '
+                        '640x400). false — меньше нагрузка на GPU'),
         DeclareLaunchArgument(
             'arm_offset_xyz', default_value='0 0 0',
             description='Доп. смещение базы руки от точки крепления тележки, м'),
@@ -384,9 +463,15 @@ def generate_launch_description():
         gz_bridge_orbbec,
         gz_bridge_d435i,
         camera_points,
+        gz_bridge_cart_sensors,
+        gz_bridge_front_camera,
+        front_camera_points,
         vacuum_sim,
+        scene_markers,
+        vacuum_button,
         spawn_delay,
         controllers_delay,
+        parking_delay,
         analyzer_delay,
         rviz_node,
         moveit_world_tf,

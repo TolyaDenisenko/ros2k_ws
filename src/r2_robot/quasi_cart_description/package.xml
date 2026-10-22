@@ -18,6 +18,7 @@
   <exec_depend>robot_state_publisher</exec_depend>
   <!-- рука подключается через xacro из этого пакета -->
   <exec_depend>xarm_description</exec_depend>
+  <exec_depend>quasi_camera_description</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

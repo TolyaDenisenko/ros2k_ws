@@ -75,7 +75,7 @@ hand-eye калибровкой (док. 08).
 
 \* `link_base` руки в мире = (−0.0075, 0, 0.919) при `spawn_x=y=0`, `spawn_z=0.07`.
 Плагины `DetachableJoint` и `PosePublisher` завязаны на имя модели **`pick_box`** и
-link **`link`** — при переименовании менять `vacuum_target_model` в `cart-arm.xacro`
+link **`link`** — при переименовании менять `vacuum_targets` в `cart-arm.xacro`
 и `object_model_name` в launch.
 
 ## 4. Вакуум
@@ -84,20 +84,79 @@ link **`link`** — при переименовании менять `vacuum_tar
 
 ```
 vacuum_gripper_sim (ROS)                          Gazebo
-  сервис /vacuum_gripper/set (SetBool)
-    data:true ─ проверка касания ─ /vacuum/attach (Empty) ─► DetachableJoint: link6 ⇄ pick_box (fixed)
-    data:false ───────────────── /vacuum/detach (Empty) ─►   соединение удаляется, коробка падает
-  /vacuum/state (String) ◄──────────────────────────────── "attached" / "detached"
+  сервис /vacuum_gripper/set (SetBool)  ┐
+  топик  /vacuum_gripper/cmd (Bool)     ┤  то же самое, топик — без ответа
+  кнопка в RViz (vacuum_rviz_button)    ┘  (вызывает сервис)
+    true  ─ касание? ближайший объект ─ /vacuum/<объект>/attach ─► DetachableJoint: link6 ⇄ <объект>
+    false ──────────────────────────── /vacuum/<объект>/detach ─►   соединение удаляется, объект падает
+  /vacuum/<объект>/state (String) ◄──────────────────────────────── "attached" / "detached"
   /gz/robot_pose, /gz/object_pose ◄─ PosePublisher (10 Гц) — мировые позы для проверки касания
 ```
 
-Проверка касания (параметры ноды): расстояние от TCP (кончик присоски) до поверхности
-коробки ≤ `contact_distance` = **15 мм** и угол между осью инструмента и нормалью
-грани ≤ `max_angle_deg` = **20°**. Иначе сервис отвечает `success: false` и причиной.
-`require_contact:=false` отключает проверку (только для отладки).
+Объекты, которые можно взять, — xacro-аргумент `vacuum_targets` (`cart-arm.xacro`,
+через пробел; на каждый свой плагин DetachableJoint) и параметры ноды
+`object_names` / `object_sizes` (по 3 числа X Y Z на объект; цилиндр — описанный бокс
+2r × 2r × h). Тележка: `pick_box`; рука на столе: `pick_box cylinder_block`.
+Модели в мире должны быть НЕ static, с link `link` и своим PosePublisher.
 
-Топики для наблюдения: `/vacuum_gripper/status` (расстояние/угол/держит ли, 2 Гц),
-`/vacuum_gripper/state` (Bool).
+Проверка касания (параметры ноды): расстояние от TCP (кончик присоски) до поверхности
+объекта ≤ `contact_distance` = **15 мм** и угол между осью инструмента и нормалью
+грани ≤ `max_angle_deg` = **20°**. Из подходящих берётся ближайший. Иначе отказ с
+причиной. `require_contact:=false` отключает проверку (только для отладки).
+
+Плагин приваривает все объекты при загрузке модели; нода после старта сама
+рассылает detach всем объектам, которые держать не велели (сообщение плагина об
+этом часто теряется до подъёма моста — без этого объекты ездили за рукой).
+
+Топики для наблюдения: `/vacuum_gripper/status` (ближайший объект, расстояние, угол,
+держит ли, 2 Гц), `/vacuum_gripper/state` (Bool), `/vacuum_gripper/held` (имя объекта).
+
+### Кнопка в RViz и «можно ли брать»
+
+Нода `vacuum_rviz_button.py` (запускается обоими launch): кубик рядом с присоской.
+Дисплей **InteractiveMarkers**, namespace `/vacuum_button` (есть в конфигах RViz).
+Инструмент **Interact** на панели RViz → клик по кубику переключает вакуум, правая
+кнопка — меню. Кнопка — светофор готовности:
+
+| Цвет | Когда | Надпись |
+|---|---|---|
+| серый | дальше `near_distance` (5 см) | `ВАКУУМ выкл · pick_box: 256 мм` |
+| жёлтый | ближе 5 см | `pick_box: 23 мм, 4°` |
+| светло-зелёный, крупнее | касание: ≤ 15 мм и ≤ 20° — клик сработает | `МОЖНО БРАТЬ: pick_box 3 мм — клик` |
+| зелёный | держит | `ВАКУУМ: держит pick_box` |
+| красный, ~5 с | отказ | причина |
+
+Дисплей **VacuumContact** (`/vacuum_gripper/markers`): линия от кончика присоски до
+ближайшей точки поверхности, точка касания и полупрозрачная оболочка вокруг объекта,
+который возьмётся, — тем же цветом.
+
+Для программ и обучения (10 Гц): `/vacuum_gripper/ready` (Bool — вакуум сейчас
+сработает) и `/vacuum_gripper/contact` (JSON):
+
+```json
+{"object": "pick_box", "dist": 0.001, "angle": 0.0, "level": "ready", "ready": true,
+ "held": "", "frame": "world", "tcp": [0.4, 0.1, 0.051], "point": [0.4, 0.1, 0.05]}
+```
+
+`level`: `none` (нет данных) | `far` | `near` | `ready` | `held`.
+
+### Рука на столе (отладка без тележки)
+
+```bash
+ros2 launch cart_xarm_bringup arm_table_gz.launch.py
+```
+
+Стол верх z=0.75 (в Gazebo), база руки на столешнице; в TF `world` = `link_base`,
+верх стола z=0. Объекты (в link_base): `pick_box` (0.40, 0.10), верх z=0.05;
+`cylinder_block` (0.35, −0.20), торец z=0.09. Быстрый захват без MoveIt:
+
+```bash
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.25            # над коробкой
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.051 --lift 0  # присоска на верх
+ros2 topic pub --once /vacuum_gripper/cmd std_msgs/msg/Bool "{data: true}"
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.25 --lift 0   # поднять
+ros2 topic pub --once /vacuum_gripper/cmd std_msgs/msg/Bool "{data: false}"  # уронить
+```
 
 ## 5. Команды для проверки
 
@@ -187,7 +246,7 @@ ros2 topic echo /vacuum_gripper/status --once          # расстояние < 
 # 3. Включить вакуум
 ros2 service call /vacuum_gripper/set std_srvs/srv/SetBool "{data: true}"
 # ожидаем: success=True, "объект захвачен (DetachableJoint: attached)"
-ros2 topic echo /vacuum/state --once                   # data: attached
+ros2 topic echo /vacuum_gripper/held --once            # data: pick_box
 
 # 4. Поднять: цель на 15 см выше. Коробка должна ехать вместе с присоской
 ros2 run xarm_grasping arm_goto_tcp.py --x 0.6075 --y 0.0 --z 0.21 --lift 0
@@ -195,14 +254,14 @@ ros2 topic echo /gz/object_pose --once | grep "z:"    # z вырос (~1.1), а 
 
 # 5. Отпустить — коробка падает на стол
 ros2 service call /vacuum_gripper/set std_srvs/srv/SetBool "{data: false}"
-ros2 topic echo /vacuum/state --once                   # data: detached
+ros2 topic echo /vacuum_gripper/held --once            # data: ''
 ```
 
 Отладка в обход ноды (принудительно, без проверки касания):
 
 ```bash
-gz topic -t /vacuum/attach -m gz.msgs.Empty -p ""      # приварить
-gz topic -t /vacuum/detach -m gz.msgs.Empty -p ""      # отпустить
+gz topic -t /vacuum/pick_box/attach -m gz.msgs.Empty -p ""   # приварить
+gz topic -t /vacuum/pick_box/detach -m gz.msgs.Empty -p ""   # отпустить
 ```
 
 ### 5.7. Старая камера (регрессия)

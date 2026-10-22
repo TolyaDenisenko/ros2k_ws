@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+  arm_on_table.urdf.xacro — та же рука, что на тележке (xArm6 + присоска +
+  камера гриппера + вакуум DetachableJoint, макрос mount_xarm6_on_cart из
+  cart-arm.xacro), но без тележки: база руки жёстко закреплена в мире.
+  Сценарий «рука на столе» для отладки захвата и обучения:
+  cart_xarm_bringup/launch/arm_table_gz.launch.py.
+
+  Кадры: world = base_link = arm_mount_link = link_base (все тождественны).
+  Поэтому кадр world совпадает с планировочным кадром MoveIt (у MoveIt
+  world -> link_base тоже тождественный) и TF-дисплеи RViz сходятся с MoveIt.
+  Высоту над полом задаёт поза спавна в Gazebo (-z = верх столешницы):
+  link «world» URDF gz приваривает к миру в точке спавна.
+
+  Проверка генерации:
+      xacro arm_on_table.urdf.xacro use_sim:=true
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="xarm6_table">
+
+  <xacro:arg name="use_sim" default="false"/>
+  <!-- Sensors-система объявлена в мире (arm_table.world), не в модели -->
+  <xacro:arg name="model_sensors_plugin" default="false"/>
+  <xacro:arg name="vacuum_targets" default="pick_box cylinder_block"/>
+
+  <!-- База руки ровно на крепёжной точке base_link (до include cart-arm.xacro:
+       там свойство объявлено с default=) -->
+  <xacro:property name="arm_mount_xyz" value="0 0 0"/>
+
+  <link name="world"/>
+  <link name="base_link"/>
+  <joint name="world_to_base" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <xacro:include filename="cart-arm.xacro"/>
+  <xacro:mount_xarm6_on_cart/>
+
+</robot>

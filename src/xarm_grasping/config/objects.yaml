@@ -1,0 +1,21 @@
+# Правила классификации объектов на столе (object_perception.py, perception.classify).
+# shape: box | cylinder; dims как в xarm_grasping_msgs/DetectedObject:
+#   box      — [длина X, ширина Y, высота Z] (длина — длинная сторона), м
+#   cylinder — [высота, радиус], м
+# tol — допуск по каждому размеру, м. Подходит правило той же формы, у которого
+# все размеры в допуске; из подходящих — ближайшее. Ни одно не подошло — класс =
+# имя формы (box / cylinder).
+# category — для правил зон (place_zones.yaml): что куда ставить.
+# Сцена «рука на столе»: классы = имена моделей (cart_xarm_bringup/config/
+# arm_table_objects.yaml). Камера видит боковую грань — ширина коробки выходит
+# на ~1 см больше, радиус цилиндра на ~0.3 см; размеры классов различаются
+# сильнее допуска.
+objects:
+  pick_box:       {shape: box,      dims: [0.10, 0.05, 0.05], tol: 0.025, category: box}
+  box_small:      {shape: box,      dims: [0.06, 0.06, 0.04], tol: 0.025, category: box}
+  box_tall:       {shape: box,      dims: [0.07, 0.05, 0.10], tol: 0.025, category: box}
+  box_flat:       {shape: box,      dims: [0.12, 0.08, 0.03], tol: 0.025, category: box}
+  cylinder_block: {shape: cylinder, dims: [0.09, 0.04],       tol: 0.015, category: cylinder}
+  cyl_small:      {shape: cylinder, dims: [0.06, 0.025],      tol: 0.015, category: cylinder}
+  cyl_wide:       {shape: cylinder, dims: [0.05, 0.05],       tol: 0.015, category: cylinder}
+  cyl_tall:       {shape: cylinder, dims: [0.13, 0.035],      tol: 0.015, category: cylinder}

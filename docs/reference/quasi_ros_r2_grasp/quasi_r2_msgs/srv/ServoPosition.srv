@@ -1,0 +1,7 @@
+# Used for setting servo motors postions
+
+string link_name
+float64 position   # angle (in rad) for an arm servo, position (in m) for carrige
+---
+bool success   # indicate successful run of triggered service
+string message # informational, e.g. for error messages

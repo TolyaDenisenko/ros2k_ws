@@ -1,0 +1,24 @@
+---
+# Мост передней камеры тележки Orbbec Gemini 335Le (симуляция): gz -> ROS.
+# Источник: сенсор rgbd_camera из quasi_camera_description/urdf/gz/gz_rgbd_camera.xacro
+# (gz-топики <topic>/gz/{image,depth_image,camera_info}). Имена в ROS — единый
+# интерфейс sim/железо (docs/01, раздел 5): тот же набор даст драйвер Orbbec.
+# Облако /front_camera/points строит depth_image_proc в launch (не мост).
+- ros_topic_name: "/front_camera/color/image_raw"
+  gz_topic_name: "/front_camera/gz/image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+# Глубина 32FC1 в метрах, попиксельно совмещена с цветом (одно разрешение и FOV)
+- ros_topic_name: "/front_camera/aligned_depth/image_raw"
+  gz_topic_name: "/front_camera/gz/depth_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/front_camera/color/camera_info"
+  gz_topic_name: "/front_camera/gz/camera_info"
+  ros_type_name: "sensor_msgs/msg/CameraInfo"
+  gz_type_name: "gz.msgs.CameraInfo"
+  direction: GZ_TO_ROS

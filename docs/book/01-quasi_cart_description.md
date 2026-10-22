@@ -73,7 +73,8 @@ quasi_cart_description/
     ├── c2.urdf.xacro                   — модель тележки c2 (по умолчанию в cart.urdf.xacro)
     ├── c2-v3.urdf.xacro                — побайтно совпадает с c2.urdf.xacro
     ├── c2l-v3.urdf.xacro               — тележка c2l (длинная), задаёт arm_mount_xyz
-    ├── c2l-v3-scaled.urdf.xacro        — c2l с растянутым мешем c2 (ПО УМОЛЧАНИЮ в наших launch)
+    ├── c2l-v3.urdf.xacro        — тележка c2l (ПО УМОЛЧАНИЮ в наших launch)
+    ├── cart-front-camera.xacro  — передняя камера Orbbec 335Le (front_camera:=true)
     ├── c2h-v3 / c2m-v3 / c2t-v3 / c2w-v3.urdf.xacro — другие модели (их меши корпуса в пакете отсутствуют)
     ├── _d455.urdf.xacro                — макрос камеры RealSense D455 (навигационная камера тележки)
     └── _d405.urdf.xacro                — макрос RealSense D405 (нигде не подключается)
@@ -101,8 +102,8 @@ launch-файлы. Зависимость от `xarm_description` в
 
 ```text
 launch (cart_xarm6_gz.launch.py)
-  └─ xacro cart_with_arm.urdf.xacro  use_sim:=true robot_model:=c2l-v3-scaled ...
-       ├─ $(arg robot_model).urdf.xacro   → c2l-v3-scaled.urdf.xacro
+  └─ xacro cart_with_arm.urdf.xacro  use_sim:=true robot_model:=c2l-v3 ...
+       ├─ $(arg robot_model).urdf.xacro   → c2l-v3.urdf.xacro
        │     └─ c2l-v3.urdf.xacro         (base_link, ToF, лидар, IMU, ведущие колёса, arm_mount_xyz)
        ├─ cart-drive-differential.urdf.xacro  (поворотные колёса)
        ├─ cart-base.urdf.xacro            (base_footprint → drive_link, звенья датчиков, камеры enable_camera_*)
@@ -138,7 +139,7 @@ base_footprint ─base_joint→ drive_link ─drive_joint→ base_link ─arm_mo
 | Аргумент | Default | Смысл |
 |---|---|---|
 | `use_sim` | `false` | `true` — добавить всё для Gazebo (launch gz передаёт `true`) |
-| `robot_model` | `c2l-v3-scaled` | имя файла тележки `<robot_model>.urdf.xacro` |
+| `robot_model` | `c2l-v3` | имя файла тележки `<robot_model>.urdf.xacro` |
 | `simulator` | `ignition` | единственный поддерживаемый вариант (= gz sim) |
 | `enable_floor_tofs` | `true` | напольные ToF-датчики 21–26 |
 | `enable_extra_floor_tofs` | `false` | доп. ToF 27–30 (есть у c2l) |
@@ -188,7 +189,7 @@ property). `drive` выбирает файл привода — **жёстко**
 
 Имя файла подставляется прямо из аргумента. `robot_model:=c2` → `c2.urdf.xacro`.
 Порядок важен: файл модели идёт **первым**, чтобы его свойства (`arm_mount_xyz`,
-`base_mesh`, `camera_offset_*`) уже существовали, когда их читают дальше.
+`front_camera_*`, `camera_offset_*`) уже существовали, когда их читают дальше.
 
 **Блок симуляции** ([строки 64-110](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L64)):
 при `use_sim=true` и `simulator=ignition` подключаются `cart.ign.xacro`,
@@ -229,38 +230,25 @@ property). `drive` выбирает файл привода — **жёстко**
 > ⚠️ Обрати внимание: плагины `quasi_battery_hardware` и `dynamixel_hardware` в
 > этом workspace отсутствуют — на реальном железе файл рассчитан на полный r2_robot.
 
-### 4.3 Файлы моделей тележки: `c2l-v3-scaled`, `c2l-v3`, `c2`
+### 4.3 Файлы моделей тележки: `c2l-v3`, `c2`
 
-**`c2l-v3-scaled.urdf.xacro`** — всего две строки по делу
-([строки 17-20](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3-scaled.urdf.xacro#L17)):
-
-```xml
-<xacro:property name="base_mesh" value="base_link_c2-v3.stl" />
-<xacro:property name="base_mesh_scale" value="1.278 1.319 1" />
-
-<xacro:include filename="c2l-v3.urdf.xacro" />
-```
-
-Он задаёт меш и масштаб **до** include, а `c2l-v3.urdf.xacro` объявляет те же
-свойства с `default=` — поэтому значения из scaled-файла сохраняются. Масштаб
-считается из габаритов (`0.46/0.36`, `0.31/0.235`, см. комментарий строк 8-12).
-Масштаб идёт от начала `base_link`, поэтому ручка (-X) выходит на ~3 см дальше реальной.
-
-**`c2l-v3.urdf.xacro`** — полная модель c2l:
+**`c2l-v3.urdf.xacro`** — полная модель c2l (меш корпуса `base_link_c2l-v3.stl`
+взят из репозитория тележки `quasi_ros_c1`):
 
 ```xml
-<xacro:property name="base_mesh" default="base_link_c2l-v3.stl" />
-<xacro:property name="base_mesh_scale" default="1 1 1" />
-
 <!-- Крепление руки (cart-arm.xacro), base_link: по CAD (C2R.000.000.000)
      база руки смещена на 250 мм от центра к ручке (-X) и на 129.5 мм
      к левому краю, если стоять у ручки лицом вперёд (+Y); z — верх крыши -->
 <xacro:property name="arm_mount_xyz" default="-0.25 -0.1295 0.849" />
+
+<!-- Передняя камера (cart-front-camera.xacro): оценка, уточнить по CAD -->
+<xacro:property name="front_camera_xyz" default="0.409124 0.0 0.839651" />
+<xacro:property name="front_camera_rpy" default="${-pi} 0.041 0.0" />
 ```
-([строки 7-14](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L7)).
+([строки 5-15](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L5)).
 
 Дальше в файле:
-- `base_link` с мешем `${base_mesh}` и массой 35.5 кг ([строки 16-40](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L16));
+- `base_link` с мешем `base_link_c2l-v3.stl` и массой 35.5 кг ([строки 16-40](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L16));
 - `drive_joint` (fixed): `drive_link → base_link`, `xyz="0.3625 0 0"` ([строка 42](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L42)) — корпус впереди оси ведущих колёс;
 - суставы ToF 1–16, напольных 21–30 (с `xacro:if/unless` по `enable_floor_tofs`, `enable_extra_floor_tofs`), лидара (`z=0.428`) и IMU;
 - ведущие колёса `drive_wheel_right_joint` / `drive_wheel_left_joint` с `y=∓0.25193` ([строки 290-325](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L290));
@@ -379,7 +367,7 @@ differential, 0.07 для mecanum.
 ```
 
 `arm_mount_link` — пустое звено-«фланец» на крыше. Итоговое значение:
-- `c2l-v3`, `c2l-v3-scaled` → `-0.25 -0.1295 0.849` (из `c2l-v3.urdf.xacro:14`);
+- `c2l-v3` → `-0.25 -0.1295 0.849` (из `c2l-v3.urdf.xacro:14`);
 - `c2` и остальные → `-0.0075 0.0 0.849` (default здесь).
 
 **Подключение руки** — [строки 73-97](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L73):
@@ -499,15 +487,14 @@ c2l-v3*, иначе центр крыши c2), доводка — через `ar
 | Начальная поза руки в Gazebo | [cart_xarm6_gz.launch.py:67](../../src/r2_robot/cart_xarm_bringup/launch/cart_xarm6_gz.launch.py#L67) | `arm_initial_positions` | `arm_initial_positions:="0 0 0 0 0 0"` |
 | Сменить камеру на руке | [cart-arm.xacro:33](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L33) | `camera_model` | `camera_model:=d435i` |
 | Присоска хватает другой объект | [cart-arm.xacro:37](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L37), [:118](../../src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro#L118) | `vacuum_target_model`, `child_link` | `vacuum_target_model:=my_box` |
-| Масштаб корпуса c2l-scaled | [c2l-v3-scaled.urdf.xacro:18](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3-scaled.urdf.xacro#L18) | `base_mesh_scale` | `"1.278 1.319 1"` |
+| Поза передней камеры c2l | [c2l-v3.urdf.xacro:14-15](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L14) | `front_camera_xyz`, `front_camera_rpy` | `default="0.41 0 0.84"` |
 | Включить доп. напольные ToF | [cart_with_arm.urdf.xacro:26](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L26) | `enable_extra_floor_tofs` | `xacro … enable_extra_floor_tofs:=true` |
 | Позиция навигационной камеры c2l | [c2l-v3.urdf.xacro:354-377](../../src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro#L354) | `camera_offset_*`, `camera_pitch` | `camera_pitch value="-0.1"` |
 | Скользкость корпуса в Gazebo | [cart.ign.xacro:20](../../src/r2_robot/quasi_cart_description/urdf/cart.ign.xacro#L20) | `mu`, `mu2` | `<mu>0.5</mu>` |
 | Топик управления движением тележки | [cart-sensors.ign.xacro:14](../../src/r2_robot/quasi_cart_description/urdf/cart-sensors.ign.xacro#L14) | `<topic>` | менять синхронно с `gz_bridge.yaml` |
 
-**Добавить новую тележку:** создать `urdf/<имя>.urdf.xacro` (по образцу
-`c2l-v3-scaled` — задать свойства и include базового файла, или полный файл как
-`c2l-v3`), при необходимости задать в нём `arm_mount_xyz`, пересобрать пакет
+**Добавить новую тележку:** создать `urdf/<имя>.urdf.xacro` (полный файл по
+образцу `c2l-v3`), при необходимости задать в нём `arm_mount_xyz` и `front_camera_*`, пересобрать пакет
 (новый файл!), запустить с `robot_model:=<имя>`.
 
 ---
@@ -519,7 +506,7 @@ c2l-v3*, иначе центр крыши c2), доводка — через `ar
 | `name 'robot_model' is not defined` | в верхнем xacro нет `xacro:property robot_model` | см. [cart_with_arm.urdf.xacro:51](../../src/r2_robot/quasi_cart_description/urdf/cart_with_arm.urdf.xacro#L51) |
 | `Scene already exists with name: scene` + segfault | Sensors-система объявлена и в мире, и в модели | держать `model_sensors_plugin=false` |
 | Тележка не появилась в Gazebo, рука «наполовину» | сенсор на несуществующем звене (так было с realsense) или меши не установлены в `share/` | проверить `xacro`/`check_urdf`, пересобрать пакет |
-| Корпус невидим | у выбранной модели нет меша (`c2l-v3`, `c2h/m/t/w-v3`) | использовать `c2` или `c2l-v3-scaled` |
+| Корпус невидим | у выбранной модели нет меша (`c2h/m/t/w-v3`) | использовать `c2` или `c2l-v3` |
 | `enable_camera_oak:=true` ломает xacro | нет пакета `depthai_descriptions` (аналогично orbbec) | не включать или установить пакет |
 | Сдвинул `arm_mount_xyz` в `cart-arm.xacro`, а на c2l ничего не изменилось | `c2l-v3.urdf.xacro` задаёт своё значение раньше, `default=` в cart-arm уже не срабатывает | менять в файле модели |
 | Новый файл модели «не найден» | xacro читается из `install/` | `colcon build --packages-select quasi_cart_description` |
@@ -545,7 +532,7 @@ c2l-v3*, иначе центр крыши c2), доводка — через `ar
 
 3. **Сдвинь руку без правки файлов** в RViz:
    ```bash
-   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scaled
+   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
    ```
    Затем найди, передаёт ли `cart_xarm6_rviz.launch.py` аргумент `arm_offset_xyz`
    (подсказка: сравни со строками 82-91 `cart_xarm6_gz.launch.py`). Если нет — как

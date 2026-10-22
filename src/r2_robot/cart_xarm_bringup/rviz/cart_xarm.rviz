@@ -74,6 +74,66 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /xarm_grasping/grasp_markers
       Value: true
+    # ---- Истинная сцена Gazebo (стол, pick_box, cylinder_block) — нода scene_markers ----
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: SceneGazebo
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /scene_markers
+      Value: true
+    # ---- Кнопка вакуума (vacuum_rviz_button): кубик у присоски, инструмент Interact, клик вкл/выкл ----
+    - Class: rviz_default_plugins/InteractiveMarkers
+      Enabled: true
+      Interactive Markers Namespace: /vacuum_button
+      Name: VacuumButton
+      Show Axes: false
+      Show Descriptions: true
+      Show Visual Aids: false
+      Value: true
+    # ---- Готовность к захвату (vacuum_gripper_sim): линия присоска -> ближайшая точка, подсветка цели ----
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: VacuumContact
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /vacuum_gripper/markers
+      Value: true
+    # ---- Объекты на столе (object_perception) и зоны установки (scene_manager) ----
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Objects
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /objects/markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: PlaceZones
+      Namespaces:
+        {}
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /place_zones/markers
+      Value: true
     # ---- Камера гриппера (Orbbec Gemini 335Le; docs/STATUS.md, раздел «Камера») ----
     # Живая картинка напрямую из драйвера/симуляции (не через grasp_analyzer).
     # Reliability Best Effort — совместимо и с симуляцией, и с драйвером на железе.

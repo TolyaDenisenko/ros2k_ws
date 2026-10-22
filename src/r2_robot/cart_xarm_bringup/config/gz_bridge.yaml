@@ -26,21 +26,21 @@
 # робота). Команда "attach" жёстко сваривает pick_box со звеном link6 (там лежит
 # присоска), "detach" отпускает. Эти топики дёргает нода vacuum_gripper_sim
 # (xarm_grasping), напрямую их дёргать только для отладки (docs/STATUS.md).
-- ros_topic_name: "/vacuum/attach"
-  gz_topic_name: "/vacuum/attach"
+- ros_topic_name: "/vacuum/pick_box/attach"
+  gz_topic_name: "/vacuum/pick_box/attach"
   ros_type_name: "std_msgs/msg/Empty"
   gz_type_name: "gz.msgs.Empty"
   direction: ROS_TO_GZ
 
-- ros_topic_name: "/vacuum/detach"
-  gz_topic_name: "/vacuum/detach"
+- ros_topic_name: "/vacuum/pick_box/detach"
+  gz_topic_name: "/vacuum/pick_box/detach"
   ros_type_name: "std_msgs/msg/Empty"
   gz_type_name: "gz.msgs.Empty"
   direction: ROS_TO_GZ
 
 # Состояние соединения: плагин пишет строку "attached" / "detached"
-- ros_topic_name: "/vacuum/state"
-  gz_topic_name: "/vacuum/state"
+- ros_topic_name: "/vacuum/pick_box/state"
+  gz_topic_name: "/vacuum/pick_box/state"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
   direction: GZ_TO_ROS

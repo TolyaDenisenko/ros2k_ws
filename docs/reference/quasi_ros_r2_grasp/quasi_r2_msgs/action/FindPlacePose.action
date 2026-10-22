@@ -1,0 +1,10 @@
+vision_msgs/BoundingBox3DArray workspace
+
+moveit_msgs/AttachedCollisionObject attached_object     # attached collision object obtained from MoveIt
+geometry_msgs/QuaternionStamped original_orientation    # (optional) original object orientation in space
+
+float32 area_height -1                                  # height of target plane to place the object on.  -1 - any height
+int16 max_poses                                         # maximum number of place poses to return. use default limit from parameters if <= 0
+---
+geometry_msgs/PoseStamped[] object_poses
+---

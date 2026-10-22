@@ -1,0 +1,13 @@
+# Взять объект присоской и поставить в зону (pick_place_server, MoveIt).
+string object_id
+# Зона из config/place_zones.yaml; пусто — по правилам для класса объекта
+string zone
+---
+bool success
+string message
+# Где объект оказался (центр)
+geometry_msgs/PoseStamped place_pose
+---
+# detect | plan_pregrasp | approach | grip | lift | transfer | lower | release | retreat
+string stage
+string detail

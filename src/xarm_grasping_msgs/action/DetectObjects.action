@@ -1,0 +1,9 @@
+# Распознать объекты на столе по свежему облаку камеры гриппера.
+# false — только вернуть результат; true — ещё и обновить Planning Scene MoveIt
+bool update_scene
+---
+bool success
+string message
+DetectedObjectArray objects
+---
+string stage

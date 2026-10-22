@@ -281,7 +281,9 @@ def launch_setup(context, *args, **kwargs):
         remappings=[
             ('/tf', 'tf'),
             ('/tf_static', 'tf_static'),
-        ]
+        ],
+        # use_rviz:=false — move_group без окна (headless-проверки, cart_xarm_bringup)
+        condition=IfCondition(LaunchConfiguration('use_rviz', default='true')),
     )
 
     xyz = attach_xyz.perform(context)[1:-1].split(' ')

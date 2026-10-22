@@ -15,8 +15,7 @@
 | `robot_model` | Корпус (меш `base_link`) | Габарит корпуса в плане (X × Y) | Крепление руки (`base_link`) | Статус |
 |---|---|---|---|---|
 | `c2` | `base_link_c2-v3.stl` | ≈ 0.83 × 0.47 м | `-0.0075 0 0.849` — центр крыши | работает |
-| `c2l-v3-scaled` *(по умолчанию)* | `base_link_c2-v3.stl` × `1.278 1.319 1` | ≈ 1.06 × 0.62 м | `-0.25 -0.1295 0.849` | работает |
-| `c2l-v3` | `base_link_c2l-v3.stl` | — | `-0.25 -0.1295 0.849` | **меша нет в пакете**, корпус не отобразится |
+| `c2l-v3` *(по умолчанию)* | `base_link_c2l-v3.stl` | ≈ 1.03 × 0.62 м | `-0.25 -0.1295 0.849` | работает |
 
 Габарит по X включает ручку. Высота у всех моделей одинаковая: крыша на
 z = 0.849 м, ручка до ≈ 0.99 м.
@@ -31,10 +30,10 @@ z = 0.849 м, ручка до ≈ 0.99 м.
 | Масса корпуса | 22.9 кг | 35.5 кг |
 | Доп. напольные ToF 27–30 | нет | есть (`enable_extra_floor_tofs`) |
 
-> **Почему `c2l-v3-scaled`.** Собственного меша корпуса `base_link_c2l-v3.stl`
-> нет, а конструкция у c2l та же, что у c2. Поэтому берётся меш c2, растянутый
-> до габаритов c2l (подробнее в [разделе 5](#5-масштабированный-корпус-c2l-v3-scaled)).
-> Колёса, ToF, лидар, IMU стоят в позициях c2l, а их меши общие для всех тележек.
+> Меш `base_link_c2l-v3.stl` взят из репозитория тележки `quasi_ros_c1`
+> (`quasi_cart_description/meshes`), оттуда же меши ToF 27–36. Раньше меша не
+> было, и вместо него использовалась `c2l-v3-scaled` (меш c2, растянутый до
+> габаритов c2l). Эта модель удалена.
 
 ---
 
@@ -54,20 +53,20 @@ source install/setup.bash
 ### Gazebo + MoveIt (основной запуск)
 
 ```bash
-# тележка c2l (масштабированный корпус) — по умолчанию
+# тележка c2l — по умолчанию
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py
 
 # тележка c2
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2
 
 # c2l без MoveIt, обычный RViz
-ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3-scaled use_moveit:=false
+ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3 use_moveit:=false
 ```
 
 ### Только RViz (без Gazebo) — проверка модели и крепления
 
 ```bash
-ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scaled
+ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
 ```
 
 Так быстрее всего проверить, где стоит рука: Gazebo не нужен, суставы руки
@@ -79,7 +78,7 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scal
 
 | Аргумент | По умолчанию | Назначение |
 |---|---|---|
-| `robot_model` | `c2l-v3-scaled` | тип тележки (таблица в разделе 1) |
+| `robot_model` | `c2l-v3` | тип тележки (таблица в разделе 1) |
 | `arm_offset_xyz` | `0 0 0` | **доп.** смещение базы руки от точки крепления тележки, м |
 | `arm_offset_rpy` | `0 0 0` | доп. поворот базы руки (roll pitch yaw), рад |
 
@@ -145,11 +144,11 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scal
 ```bash
 # сдвинуть руку ещё на 5 см вперёд и на 2 см вправо
 ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py \
-    robot_model:=c2l-v3-scaled arm_offset_xyz:="0.05 -0.02 0"
+    robot_model:=c2l-v3 arm_offset_xyz:="0.05 -0.02 0"
 
 # повернуть базу руки на 90° вокруг вертикали
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
-    robot_model:=c2l-v3-scaled arm_offset_rpy:="0 0 1.5708"
+    robot_model:=c2l-v3 arm_offset_rpy:="0 0 1.5708"
 ```
 
 Удобно подбирать значение в RViz, а потом перенести его в файл модели (вариант B).
@@ -158,56 +157,43 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 
 | Тележка | Файл | Что менять |
 |---|---|---|
-| `c2l-v3`, `c2l-v3-scaled` | `src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.25 -0.1295 0.849" />` (в начале файла) |
+| `c2l-v3` | `src/r2_robot/quasi_cart_description/urdf/c2l-v3.urdf.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.25 -0.1295 0.849" />` (в начале файла) |
 | `c2` | `src/r2_robot/quasi_cart_description/urdf/cart-arm.xacro` | `<xacro:property name="arm_mount_xyz" default="-0.0075 0.0 0.849"/>` — это значение по умолчанию для всех моделей, у которых нет своего |
-
-`c2l-v3-scaled` берёт крепление из `c2l-v3.urdf.xacro`, поэтому правка там
-действует на обе c2l-модели. Если для масштабированной нужно своё крепление,
-добавьте в `c2l-v3-scaled.urdf.xacro` **перед** `<xacro:include .../>`:
-
-```xml
-<xacro:property name="arm_mount_xyz" value="-0.25 -0.1295 0.849" />
-```
 
 > Почему так работает: в `c2l-v3.urdf.xacro` и `cart-arm.xacro` свойство
 > объявлено с `default=`. Такое значение применяется, только если свойство ещё
 > не задано. Действует первое объявление в порядке подключения:
-> `c2l-v3-scaled` → `c2l-v3` → `cart-arm.xacro`.
+> `c2l-v3` → `cart-arm.xacro`.
 
 После правки пересоберите `quasi_cart_description` (раздел 2).
 
 ---
 
-## 5. Масштабированный корпус (`c2l-v3-scaled`)
+## 5. Передняя камера, лидар, ToF
 
-Файл: `src/r2_robot/quasi_cart_description/urdf/c2l-v3-scaled.urdf.xacro`
+Передняя камера — Orbbec Gemini 335Le (как на реальной тележке), файл
+`quasi_cart_description/urdf/cart-front-camera.xacro`, тело — общий макрос
+`quasi_camera_description`. Включена по умолчанию, отключается
+`front_camera:=false`. В симуляции 640×400 @15 Гц.
 
-```xml
-<xacro:property name="base_mesh" value="base_link_c2-v3.stl" />
-<xacro:property name="base_mesh_scale" value="1.278 1.319 1" />
-<xacro:include filename="c2l-v3.urdf.xacro" />
-```
+Поза — свойства `front_camera_xyz` / `front_camera_rpy` в файле модели
+(нижний винт камеры в `base_link`; камера вверх ногами, `roll = -π`,
+наклон вниз 0.041 рад):
 
-Как посчитан масштаб. Габарит меша c2: x [−0.471 … 0.36], y [−0.235 … 0.235].
+| Модель | `front_camera_xyz` | Источник |
+|---|---|---|
+| `c2` | `0.309 0 0.840` (default в `cart-front-camera.xacro`) | `quasi_ros_c1`, c2-v3 |
+| `c2l-v3` | `0.409 0 0.840` | **оценка**: поза c2 + 0.1 м вперёд; уточнить по CAD |
 
-| Ось | c2 | c2l | Масштаб |
-|---|---|---|---|
-| X (перед) | 0.36 | 0.46 | 0.46 / 0.36 = **1.278** |
-| Y | 0.235 | 0.31 | 0.31 / 0.235 = **1.319** |
-| Z | — | — | **1** (высота та же) |
+Топики в ROS (мосты `gz_bridge_cart_sensors.yaml`, `gz_bridge_front_camera.yaml`;
+имена — как в `quasi_ros_c1/nav2.yaml`):
 
-Ограничения:
-
-- Масштаб считается от начала `base_link`, поэтому задняя часть с ручкой
-  уходит на ~3 см дальше реальной (−0.60 вместо ≈ −0.57).
-- Детали корпуса (профиль, уголки) растянуты пропорционально. Визуально это
-  заметно, но габарит и коллизии соответствуют c2l.
-- Масштаб применяется и к visual, и к collision, то есть Gazebo и коллизии
-  видят корпус c2l.
-
-Если появится настоящий меш: положите его в
-`src/r2_robot/quasi_cart_description/meshes/base_link_c2l-v3.stl`, пересоберите
-и запускайте `robot_model:=c2l-v3`. Масштабированная модель больше не нужна.
+| Топик | Тип | frame |
+|---|---|---|
+| `/scan`, `/scan/points` | LaserScan, PointCloud2 | `lidar_link` |
+| `/range1_pcl` … `/range8_pcl` | PointCloud2 (ToF 18×18 лучей) | `tofN_link` |
+| `/front_camera/color/image_raw`, `.../camera_info`, `/front_camera/aligned_depth/image_raw` | Image, CameraInfo | `front_camera_color_optical_frame` |
+| `/front_camera/points` | PointCloud2 (depth_image_proc) | `front_camera_color_optical_frame` |
 
 ---
 
@@ -216,8 +202,8 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 Если тележка кажется маленькой, сначала убедитесь, что загружена нужная модель.
 
 ```bash
-# 1) масштаб корпуса в загруженном описании (для c2l-v3-scaled: scale="1.278 1.319 1")
-ros2 param get /robot_state_publisher robot_description | grep -o 'base_link_c2-v3.stl" scale="[^"]*"'
+# 1) меш корпуса в загруженном описании (для c2l: base_link_c2l-v3.stl)
+ros2 param get /robot_state_publisher robot_description | grep -o 'base_link_c2[^"]*' | sort -u
 
 # 2) положение базы руки относительно корпуса (для c2l: -0.25 -0.1295 0.849)
 ros2 run tf2_ros tf2_echo base_link link_base
@@ -230,9 +216,8 @@ ros2 run tf2_ros tf2_echo drive_link drive_wheel_left_link
 
 | Симптом | Причина | Что сделать |
 |---|---|---|
-| `scale` не найден, рука в центре крыши | запущено без `robot_model:=...`, загрузилась `c2` | добавить `robot_model:=c2l-v3-scaled` |
+| меш `base_link_c2-v3.stl`, рука в центре крыши | запущено `robot_model:=c2` | `robot_model:=c2l-v3` или без аргумента |
 | Правки в xacro не видны | не пересобран пакет или не выполнен `source` | раздел 2 |
-| Корпуса нет, только колёса и датчики | `robot_model:=c2l-v3` (нет меша) | использовать `c2l-v3-scaled` |
 
 Для ориентира: у c2l корпус в плане ≈ 0.92 × 0.62 м без ручки (у c2 ≈ 0.72 × 0.47),
 а высота у обеих одинаковая, ≈ 1 м. Рядом с xArm6 тележка может казаться
@@ -250,8 +235,8 @@ ros2 run tf2_ros tf2_echo drive_link drive_wheel_left_link
    <xacro:property name="arm_mount_xyz" default="X Y Z" />
    ```
    Без этой строки рука встанет в центр крыши c2 (`-0.0075 0 0.849`).
-3. Если корпус берёте из чужого меша с масштабом — сделайте обёртку по
-   образцу `c2l-v3-scaled.urdf.xacro`.
+3. Задайте позу передней камеры `front_camera_xyz` / `front_camera_rpy`
+   (иначе — поза c2).
 4. Пересоберите пакет и запустите с `robot_model:=<имя>`.
 5. Желательно добавить имя в `description` аргумента `robot_model` в обоих
    launch-файлах (`src/r2_robot/cart_xarm_bringup/launch/`).
@@ -269,9 +254,10 @@ ros2 run tf2_ros tf2_echo drive_link drive_wheel_left_link
 | `quasi_cart_description/urdf/cart_with_arm.urdf.xacro` | сборка: подключает `<robot_model>.urdf.xacro`, привод, датчики, руку |
 | `quasi_cart_description/urdf/cart-arm.xacro` | рука xArm6 + присоска + D435i; `arm_mount_joint`, значение `arm_mount_xyz` по умолчанию |
 | `quasi_cart_description/urdf/c2.urdf.xacro` | тележка c2 |
-| `quasi_cart_description/urdf/c2l-v3.urdf.xacro` | тележка c2l: геометрия, `arm_mount_xyz`, `base_mesh` / `base_mesh_scale` по умолчанию |
-| `quasi_cart_description/urdf/c2l-v3-scaled.urdf.xacro` | c2l с масштабированным мешем c2 |
-| `quasi_cart_description/meshes/base_link_c2-v3.stl` | меш корпуса c2 (используется и для c2l-v3-scaled) |
+| `quasi_cart_description/urdf/c2l-v3.urdf.xacro` | тележка c2l: геометрия, `arm_mount_xyz`, `front_camera_*` |
+| `quasi_cart_description/urdf/cart-front-camera.xacro` | передняя камера Orbbec 335Le (`front_camera:=true`) |
+| `quasi_cart_description/meshes/base_link_c2-v3.stl`, `base_link_c2l-v3.stl` | меши корпусов c2, c2l |
+| `cart_xarm_bringup/config/gz_bridge_cart_sensors.yaml`, `gz_bridge_front_camera.yaml` | мосты лидара, ToF, передней камеры |
 | `cart_xarm_bringup/launch/cart_xarm6_gz.launch.py` | Gazebo + RViz/MoveIt; аргументы `robot_model`, `arm_offset_*`, `spawn_*` |
 | `cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py` | только RViz; аргументы `robot_model`, `arm_offset_*` |
 

@@ -1,0 +1,69 @@
+# Мост навигационных датчиков тележки (симуляция): gz -> ROS.
+# Источник: cart-sensors.ign.xacro (quasi_cart_description). Имена в ROS — как
+# в репозитории тележки quasi_ros_c1 (nav2.yaml): лидар /scan, ToF — облака
+# /rangeN_pcl. Готовы для costmap (voxel_layer) и, позже, OctoMap.
+
+# Лидар YDLIDAR TG15 (gpu_lidar, 360°, 10 Гц, lidar_link)
+- ros_topic_name: "/scan"
+  gz_topic_name: "/model/cart/lidar"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/scan/points"
+  gz_topic_name: "/model/cart/lidar/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+# Напольные ToF 1..8 (gpu_ray 18x18 лучей, ±9°, до 5 м; frame tofN_link).
+# На железе драйвер даёт sensor_msgs/Range /rangeN, а в costmap идут облака
+# /rangeN_pcl — в симуляции сразу отдаём облако.
+- ros_topic_name: "/range1_pcl"
+  gz_topic_name: "/model/cart/tof_sensor1/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range2_pcl"
+  gz_topic_name: "/model/cart/tof_sensor2/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range3_pcl"
+  gz_topic_name: "/model/cart/tof_sensor3/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range4_pcl"
+  gz_topic_name: "/model/cart/tof_sensor4/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range5_pcl"
+  gz_topic_name: "/model/cart/tof_sensor5/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range6_pcl"
+  gz_topic_name: "/model/cart/tof_sensor6/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range7_pcl"
+  gz_topic_name: "/model/cart/tof_sensor7/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/range8_pcl"
+  gz_topic_name: "/model/cart/tof_sensor8/scan/points"
+  ros_type_name: "sensor_msgs/msg/PointCloud2"
+  gz_type_name: "gz.msgs.PointCloudPacked"
+  direction: GZ_TO_ROS
+

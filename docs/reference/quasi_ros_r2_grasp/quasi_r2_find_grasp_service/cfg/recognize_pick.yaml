@@ -1,0 +1,55 @@
+find_grasp_server:
+  ros__parameters:
+    cloud_topic: /realsense/depth/color/points
+    camera_info_topic: "/realsense/depth/camera_info"
+    # cloud_topic: "/camera/aligned_depth_to_color/color/points"
+    object_topic: "/ros2_openvino_toolkit/detected_objects"
+    device: 0 # 0:CPU, 1:GPU, 2:VPU
+    # trained_file: /usr/local/share/gpd/models/15channels/params/
+    # image_size: 60  
+    # image_num_channels: 15  
+    auto_mode: false
+    plane_remove: false
+    object_detect: false
+    remove_plane_before_image_calculation: false
+    # grasp workspace in camera frames
+    workspace: [0.4, 2.0, -2.0, 2.0, -2.0, 2.0] # Realsense
+    # gripper geometry parameters in metre
+    # finger_width: the finger thickness
+    # hand_outer_diameter: the maximum robot hand aperture
+    # hand_depth: the hand depth (the finger length)
+    # hand_height: the finger breadth
+    min_aperture: 0.005
+    max_aperture: 0.092
+    rotation_axes: [1,2]
+    finger_width: 0.018
+    hand_outer_diameter: 0.12
+    hand_depth: 0.07
+    hand_height: 0.05
+    num_orientations: 8
+    num_samples: 500
+    num_selected: 150
+    num_finger_placements: 10
+    filter_approach_direction: true
+    #direction: [0.0, 0.0, 0.0]     # this approach direction parameter is not used anymore
+    thresh_rad: 0.785
+    min_inliers: 15
+    init_bite: 0.04
+    remove_outliers: true
+    voxelize: true
+    num_threads: 6
+    #nn_radius: 0.03
+plan_grasps_node:
+  ros__parameters:
+    rviz: true
+    grasp_score_threshold: -3000.0
+    grasp_frame_id: "base_footprint"
+    grasp_approach: [0.906183139995265,0.0,-0.422885465331124] #[0.45, 0.8, -0.070]
+    grasp_approach_angle: 6.28 # 1.047=PI/3 # 0.785=PI/4 # 0.523=PI/6 # 0.345=PI/9 # acceptable approaching angle
+    grasp_offset: [0.0, 0.0, 0.038]
+    # grasp boundry in grasp_frame_id
+    grasp_boundry: [0.3, 1.5, -0.7, 0.7, -0.33, 1.5]
+    grasp_min_distance: 0.05
+    eef_offset: 0.15 # 0.0525
+    eef_yaw_offset: 0.0 # M_PI/4
+    finger_joint_names: ["gripper_base_outer_axis_left_joint","gripper_base_outer_axis_right_joint"]

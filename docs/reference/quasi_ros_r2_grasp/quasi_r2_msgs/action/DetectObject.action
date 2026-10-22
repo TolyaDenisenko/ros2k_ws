@@ -1,0 +1,10 @@
+vision_msgs/BoundingBox3DArray workspace
+
+float32 area_height -1
+
+string object_name
+uint8  shape_type       # Use one of the constants defined in shape_msgs/SolidPrimitive,
+                        # or 0 for none(Mesh only) and 255 for Auto
+---
+Object[] objects
+---

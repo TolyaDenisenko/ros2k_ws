@@ -1,0 +1,59 @@
+########################################
+# CONSTANTS
+########################################
+# Colors
+uint8 RED=0 
+uint8 GREEN=1 
+uint8 BLUE=2
+uint8 WHITE=3
+uint8 YELLOW=4
+uint8 CYAN=5
+uint8 MAGENTA=6 
+uint8 BLACK=7
+uint8 ORANGE=8
+
+# Align
+uint8 LEFT=0
+uint8 CENTER=1
+uint8 RIGHT=2
+
+# Icons
+int16 NONE=-1
+int16 SKULL=0
+int16 EXCLAMATION=1
+int16 ARROW_DOWN=2
+int16 ARROW_LEFT=3
+int16 ARROW_RIGHT=4
+int16 ARROW_UP=5
+int16 EMPTY = 6
+int16 FULL = 7
+int16 NOCONNECTION = 8
+
+# Images
+int16 COLORS3 = 0
+int16 BATTERY_0 = 1
+int16 BATTERY_10 = 2
+int16 BATTERY_20 = 3
+int16 BATTERY_30 = 4
+int16 BATTERY_40 = 5
+int16 BATTERY_50 = 6
+int16 BATTERY_60 = 7
+int16 BATTERY_70 = 8
+int16 BATTERY_80 = 9
+int16 BATTERY_90 = 10
+int16 BATTERY_100 = 11
+int16 BATTERY_CHARGED = 12
+int16 BATTERY_CHARGING_0 = 13
+int16 BATTERY_CHARGING_80 = 14
+int16 BATTERY_LOW = 15
+int16 NO_CONNECTION = 16
+int16 CALIBRATION = 17
+int16 SYNCHRONIZATION = 18
+
+# Animation
+int16 SYNC = 0
+int16 QUASI_R2 = 1
+int16 STATIC = 2
+int16 CALIB = 3
+int16 PRELOADER = 4
+int16 EXPECTATION = 5

@@ -1,0 +1,12 @@
+###########################################################
+# This action is used when planning grasps for a single,
+#  already known object, one object at a time.
+
+# Object for which grasp planning is requested
+Object object
+int16 max_grasps                                # number of best grasps to return. return all (up to configured num_selected parameter) if <= 0
+moveit_msgs/GripperTranslation grasp_approach   # Desired approach direction for the grasp
+float64 grasp_approach_direction_threshold      # approach direction angle threshold, 0.0 or NaN - use default value from parameters
+---
+# Grasps sorted by score
+moveit_msgs/Grasp[] grasps

@@ -8,7 +8,7 @@ cart_xarm6_rviz.launch.py — только RViz, без Gazebo: модель т�
 Запуск:
   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py
   ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py use_gui:=false
-  ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3-scaled
+  ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
 """
 import os
 
@@ -58,8 +58,8 @@ def generate_launch_description():
         DeclareLaunchArgument('use_gui', default_value='true',
                               description='Окно с ползунками суставов'),
         DeclareLaunchArgument(
-            'robot_model', default_value='c2l-v3-scaled',
-            description='Тип тележки: c2 | c2l-v3-scaled'),
+            'robot_model', default_value='c2l-v3',
+            description='Тип тележки: c2 | c2l-v3'),
         DeclareLaunchArgument(
             'arm_offset_xyz', default_value='0 0 0',
             description='Доп. смещение базы руки от точки крепления тележки, м'),

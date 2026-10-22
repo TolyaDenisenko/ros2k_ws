@@ -268,6 +268,14 @@ TOP выигрывал, — меняйте веса в этих строках.
 
 ## 6. `scripts/vacuum_gripper_sim.py` — «логический» вакуум
 
+> ⚠️ **Обновлено (2026-10-22).** Вакуум теперь работает с несколькими объектами
+> (`object_names`/`object_sizes`, топики `/vacuum/<объект>/...`), есть топик
+> `/vacuum_gripper/cmd`, кнопка в RViz и светофор готовности — см.
+> [главу 9](09-вакуум-кнопка-готовность.md). Параметры `object_model_name` /
+> `object_size` и топики `/vacuum/attach|detach|state`, описанные ниже, заменены.
+> `grasp_analyzer` (раздел 4) остаётся, но для захвата по классам и зонам
+> используется новый конвейер — главы 10–13.
+
 Файл: [`scripts/vacuum_gripper_sim.py`](../../src/xarm_grasping/scripts/vacuum_gripper_sim.py) (286 строк).
 
 В Gazebo нет физики присоски. Вместо неё в модель робота (`quasi_cart_description/urdf/cart-arm.xacro`)
@@ -391,7 +399,7 @@ TOP выигрывал, — меняйте веса в этих строках.
 `cart_table_offline.world` при spawn 0,0: `link_base` в мире = (−0.0075, 0, 0.919); верх стола в
 `link_base` z = +0.006; `pick_box` в центре (0.6075, 0, 0.031), его верх z = +0.056.
 Эти числа посчитаны для руки в центре крыши (как у `c2`). Для дефолтной тележки
-`c2l-v3-scaled` `link_base` стоит у края, и цифры другие — см. параметры `grasp_analyzer` в
+`c2l-v3` `link_base` стоит у края, и цифры другие — см. параметры `grasp_analyzer` в
 главном launch (`table_height=0.015`, `pick_box` в `link_base` ≈ (1.14, 0.135)).
 
 ---
@@ -424,7 +432,7 @@ Node(
 [`grasp_params.yaml`](../../src/xarm_grasping/config/grasp_params.yaml): верхний ключ `grasp_analyzer:` должен
 совпадать с `name` ноды, имена параметров — с `declare_parameter()`.
 
-YAML написан под текущую дефолтную сцену (тележка `c2l-v3-scaled`, спавн (-0.3, 0), камера
+YAML написан под текущую дефолтную сцену (тележка `c2l-v3`, спавн (-0.3, 0), камера
 Orbbec Gemini 335Le, мир `cart_table_offline.world`): топики `/gripper_camera/color/image_raw`
 и `/gripper_camera/points`, фрейм `gripper_camera_color_optical_frame`, `table_height: 0.015`,
 `block_x: 1.14`, `block_y: 0.135` — те же числа, что в главном launch.

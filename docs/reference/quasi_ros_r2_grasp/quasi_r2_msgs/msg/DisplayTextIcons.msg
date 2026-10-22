@@ -1,0 +1,16 @@
+string line1 ""
+string line2 ""
+string line3 ""
+bool text1_3_font false
+bool text2_font false
+uint8 text1_color 7
+uint8 text2_color 7
+uint8 text3_color 7
+uint8 text1_align 0
+uint8 text2_align 0
+uint8 text3_align 0
+int16 icon1 -1
+int16 icon2 -1
+int16 icon3 -1
+uint8 line_color 7
+uint16 duration 10

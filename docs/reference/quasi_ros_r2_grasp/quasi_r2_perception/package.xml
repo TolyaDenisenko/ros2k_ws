@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>quasi_r2_perception</name>
+  <version>0.0.0</version>
+  <description>Quasi R2 perception related components</description>
+  <maintainer email="fedor@quasi.ai">Fedor Bokov</maintainer>
+  <license>Proprietary</license>
+
+  <buildtool_depend>ament_cmake_ros</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>bondcpp</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  <depend>tf2_eigen</depend>
+  <depend>sensor_msgs</depend>
+  <depend>quasi_r2_msgs</depend>
+  <depend>vision_msgs</depend>
+  <depend>object_msgs</depend>
+  <depend>quasi_utils</depend>
+  <depend>geometric_shapes</depend>
+  <depend>image_geometry</depend>
+  <depend>message_filters</depend>
+  <exec_depend>dynamic_vino_sample</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

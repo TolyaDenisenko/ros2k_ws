@@ -63,6 +63,7 @@
     <sensor name="imu" type="imu">
       <topic>/model/cart/imu</topic>
       <ignition_frame_id>imu_link</ignition_frame_id>
+      <frame_id>imu_link</frame_id>
       <always_on>true</always_on>
       <visualize>$(arg imu_visual)</visualize>
       <update_rate>50</update_rate>
@@ -118,6 +119,7 @@
     <sensor type="gpu_ray" name="tof_sensor1">
       <topic>/model/cart/tof_sensor1/scan</topic>
       <ignition_frame_id>tof1_link</ignition_frame_id>
+      <frame_id>tof1_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -156,6 +158,7 @@
     <sensor type="gpu_ray" name="tof_sensocart">
       <topic>/model/cart/tof_sensor2/scan</topic>
       <ignition_frame_id>tof2_link</ignition_frame_id>
+      <frame_id>tof2_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -194,6 +197,7 @@
     <sensor type="gpu_ray" name="tof_sensor3">
       <topic>/model/cart/tof_sensor3/scan</topic>
       <ignition_frame_id>tof3_link</ignition_frame_id>
+      <frame_id>tof3_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -232,6 +236,7 @@
     <sensor type="gpu_ray" name="tof_sensor4">
       <topic>/model/cart/tof_sensor4/scan</topic>
       <ignition_frame_id>tof4_link</ignition_frame_id>
+      <frame_id>tof4_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -270,6 +275,7 @@
     <sensor type="gpu_ray" name="tof_sensor5">
       <topic>/model/cart/tof_sensor5/scan</topic>
       <ignition_frame_id>tof5_link</ignition_frame_id>
+      <frame_id>tof5_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -308,6 +314,7 @@
     <sensor type="gpu_ray" name="tof_sensor6">
       <topic>/model/cart/tof_sensor6/scan</topic>
       <ignition_frame_id>tof6_link</ignition_frame_id>
+      <frame_id>tof6_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -346,6 +353,7 @@
     <sensor type="gpu_ray" name="tof_sensor7">
       <topic>/model/cart/tof_sensor7/scan</topic>
       <ignition_frame_id>tof7_link</ignition_frame_id>
+      <frame_id>tof7_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -384,6 +392,7 @@
     <sensor type="gpu_ray" name="tof_sensor8">
       <topic>/model/cart/tof_sensor8/scan</topic>
       <ignition_frame_id>tof8_link</ignition_frame_id>
+      <frame_id>tof8_link</frame_id>
       <update_rate>10</update_rate>
       <visualize>$(arg tof_visual)</visualize>
       <ray>
@@ -421,6 +430,7 @@
     <sensor type="gpu_lidar" name="ydlidar_tg15_sensor">
       <topic>/model/cart/lidar</topic>
       <ignition_frame_id>lidar_link</ignition_frame_id>
+      <frame_id>lidar_link</frame_id>
       <pose>0 0 0 0 0 0</pose>
       <visualize>$(arg laser_visual)</visualize>
       <update_rate>10</update_rate>
@@ -460,6 +470,7 @@
     <sensor type="rgbd_camera" name="realsense">
       <topic>/model/cart/realsense</topic>
       <ignition_frame_id>camera_rgb_camera_frame</ignition_frame_id>
+      <frame_id>camera_rgb_camera_frame</frame_id>
       <always_on>1</always_on>
       <update_rate>15.0</update_rate>
       <visualize>$(arg camera_visual)</visualize>

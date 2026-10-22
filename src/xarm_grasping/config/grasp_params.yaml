@@ -6,7 +6,7 @@
 #   ros2 run xarm_grasping grasp_analyzer.py --ros-args \
 #       --params-file src/xarm_grasping/config/grasp_params.yaml
 #
-# Значения — для дефолтной сцены cart_xarm6_gz: тележка c2l-v3-scaled,
+# Значения — для дефолтной сцены cart_xarm6_gz: тележка c2l-v3,
 # спавн (-0.3,0), камера Orbbec Gemini 335Le, мир cart_table_offline.world.
 grasp_analyzer:
   ros__parameters:

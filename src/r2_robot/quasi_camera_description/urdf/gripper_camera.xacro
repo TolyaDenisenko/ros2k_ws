@@ -6,41 +6,58 @@
   (параметры add_gripper_camera / gripper_camera_model / ...).
 
   Геометрия (в фрейме link_eef, Z — по оси инструмента, присоска до z=0.1265,
-  TCP z=0.126, радиус присоски ~0.046 м):
-    mount_xyz = 0.075 0 0.030   — винт камеры на 75 мм от оси и 30 мм от фланца
-    mount_rpy = π -π/2 0        — ось X камеры (взгляд) = ось Z инструмента;
-                                  проверка: R·[1,0,0] = [0,0,1]
-  Камера смотрит туда же, куда присоска, но со смещением 89 мм от оси.
-  Присоска в кадр не попадает (край присоски под углом ~40° при VFOV ±32°),
-  объект на оси TCP на дистанции 0.4 м виден со смещением ~12° от центра.
-  Значения — стартовые, уточнить по CAD кронштейна и калибровке (документ 08).
+  TCP z=0.126, радиус присоски ~0.046 м). Кронштейн Camera_Stand_1300: пластина
+  3 мм на фланце (z 0..0.003), лапка с пазами в сторону +X до x=0.0755.
+  Камера прикручена ЗАДНЕЙ панелью к лапке (со стороны присоски) и смотрит
+  вдоль оси инструмента:
+    mount_rpy = 0 -π/2 0  — X камеры (взгляд) -> +Z инструмента, Y (ширина
+                            124 мм) -> +Y (поперёк лапки), Z (верх) -> -X
+                            (верх к оси, нижняя грань с винтом 1/4" — наружу);
+    mount_xyz = 0.075 0 0.015 — нижний винт: нижняя грань на краю лапки
+                            (x=0.075, корпус по высоте 29 мм занимает x
+                            0.046..0.075 — вплотную к присоске, не пересекая);
+                            задняя панель (12 мм позади винта) на пластине
+                            z = 0.015 - 0.012 = 0.003.
+  Присоска частично видна в краю кадра (камера в ~60 мм от оси) — так и на
+  железе. Уточнить по калибровке (документ 08).
 -->
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="gripper_camera"
       params="camera_model parent:=link_eef name:=gripper_camera
-              mount_xyz:='0.075 0 0.030' mount_rpy:='${pi} ${-pi/2} 0'
+              mount_xyz:='0.075 0 0.015' mount_rpy:='0 ${-pi/2} 0'
               use_nominal_extrinsics:=true add_gz_sensor:=false preview:=false">
 
-    <!-- Кронштейн: бокс-заглушка (до появления STL из CAD). Привязан к mount_xyz:
-         центр на 18.75 мм (полтолщины бокса) ближе к оси, чем винт камеры;
-         при дефолте 0.075 → x=0.05625, рядом с присоской (до x=0.0375). -->
-    <xacro:property name="_m" value="${[float(v) for v in mount_xyz.split()]}"/>
+    <!-- Кронштейн Camera_Stand_1300 (STL из CAD, мм -> scale 0.001): пластина 3 мм
+         между фланцем и присоской. Диск Ø75 (отверстие Ø30, крепёж) — на фланец
+         соосно link_eef; лапка 45x60 мм с пазами под камеру — в сторону +X
+         link_eef (до x=75.5 мм). Оси меша: Y — толщина (0..3 мм), X — к лапке,
+         Z — поперёк; rpy = (π/2, 0, 0): Y меша -> Z инструмента, Z меша -> -Y. -->
     <joint name="${name}_bracket_joint" type="fixed">
-      <origin xyz="${_m[0] - 0.01875} ${_m[1]} ${_m[2]}" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <parent link="${parent}"/>
       <child link="${name}_bracket_link"/>
     </joint>
     <link name="${name}_bracket_link">
       <inertial>
-        <mass value="0.08"/>
-        <inertia ixx="3.0e-5" ixy="0" ixz="0" iyy="3.0e-5" iyz="0" izz="1.0e-5"/>
+        <!-- алюминий 3 мм, ~0.06 кг; центр масс смещён к лапке -->
+        <origin xyz="0.012 0 0.0015" rpy="0 0 0"/>
+        <mass value="0.06"/>
+        <inertia ixx="2.5e-5" ixy="0" ixz="0" iyy="5.0e-5" iyz="0" izz="7.5e-5"/>
       </inertial>
       <visual>
-        <geometry><box size="0.0375 0.04 0.06"/></geometry>
-        <material name="${name}_bracket_mat"><color rgba="0.15 0.15 0.15 1"/></material>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find quasi_camera_description)/meshes/brackets/camera_stand_1300.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="${name}_bracket_mat"><color rgba="0.75 0.75 0.78 1"/></material>
       </visual>
       <collision>
-        <geometry><box size="0.0375 0.04 0.06"/></geometry>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find quasi_camera_description)/meshes/brackets/camera_stand_1300.stl"
+                scale="0.001 0.001 0.001"/>
+        </geometry>
       </collision>
     </link>
 
