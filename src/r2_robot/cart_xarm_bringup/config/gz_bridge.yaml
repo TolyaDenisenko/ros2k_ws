@@ -1,7 +1,10 @@
 ---
 # gz_bridge для cart_xarm_bringup: тележка + xArm6 -> ROS 2 (общая часть: clock, колёса, езда, вакуум)
-# /clock из Gazebo
-- ros_topic_name: "/clock"
+# Часы Gazebo: gz публикует /clock на КАЖДОМ шаге физики (1 мс -> 1000 Гц).
+# Мостим в /clock_gz, а в /clock их прореживает до 200 Гц нода clock_throttle
+# (launch). Иначе каждая из ~30 нод с use_sim_time получает 1000 сообщ./с —
+# CPU уходит на часы, Nav2 не успевает поднять action-серверы.
+- ros_topic_name: "/clock_gz"
   gz_topic_name: "/clock"
   ros_type_name: "rosgraph_msgs/msg/Clock"
   gz_type_name: "gz.msgs.Clock"

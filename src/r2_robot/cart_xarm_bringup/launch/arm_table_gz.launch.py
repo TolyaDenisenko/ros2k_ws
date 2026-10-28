@@ -104,6 +104,17 @@ def generate_launch_description():
         package='ros_gz_bridge', executable='parameter_bridge', name='gz_bridge',
         parameters=[{'config_file': bridge_cfg('gz_bridge_arm_table.yaml'),
                      'use_sim_time': True}], output='screen')
+    # Прореживание часов: /clock_gz (1000 Гц, каждый шаг физики) -> /clock 200 Гц.
+    # Самый частый таймер у нод — 50 Гц (collision_monitor), запаса хватает.
+    # Физику и ros2_control (живёт внутри gz) это не касается. Сама нода —
+    # на wall time: её use_sim_time ждал бы /clock, который она же публикует
+    # (явный False перекрывает глобальный SetParameter(use_sim_time) этого launch).
+    clock_throttle = Node(
+        package='topic_tools', executable='throttle', name='clock_throttle',
+        arguments=['messages', '/clock_gz', '200.0', '/clock'],
+        parameters=[{'use_sim_time': False}],
+        output='screen',
+    )
     gz_bridge_camera = Node(
         package='ros_gz_bridge', executable='parameter_bridge',
         name='gz_bridge_gripper_camera',
@@ -231,7 +242,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'arm_initial_positions', default_value='0 -0.596 -1.013 0 1.609 0',
             description='Начальные углы joint1..joint6 (рад) через пробел'),
-        gz_sim, rsp, gz_bridge, gz_bridge_camera, camera_points,
+        gz_sim, rsp, gz_bridge, clock_throttle, gz_bridge_camera, camera_points,
         TimerAction(period=3.0, actions=[spawn_robot]),
         TimerAction(period=6.0, actions=spawners),
         TimerAction(period=8.0, actions=[vacuum_sim, vacuum_button, scene_markers]),

@@ -173,6 +173,17 @@ def generate_launch_description():
                      'use_sim_time': True}],
         output='screen',
     )
+    # Прореживание часов: /clock_gz (1000 Гц, каждый шаг физики) -> /clock 200 Гц.
+    # Самый частый таймер у нод — 50 Гц (collision_monitor), запаса хватает.
+    # Физику и ros2_control (живёт внутри gz) это не касается. Сама нода —
+    # на wall time: её use_sim_time ждал бы /clock, который она же публикует
+    # (явный False перекрывает глобальный SetParameter(use_sim_time) этого launch).
+    clock_throttle = Node(
+        package='topic_tools', executable='throttle', name='clock_throttle',
+        arguments=['messages', '/clock_gz', '200.0', '/clock'],
+        parameters=[{'use_sim_time': False}],
+        output='screen',
+    )
     # 5b. Камера гриппера: Orbbec -> /gripper_camera/{color,aligned_depth}/...;
     #     D435i -> /camera/... (отдельные yaml, чтобы не смешивать интерфейсы).
     gz_bridge_orbbec = Node(
@@ -474,6 +485,7 @@ def generate_launch_description():
         jsp,
         rsp,
         gz_bridge,
+        clock_throttle,
         gz_bridge_orbbec,
         gz_bridge_d435i,
         camera_points,

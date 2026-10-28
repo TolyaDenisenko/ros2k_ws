@@ -83,7 +83,8 @@ def bridge(objs):
     out = ['# СГЕНЕРИРОВАНО tools/gen_arm_table_scene.py из config/arm_table_objects.yaml — не править руками.',
            '# gz_bridge сценария «рука на столе»: /clock, поза руки, вакуум и поза каждого объекта.',
            '# Камера гриппера — gz_bridge_gripper_camera.yaml (общий с тележкой).',
-           '- {ros_topic_name: "/clock", gz_topic_name: "/clock", ros_type_name: "rosgraph_msgs/msg/Clock", '
+           '# /clock_gz -> /clock (200 Гц) прореживает clock_throttle, см. gz_bridge.yaml',
+           '- {ros_topic_name: "/clock_gz", gz_topic_name: "/clock", ros_type_name: "rosgraph_msgs/msg/Clock", '
            'gz_type_name: "gz.msgs.Clock", direction: GZ_TO_ROS}',
            '- {ros_topic_name: "/gz/robot_pose", gz_topic_name: "/xarm6_table/pose", '
            'ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}']
