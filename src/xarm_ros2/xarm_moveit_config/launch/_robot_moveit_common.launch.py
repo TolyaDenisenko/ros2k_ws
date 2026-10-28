@@ -39,6 +39,9 @@ def launch_setup(context, *args, **kwargs):
 
     add_realsense_d435i = LaunchConfiguration('add_realsense_d435i', default=False)
     add_d435i_links = LaunchConfiguration('add_d435i_links', default=True)
+    # камера гриппера (quasi_camera_description) в модели MoveIt — коллизии корпуса
+    add_gripper_camera = LaunchConfiguration('add_gripper_camera', default=False)
+    gripper_camera_model = LaunchConfiguration('gripper_camera_model', default='gemini335le')
     model1300 = LaunchConfiguration('model1300', default=False)
 
     attach_to = LaunchConfiguration('attach_to', default='world')
@@ -89,6 +92,8 @@ def launch_setup(context, *args, **kwargs):
             'ros2_control_plugin': ros2_control_plugin,
             'add_realsense_d435i': add_realsense_d435i,
             'add_d435i_links': add_d435i_links,
+            'add_gripper_camera': add_gripper_camera,
+            'gripper_camera_model': gripper_camera_model,
             'model1300': model1300,
             'attach_to': attach_to,
             'attach_xyz': attach_xyz,
@@ -115,6 +120,7 @@ def launch_setup(context, *args, **kwargs):
             'add_vacuum_gripper': add_vacuum_gripper,
             'add_bio_gripper': add_bio_gripper,
             'add_other_geometry': add_other_geometry,
+            'add_gripper_camera': add_gripper_camera,
         },
         arguments={
             'context': context,

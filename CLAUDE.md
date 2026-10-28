@@ -19,6 +19,7 @@ Main launches:
 - `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` — cart+arm in Gazebo, MoveIt RViz, grasp_analyzer. Args: `use_moveit`, `use_rviz`, `headless` (no Gazebo GUI), `camera_model` (`gemini335le` default | `d435i`), `gripper_camera_preview`, `robot_model` (`c2l-v3` default, `c2`; see CART_MODELS.md), `front_camera` (cart front Orbbec, default true), `spawn_x/y/z/yaw`, `arm_initial_positions`.
 - `ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py` — URDF check in RViz only.
 - `ros2 launch cart_xarm_bringup arm_table_gz.launch.py` — same arm (camera, vacuum, analyzer) fixed on a table, no cart (`arm_on_table.urdf.xacro`, `worlds/arm_table.world`); for grasp debugging/training. TF `world` = `link_base`, table top z=0.
+- `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py` — cart navigation: Nav2 + slam_toolbox + OctoMap (front camera) in `worlds/cart_nav.world`; params `config/nav2_cart.yaml` (see docs/NAV.md).
 - `ros2 launch xarm_gz_bringup xarm6_gz.launch.py add_vacuum_gripper:=true` — arm alone on a table.
 - `ros2 launch xarm_moveit_config xarm6_moveit_fake.launch.py add_vacuum_gripper:=true` — MoveIt with fake hardware.
 - URDF sanity: `xacro .../quasi_cart_description/urdf/cart_with_arm.urdf.xacro > /tmp/c.urdf && check_urdf /tmp/c.urdf`.
@@ -29,6 +30,8 @@ There is no test suite or linter configured.
 
 - `docs/STATUS.md` — status board, known issues, decisions, changelog (newest first). Add an entry for every behavior change.
 - `docs/CAMERA_VACUUM_SIM.md` — how the Orbbec camera / simulated vacuum / scene work + verification commands.
+- `docs/NAV.md` — cart navigation (Nav2, SLAM, OctoMap, maps, troubleshooting).
+- `docs/CLAUDE_MISTAKES.md` — Claude's past mistakes in this project and lessons; read it before nav/sensor work and add new entries.
 
 ## Architecture
 
@@ -45,6 +48,7 @@ There is no test suite or linter configured.
 - The gz **Sensors system must be declared only in the world**, not in the robot model — a duplicate causes `Scene already exists` + segfault.
 - Packages with `COLCON_IGNORE` (xarm_gazebo, realsense_gazebo_plugin, d435i_xarm_setup, xarm_planner, xarm_moveit_servo) are Gazebo Classic / unavailable in Kilted — don't re-enable. `src/object_recognition_msgs` is an empty dangling submodule.
 - Known issues in grasp pipeline: `grasp_analyzer` still assumes a cylinder; it rejects implausible objects (range/radius/height guards) and uses the a-priori block pose only with `use_prior_pose:=true`; `scene_markers.py` shows the true Gazebo scene in RViz (`/scene_markers`) for comparison; `table_height`/`block_x/y` are passed from launch as constants measured for c2l-v3 at spawn (-0.3,0) (recompute if cart/spawn changes); table detection assumes a downward-looking optical frame. The table is at x=1.05 (top z=0.925); default spawn_x=-0.3 keeps the c2l-v3 body clear of the table; the arm base (world x≈-0.54, at the handle end) is ~1.14 m from `pick_box` (x=0.6) — out of xArm6 reach (~0.7 m), scene layout still to be fixed.
+- The cart lidar sees the cart's own posts (~0.46 m). The gz bridge publishes `/scan_raw`; `cart_xarm_bringup/scripts/lidar_blackout_filter.py` publishes `/scan` without the post sectors (`config/lidar_blackout.yaml` = `blackout_angles` of the ydlidar driver from quasi_ros_c1, as on hardware). Don't work around it with min-range hacks, and don't move sensors away from their real poses to fix sim artifacts.
 - Vacuum in sim is a logical weld (DetachableJoint), not physics. The plugin welds the target at load; `vacuum_gripper_sim` detaches it at startup.
 - gz does not resolve `package://` for our packages: mesh paths use `file://$(find pkg)/...`. In shell tests never `pkill -f` patterns that appear in your own command line.
 - When testing in sim yourself, isolate it (`ROS_DOMAIN_ID`, `GZ_PARTITION`) — the user often runs their own sim in parallel.

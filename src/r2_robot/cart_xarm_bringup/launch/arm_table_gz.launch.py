@@ -200,6 +200,8 @@ def generate_launch_description():
         launch_arguments={
             'robot_type': 'xarm', 'dof': '6', 'add_gripper': 'false',
             'add_vacuum_gripper': 'true', 'prefix': '', 'hw_ns': 'xarm',
+            # камера гриппера в модели MoveIt: планировщик учитывает её корпус
+            'add_gripper_camera': 'true', 'gripper_camera_model': 'gemini335le',
             'ros2_control_plugin': 'gz_ros2_control/GazeboSimSystem',
             'use_sim_time': 'true',
             # world -> link_base уже в URDF (тождественно) — второй издатель не нужен

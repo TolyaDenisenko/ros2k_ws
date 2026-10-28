@@ -30,7 +30,13 @@
   <exec_depend>xarm_moveit_config</exec_depend>
   <exec_depend>xarm_grasping</exec_depend>
   <exec_depend>depth_image_proc</exec_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>rclcpp_components</exec_depend>
+  <!-- навигация (cart_nav_gz.launch.py) -->
+  <exec_depend>nav2_bringup</exec_depend>
+  <exec_depend>slam_toolbox</exec_depend>
+  <exec_depend>octomap_server</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

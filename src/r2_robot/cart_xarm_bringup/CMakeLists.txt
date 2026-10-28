@@ -7,4 +7,8 @@ install(DIRECTORY launch config worlds rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(PROGRAMS scripts/lidar_blackout_filter.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

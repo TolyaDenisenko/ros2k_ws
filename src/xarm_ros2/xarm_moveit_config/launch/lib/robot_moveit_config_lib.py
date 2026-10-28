@@ -11,6 +11,7 @@ import yaml
 from ament_index_python import get_package_share_directory
 from launch.launch_description_sources import load_python_launch_file_as_module
 from launch.substitutions import Command, FindExecutable, PathJoinSubstitution
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 from uf_ros_lib.uf_robot_utils import get_xacro_command, load_yaml
 
@@ -63,14 +64,16 @@ def get_xarm_robot_description_parameters(
     xarm_type = arguments.get('xarm_type', None)
     
     return {
-        'robot_description': get_xacro_command(
+        # value_type=str: иначе launch_ros пробует разобрать XML как YAML и падает,
+        # если в комментариях xacro есть ': ' (камера quasi_camera_description)
+        'robot_description': ParameterValue(get_xacro_command(
             xacro_file=xacro_urdf_file, 
             mappings=urdf_arguments
-        ),
-        'robot_description_semantic': get_xacro_command(
+        ), value_type=str),
+        'robot_description_semantic': ParameterValue(get_xacro_command(
             xacro_file=xacro_srdf_file,
             mappings=srdf_arguments
-        ),
+        ), value_type=str),
         'robot_description_planning': load_yaml(moveit_config_package_name, 'config', xarm_type, 'joint_limits.yaml'),
         'robot_description_kinematics': load_yaml(moveit_config_package_name, 'config', xarm_type, 'kinematics.yaml')
     }

@@ -8,9 +8,29 @@
   <xacro:arg name="add_vacuum_gripper" default="false" />
   <xacro:arg name="add_bio_gripper" default="false" />
   <xacro:arg name="add_other_geometry" default="false" />
+  <xacro:arg name="add_gripper_camera" default="false" />
 
   <xacro:include filename="$(find xarm_moveit_config)/srdf/xarm_macro.srdf.xacro" />
   <xacro:xarm_macro_srdf prefix="$(arg prefix)" dof="$(arg dof)" robot_type="$(arg robot_type)" 
     add_gripper="$(arg add_gripper)" add_vacuum_gripper="$(arg add_vacuum_gripper)" add_bio_gripper="$(arg add_bio_gripper)" add_other_geometry="$(arg add_other_geometry)" />
+
+
+  <!-- камера гриппера на link_eef (quasi_camera_description): кронштейн зажат между
+       фланцем и присоской, корпус камеры вплотную к присоске -->
+  <xacro:if value="$(arg add_gripper_camera)">
+    <xacro:property name="_p" value="$(arg prefix)" />
+    <xacro:property name="_dof" value="$(arg dof)" />
+    <xacro:property name="_cam_links" value="${[_p + 'gripper_camera_bracket_link', _p + 'gripper_camera_link']}" />
+    <xacro:property name="_near_links" value="${[_p + 'link_eef', _p + 'link' + str(_dof), _p + 'link' + str(int(_dof) - 1), _p + 'xarm_vacuum_gripper_link']}" />
+    <disable_collisions link1="${_cam_links[0]}" link2="${_cam_links[1]}" reason="Adjacent" />
+    <xacro:macro name="_cam_disable" params="links">
+      <xacro:if value="${links}">
+        <disable_collisions link1="${_cam_links[0]}" link2="${links[0]}" reason="Adjacent" />
+        <disable_collisions link1="${_cam_links[1]}" link2="${links[0]}" reason="Never" />
+        <xacro:_cam_disable links="${links[1:]}" />
+      </xacro:if>
+    </xacro:macro>
+    <xacro:_cam_disable links="${_near_links}" />
+  </xacro:if>
 
 </robot>

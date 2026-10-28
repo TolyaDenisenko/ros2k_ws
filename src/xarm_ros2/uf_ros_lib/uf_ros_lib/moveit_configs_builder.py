@@ -264,6 +264,8 @@ class MoveItConfigsBuilder(ParameterBuilder):
         add_realsense_d435i = get_param_str('add_realsense_d435i', False)
         add_d435i_links = get_param_str('add_d435i_links', True)
         use_gazebo_camera = get_param_str('use_gazebo_camera', False)
+        add_gripper_camera = get_param_str('add_gripper_camera', False)
+        gripper_camera_model = get_param_str('gripper_camera_model', 'gemini335le')
         add_other_geometry = get_param_str('add_other_geometry', False)
         geometry_type = get_param_str('geometry_type', 'box')
         geometry_mass = get_param_str('geometry_mass', 0.1)
@@ -312,6 +314,8 @@ class MoveItConfigsBuilder(ParameterBuilder):
             'add_realsense_d435i': add_realsense_d435i,
             'add_d435i_links': add_d435i_links,
             'use_gazebo_camera': use_gazebo_camera,
+            'add_gripper_camera': add_gripper_camera,
+            'gripper_camera_model': gripper_camera_model,
             'add_other_geometry': add_other_geometry,
             'geometry_type': geometry_type,
             'geometry_mass': geometry_mass,
@@ -333,6 +337,7 @@ class MoveItConfigsBuilder(ParameterBuilder):
             'add_vacuum_gripper': add_vacuum_gripper,
             'add_bio_gripper': add_bio_gripper,
             'add_other_geometry': add_other_geometry,
+            'add_gripper_camera': add_gripper_camera,
         }
 
         self.__urdf_package = Path(get_package_share_directory('xarm_description'))

@@ -1,0 +1,5 @@
+repositories:
+  ros2k_ws:
+    type: git
+    url: git@github.com:TolyaDenisenko/ros2k_ws.git
+    version: main

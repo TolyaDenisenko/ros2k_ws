@@ -22,6 +22,10 @@
   <xacro:arg name="add_realsense_d435i" default="false"/>
   <xacro:arg name="add_d435i_links" default="true"/>
   <xacro:arg name="use_gazebo_camera" default="false"/>
+  <!-- камера гриппера (quasi_camera_description) — для модели MoveIt: только звенья
+       и коллизии, без gz-сенсора -->
+  <xacro:arg name="add_gripper_camera" default="false"/>
+  <xacro:arg name="gripper_camera_model" default="gemini335le"/>
 
   <xacro:arg name="add_other_geometry" default="false"/>
   <xacro:arg name="geometry_type" default="box"/>
@@ -68,6 +72,7 @@
     baud_checkset="$(arg baud_checkset)" default_gripper_baud="$(arg default_gripper_baud)"
     model1300="$(arg model1300)" attach_to="$(arg attach_to)" attach_xyz="$(arg attach_xyz)" attach_rpy="$(arg attach_rpy)"
     robot_sn="$(arg robot_sn)" use_gazebo_camera="$(arg use_gazebo_camera)" mesh_suffix="$(arg mesh_suffix)" kinematics_suffix="$(arg kinematics_suffix)"
-    gripper_version="$(arg gripper_version)" />
+    gripper_version="$(arg gripper_version)"
+    add_gripper_camera="$(arg add_gripper_camera)" gripper_camera_model="$(arg gripper_camera_model)" />
 
 </robot>

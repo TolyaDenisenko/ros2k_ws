@@ -7,8 +7,8 @@ scene_manager — модель мира для захвата: Planning Scene Mo
    * объекты из /objects (object_perception) -> CollisionObject (id = id объекта):
      MoveIt объезжает их и не сбивает соседей при подходе;
    * стол -> CollisionObject 'table' (верх чуть ниже найденной плоскости);
-   * камера гриппера с кронштейном -> AttachedCollisionObject к link_eef: в
-     модели MoveIt её нет (moveit_configs_builder строит только руку);
+   * камера гриппера с кронштейном — в самой модели MoveIt (launch передаёт
+     add_gripper_camera:=true в _robot_moveit_common), здесь не добавляется;
    * захват: /vacuum_gripper/held стал непустым -> ближайший к TCP объект
      прикрепляется к link_tcp (MoveIt учитывает его при переносе); отпустили ->
      открепляется и остаётся в сцене там, где его поставили.
@@ -52,11 +52,8 @@ from visualization_msgs.msg import Marker, MarkerArray
 from xarm_grasping_msgs.action import FindPlacePose
 from xarm_grasping_msgs.msg import DetectedObject, DetectedObjectArray
 
-# Камера Gemini 335Le на кронштейне в кадре link_eef (quasi_camera_description,
-# gripper_camera.xacro): x 0.046..0.0755, y ±0.062, z 0.003..0.053 (+ запас 5 мм)
-CAMERA_BOX_CENTER = (0.061, 0.0, 0.028)
-CAMERA_BOX_SIZE = (0.040, 0.134, 0.060)
-GRIPPER_TOUCH_LINKS = ['link6', 'link_eef', 'link_tcp', 'xarm_vacuum_gripper_link']
+GRIPPER_TOUCH_LINKS = ['link6', 'link_eef', 'link_tcp', 'xarm_vacuum_gripper_link',
+                       'gripper_camera_bracket_link', 'gripper_camera_link']
 
 
 def primitive_of(o: DetectedObject):
@@ -149,7 +146,6 @@ class SceneManager(Node):
         self.table_z = None
         self.scene_ids = set()       # объекты, которые сейчас в мире Planning Scene
         self.attached_id = ''        # объект в присоске (прикреплён в сцене)
-        self.camera_added = False
 
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
@@ -192,25 +188,7 @@ class SceneManager(Node):
         return c
 
     def on_timer(self):
-        if not self.camera_added and self.scene_cli.service_is_ready():
-            self.add_camera()
         self.publish_zones()
-
-    def add_camera(self):
-        """Камера с кронштейном — прикреплённое тело на link_eef (нет в модели MoveIt)."""
-        box = SolidPrimitive(type=SolidPrimitive.BOX, dimensions=list(CAMERA_BOX_SIZE))
-        pose = Pose()
-        pose.position = Point(x=CAMERA_BOX_CENTER[0], y=CAMERA_BOX_CENTER[1],
-                              z=CAMERA_BOX_CENTER[2])
-        pose.orientation.w = 1.0
-        a = AttachedCollisionObject(link_name='link_eef', touch_links=GRIPPER_TOUCH_LINKS)
-        a.object = self.co('gripper_camera', box, pose)
-        a.object.header.frame_id = 'link_eef'
-        s = PlanningScene()
-        s.robot_state.attached_collision_objects = [a]
-        self.camera_added = self.apply(s, 'камера гриппера')
-        if self.camera_added:
-            self.get_logger().info('камера гриппера добавлена в Planning Scene (link_eef)')
 
     def on_objects(self, msg: DetectedObjectArray):
         with self.lock:

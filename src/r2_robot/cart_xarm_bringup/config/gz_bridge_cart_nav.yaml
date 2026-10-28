@@ -1,0 +1,15 @@
+# gz_bridge для навигации (cart_nav_gz.launch.py), дополняет gz_bridge.yaml и
+# gz_bridge_cart_sensors.yaml: TF одометрии и IMU тележки.
+# OdometryPublisher (cart-sensors.ign.xacro) публикует odom -> base_footprint
+# в /model/cart/tf; slam_toolbox добавляет map -> odom.
+- ros_topic_name: "/tf"
+  gz_topic_name: "/model/cart/tf"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/imu"
+  gz_topic_name: "/model/cart/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS

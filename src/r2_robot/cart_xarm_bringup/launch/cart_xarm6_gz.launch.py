@@ -228,6 +228,15 @@ def generate_launch_description():
                      'use_sim_time': True}],
         output='screen',
     )
+    # Стойки тележки в поле лидара: /scan_raw -> /scan без секторов стоек
+    # (на железе — blackout_angles драйвера ydlidar, config/lidar_blackout.yaml).
+    lidar_blackout_filter = Node(
+        package='cart_xarm_bringup',
+        executable='lidar_blackout_filter.py',
+        name='lidar_blackout_filter',
+        parameters=[bridge_cfg('lidar_blackout.yaml'), {'use_sim_time': True}],
+        output='screen',
+    )
     gz_bridge_front_camera = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -383,6 +392,11 @@ def generate_launch_description():
             'dof': '6',
             'add_gripper': 'false',
             'add_vacuum_gripper': 'true',
+            # камера гриппера в модели MoveIt: планировщик учитывает её корпус
+            # (только Orbbec из quasi_camera_description; D435i — без камеры)
+            'add_gripper_camera': PythonExpression(
+                ["'false' if '", camera_model, "' == 'd435i' else 'true'"]),
+            'gripper_camera_model': camera_model,
             'prefix': '',
             'hw_ns': 'xarm',
             'ros2_control_plugin': 'gz_ros2_control/GazeboSimSystem',
@@ -464,6 +478,7 @@ def generate_launch_description():
         gz_bridge_d435i,
         camera_points,
         gz_bridge_cart_sensors,
+        lidar_blackout_filter,
         gz_bridge_front_camera,
         front_camera_points,
         vacuum_sim,

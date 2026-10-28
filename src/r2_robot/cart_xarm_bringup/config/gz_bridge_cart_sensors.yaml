@@ -3,8 +3,10 @@
 # в репозитории тележки quasi_ros_c1 (nav2.yaml): лидар /scan, ToF — облака
 # /rangeN_pcl. Готовы для costmap (voxel_layer) и, позже, OctoMap.
 
-# Лидар YDLIDAR TG15 (gpu_lidar, 360°, 10 Гц, lidar_link)
-- ros_topic_name: "/scan"
+# Лидар YDLIDAR TG15 (gpu_lidar, 360°, 10 Гц, lidar_link). Сырой скан — в
+# /scan_raw; /scan публикует lidar_blackout_filter (вырезает стойки тележки,
+# как blackout_angles драйвера ydlidar на железе).
+- ros_topic_name: "/scan_raw"
   gz_topic_name: "/model/cart/lidar"
   ros_type_name: "sensor_msgs/msg/LaserScan"
   gz_type_name: "gz.msgs.LaserScan"
