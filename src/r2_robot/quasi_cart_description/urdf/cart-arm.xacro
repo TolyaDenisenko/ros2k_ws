@@ -35,6 +35,8 @@
   <!-- Модели Gazebo, которые присоска может «приварить» (DetachableJoint), через
        пробел. Имена = имена моделей в мире, у каждой link «link», модели НЕ static.
        На каждую — свой плагин и топики /vacuum/<модель>/{attach,detach,state}. -->
+  <!-- none — без присоски-сварки (сценарий навигации без нод захвата: иначе pick_box остаётся
+       приваренным к руке с момента загрузки и тележка тащит его за собой) -->
   <xacro:arg name="vacuum_targets" default="pick_box"/>
 
   <!-- Плагин DetachableJoint на каждую модель из списка (xacro без циклов —
@@ -131,7 +133,7 @@
       Когда слать attach — решает нода vacuum_gripper_sim (проверяет касание).
     -->
     <xacro:if value="$(arg use_sim)">
-      <xacro:vacuum_joints targets="${'$(arg vacuum_targets)'.split()}"/>
+      <xacro:vacuum_joints targets="${[t for t in '$(arg vacuum_targets)'.split() if t != 'none']}"/>
       <gazebo>
         <!-- Поза модели робота в мире (10 Гц) — для проверки касания присоской -->
         <plugin filename="gz-sim-pose-publisher-system"

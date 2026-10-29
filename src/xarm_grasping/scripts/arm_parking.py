@@ -11,6 +11,15 @@ arm_parking — режим парковки руки (имитация блок�
     исполнения, а не дёргает руку посреди езды.
 Выключение парковки снова активирует контроллер; он стартует с текущей позы.
 
+Удержание (hold_controller, по умолчанию arm_hold_controller): в симуляции «выключенный» траекторный
+контроллер НЕ держит позу — суставы остаются без управления, и рука складывается под своим весом
+(13 кг на высоте ~1 м сдвигают центр масс, тележку кренит на 10–19°). Поэтому парковка переключает
+руку на forward-контроллер позиций (config/arm_hold.yaml): он держит запомненные углы, как тормоза
+на железе. hold_controller:='' — прежнее поведение (только выключить траекторный).
+
+Запуск запаркованной (park_on_start): рука «не включена, пока нет запроса». Снять парковку —
+сервис /arm_parking/set {data: false}; пока она снята вручную, при езде рука паркуется сама.
+
 Интерфейс
 ---------
   сервис /arm_parking/set   (std_srvs/SetBool)  true — парковка, false — снять
@@ -33,7 +42,8 @@ from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile
-from std_msgs.msg import Bool
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool, Float64MultiArray
 from std_srvs.srv import SetBool
 
 
@@ -45,8 +55,15 @@ class ArmParking(Node):
         self.declare_parameter('auto_park_on_drive', True)
         self.declare_parameter('cmd_vel_topic', '/cmd_vel')
         self.declare_parameter('release_delay', 1.0)
+        self.declare_parameter('hold_controller', 'arm_hold_controller')
+        self.declare_parameter('joints', ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6'])
+        self.declare_parameter('park_on_start', False)
         self.controller = self.get_parameter('controller').value
         self.release_delay = float(self.get_parameter('release_delay').value)
+        self.hold = self.get_parameter('hold_controller').value
+        self.joints = list(self.get_parameter('joints').value)
+        self.joint_pos = {}
+        self.hold_cmd = None         # углы, которые держит тормоз
 
         cbg = ReentrantCallbackGroup()
         self.switch_cli = self.create_client(
@@ -57,6 +74,12 @@ class ArmParking(Node):
         self.pub_state = self.create_publisher(Bool, '/arm_parking/state', latched)
         self.create_service(SetBool, '/arm_parking/set', self.on_set, callback_group=cbg)
 
+        self.create_subscription(JointState, '/joint_states', self.on_joints, 10,
+                                 callback_group=cbg)
+        if self.hold:
+            self.pub_hold = self.create_publisher(
+                Float64MultiArray, f'/{self.hold}/commands', 10)
+            self.create_timer(0.05, self.on_hold_timer, callback_group=cbg)
         self.parked = False
         self.manual = False          # парковка включена вручную — авто её не снимает
         self.last_drive = None       # время последней ненулевой /cmd_vel
@@ -65,20 +88,57 @@ class ArmParking(Node):
                                      self.on_cmd_vel, 10, callback_group=cbg)
             self.create_timer(0.2, self.on_timer, callback_group=cbg)
         self.pub_state.publish(Bool(data=False))
+        self.start_tries = 0
+        if self.get_parameter('park_on_start').value:
+            self.startup_timer = self.create_timer(1.0, self.on_startup, callback_group=cbg)
         self.get_logger().info(
             'arm_parking готов. Парковка: ros2 service call /arm_parking/set '
             'std_srvs/srv/SetBool "{data: true}"')
+
+    def on_joints(self, msg: JointState):
+        for name, pos in zip(msg.name, msg.position):
+            if name in self.joints:
+                self.joint_pos[name] = pos
+
+    def on_hold_timer(self):
+        # пока рука запаркована, постоянно шлём запомненные углы в контроллер удержания
+        if self.parked and self.hold_cmd is not None:
+            self.pub_hold.publish(Float64MultiArray(data=self.hold_cmd))
+
+    def on_startup(self):
+        # запуск запаркованной: ждём, пока контроллеры руки поднимутся (spawner стартует позже ноды)
+        self.start_tries += 1
+        ok, msg = (False, '')
+        if len(self.joint_pos) == len(self.joints):
+            self.manual = True       # снять парковку может только запрос
+            ok, msg = self.switch(True)
+        if ok or self.start_tries > 90:
+            self.startup_timer.cancel()
+            if not ok:
+                self.manual = False
+                self.get_logger().error('не удалось запарковать руку при старте: ' + msg)
 
     def switch(self, park: bool) -> tuple[bool, str]:
         if park == self.parked:
             return True, 'уже ' + ('запаркована' if park else 'активна')
         if not self.switch_cli.wait_for_service(timeout_sec=2.0):
             return False, 'нет сервиса controller_manager/switch_controller'
+        if park and self.hold:
+            if len(self.joint_pos) < len(self.joints):
+                return False, 'нет /joint_states руки — не знаю, какую позу держать'
+            # запоминаем позу ДО переключения; тормоз держит именно её
+            self.hold_cmd = [self.joint_pos[j] for j in self.joints]
+            for _ in range(3):
+                self.pub_hold.publish(Float64MultiArray(data=self.hold_cmd))
         req = SwitchController.Request()
         if park:
             req.deactivate_controllers = [self.controller]
+            if self.hold:
+                req.activate_controllers = [self.hold]
         else:
             req.activate_controllers = [self.controller]
+            if self.hold:
+                req.deactivate_controllers = [self.hold]
         req.strictness = SwitchController.Request.STRICT
         req.activate_asap = True
         fut = self.switch_cli.call_async(req)
@@ -90,8 +150,11 @@ class ArmParking(Node):
             return False, f'switch_controller не выполнен ({self.controller})'
         self.parked = park
         self.pub_state.publish(Bool(data=park))
-        msg = ('рука запаркована: контроллер выключен, поза удерживается'
-               if park else 'парковка снята: контроллер активен')
+        if not park:
+            self.hold_cmd = None
+        msg = (('рука запаркована: тормоз (' + self.hold + ') держит позу') if self.hold else
+               'рука запаркована: контроллер выключен, поза удерживается'
+               ) if park else 'парковка снята: контроллер активен'
         self.get_logger().info(msg)
         return True, msg
 

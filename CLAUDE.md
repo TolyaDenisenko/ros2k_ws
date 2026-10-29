@@ -19,7 +19,7 @@ Main launches:
 - `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py` — cart+arm in Gazebo, MoveIt RViz, grasp_analyzer. Args: `use_moveit`, `use_rviz`, `headless` (no Gazebo GUI), `camera_model` (`gemini335le` default | `d435i`), `gripper_camera_preview`, `robot_model` (`c2l-v3` default, `c2`; see CART_MODELS.md), `front_camera` (cart front Orbbec, default true), `spawn_x/y/z/yaw`, `arm_initial_positions`.
 - `ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py` — URDF check in RViz only.
 - `ros2 launch cart_xarm_bringup arm_table_gz.launch.py` — same arm (camera, vacuum, analyzer) fixed on a table, no cart (`arm_on_table.urdf.xacro`, `worlds/arm_table.world`); for grasp debugging/training. TF `world` = `link_base`, table top z=0.
-- `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py` — cart navigation: Nav2 + slam_toolbox + OctoMap (front camera) in `worlds/cart_nav.world`; params `config/nav2_cart.yaml` (see docs/NAV.md).
+- `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py` — cart navigation: Nav2 + slam_toolbox + OctoMap (front camera) in `worlds/cart_nav.world`; params `config/nav2_cart.yaml` (see docs/book/NAV.md); grasp nodes are off there (`manipulation_nodes:=true` brings them back).
 - `ros2 launch xarm_gz_bringup xarm6_gz.launch.py add_vacuum_gripper:=true` — arm alone on a table.
 - `ros2 launch xarm_moveit_config xarm6_moveit_fake.launch.py add_vacuum_gripper:=true` — MoveIt with fake hardware.
 - URDF sanity: `xacro .../quasi_cart_description/urdf/cart_with_arm.urdf.xacro > /tmp/c.urdf && check_urdf /tmp/c.urdf`.
@@ -30,7 +30,8 @@ There is no test suite or linter configured.
 
 - `docs/STATUS.md` — status board, known issues, decisions, changelog (newest first). Add an entry for every behavior change.
 - `docs/CAMERA_VACUUM_SIM.md` — how the Orbbec camera / simulated vacuum / scene work + verification commands.
-- `docs/NAV.md` — cart navigation (Nav2, SLAM, OctoMap, maps, troubleshooting).
+- `docs/CHECKLIST.md` — done / to-do checklist for the whole project; tick items when closing tasks.
+- `docs/book/NAV.md` — cart navigation (Nav2, SLAM, OctoMap, maps, troubleshooting).
 - `docs/CLAUDE_MISTAKES.md` — Claude's past mistakes in this project and lessons; read it before nav/sensor work and add new entries.
 
 ## Architecture
@@ -51,6 +52,11 @@ There is no test suite or linter configured.
 - The cart lidar sees the cart's own posts (~0.46 m). The gz bridge publishes `/scan_raw`; `cart_xarm_bringup/scripts/lidar_blackout_filter.py` publishes `/scan` without the post sectors (`config/lidar_blackout.yaml` = `blackout_angles` of the ydlidar driver from quasi_ros_c1, as on hardware). Don't work around it with min-range hacks, and don't move sensors away from their real poses to fix sim artifacts.
 - DDS load: with default Fast DDS simple discovery ~50 sim processes burn 30–50% CPU per idle node in the `dds.asyn` thread (check with `top -H -p <pid>`), Nav2 bringup can time out (`"spin" action server not available`). **Don't use Fast DDS Discovery Server**: clients don't see the full graph, Nav2 costmaps (published only when `count_subscribers` > 0) stop publishing. CycloneDDS was tried (2026-10-28) and is NOT better (see docs/STATUS.md); stay on default Fast DDS. Note rmw_cyclonedds_cpp caps one domain at 32 ROS processes (`MaxAutoParticipantIndex`), the Nav2 sim needs ~32+.
 - gz publishes `/clock` every physics step (1 ms → 1000 Hz). The bridge maps it to `/clock_gz`; `clock_throttle` (topic_tools) republishes `/clock` at 200 Hz. Don't bridge gz `/clock` straight to `/clock`. Also the cart wheels `JointStatePublisher` needs `<update_rate>` (otherwise ~1 kHz). `clock_throttle` must keep `use_sim_time: False`.
+- Cart drive in sim is gz `DiffDrive` on the real wheel joints (continuous, both axes +y, separation per model in `sim_wheel_separation`, radius 0.065); `sim_drive:=velocity` restores the old body-velocity `VelocityControl`, which tipped the cart. Wheel/caster **collisions are cylinders**, not the STL meshes (mesh contacts made the cart hop). Drive wheels mu 1.5, casters mu 0.02 as separate links (`preserveFixedJoint`); c1's `cart.ign.xacro` friction does not apply to c2/c2l.
+- Arm parking = switch to `arm_hold_controller` (forward position controller, `config/arm_hold.yaml`, spawned inactive), never just deactivate `xarm6_traj_controller`: an unheld arm collapses under its own weight and tips the cart. `arm_parked:=true` parks it from start until `/arm_parking/set {data: false}`.
+- The `DetachableJoint` welds `pick_box` to the arm at load. If `vacuum_gripper_sim` is not running, set `vacuum_targets:=none` (the nav launch does via `manipulation_nodes:=false`), otherwise the cart drags the box and tips over on walls.
+- After many killed sims `/dev/shm` fills with dead Fast DDS segments: services stop being discovered, Nav2/SLAM bringup fails. Stop ROS and run `fastdds shm clean`. Stop test sims with SIGINT on the `ros2 launch` process first, `kill -9` only last.
+- rclpy node with `use_sim_time` + `MultiThreadedExecutor` burns ~84% of a core idle (200 Hz `/clock`; SingleThreaded 9%, wall time 0.1%) — measured 2026-10-29, see `docs/TASK_python_nodes_cpu.md`.
 - Vacuum in sim is a logical weld (DetachableJoint), not physics. The plugin welds the target at load; `vacuum_gripper_sim` detaches it at startup.
 - gz does not resolve `package://` for our packages: mesh paths use `file://$(find pkg)/...`. In shell tests never `pkill -f` patterns that appear in your own command line.
 - When testing in sim yourself, isolate it (`ROS_DOMAIN_ID`, `GZ_PARTITION`) — the user often runs their own sim in parallel.

@@ -29,8 +29,11 @@ ros2 launch cart_xarm_bringup cart_nav_gz.launch.py
 |---|---|---|
 | `use_rviz` | `true` | RViz навигации `rviz/cart_nav.rviz` |
 | `use_moveit` | `false` | MoveIt руки (для езды не нужен) |
-| `headless` | `false` | Gazebo без окна |
+| `headless` | `false` | Gazebo без окна. **Для езды рекомендуется `true`**: окно Gazebo ест 0.6–0.75 ядра, а вместе с RViz и OctoMap процессор забивается (2026-10-29); тележку и карты смотри в RViz |
 | `use_octomap` | `true` | 3D-карта по передней камере |
+| `arm_initial_positions` | `1.5708 0.06 -0.48 0 0.47 0` | поза руки на время езды (joint1..6, рад): перевёрнутая U поперёк тележки на стороне ручки, присоска в 1.4 см над верхней плитой (пик 1.50 м) |
+| `arm_parked` | `true` | рука запаркована тормозом с самого старта и не включается, пока нет запроса: `ros2 service call /arm_parking/set std_srvs/srv/SetBool "{data: false}"` (вернуть: `{data: true}`); при `false` рука паркуется только на время езды |
+| `manipulation_nodes` | `false` | ноды захвата (вакуум, сцена, `grasp_analyzer`, облако камеры гриппера); при езде рука ничего не держит. `true` — вернуть |
 | `gripper_camera_preview` | `true` | камера гриппера 640×400 вместо 1280×800 |
 | `spawn_x` / `spawn_y` / `spawn_yaw` | `-2.0` / `0.0` / `0.0` | где появляется тележка |
 
@@ -282,6 +285,9 @@ ros2 topic echo /collision_monitor_state
 | Нет карты и `map → odom` | slam_toolbox не активирован | `ros2 lifecycle get /slam_toolbox` должен дать `active`; смотреть лог `lifecycle_manager_slam` |
 | Первая цель не принимается | Nav2 ещё поднимается (~30 с после старта) | дождаться `Managed nodes are active` |
 | Тележка встала у препятствия | сработал collision_monitor (`/collision_monitor_state`) или нет пути | дать цель в обход, посмотреть costmap |
+| Тележка завалилась или подпрыгивает при езде | в симуляции привод — `DiffDrive` на колёсах (цилиндры в коллизиях, кастеры без трения), рука стоит на тормозе (`arm_hold_controller`); старые причины — STATUS K10 | проверить `ros2 control list_controllers`: `arm_hold_controller` active, `xarm6_traj_controller` inactive (парковка) |
+| Nav2 или SLAM не поднялись (сообщения `Action server ... not available after waiting for 30.00s`) | гонка при старте; `nav_bringup_watchdog` сам делает RESET + STARTUP (до 4 раз, первая проверка через ~85 с после запуска) | если не помогло: `ros2 service call /lifecycle_manager_navigation/manage_nodes nav2_msgs/srv/ManageLifecycleNodes "{command: 3}"`, затем `{command: 0}` |
+| Nav2 или SLAM не поднялись, сервисы «не находятся», `failed to send response ... timeout` | накопился мусор Fast DDS в `/dev/shm` после аварийно убитых запусков | закрыть всё ROS, `fastdds shm clean`, запустить заново |
 | В логе `Control loop missed its desired rate` | сим-время идёт не 1:1 с реальным | на езду не влияет |
 
 ## 9. Известное и планы
@@ -294,6 +300,15 @@ ros2 topic echo /collision_monitor_state
 - Переход на стек c1: fuse, STVL вместо `voxel_layer`, свой BT-навигатор,
   стыковка, зоны (`quasi_cart_zone_filter`), параметры по модели тележки
   (`<robot_model>.nav2.yaml`, `<robot_model>.quasi_common.yaml`).
+- Зависимости стека c1 (по списку репозиториев c1, проверено 2026-10-28):
+  форки `fuse` (kilted), `spatio_temporal_voxel_layer` и
+  `nonpersistent_voxel_layer` (ros2), `navigation2` (upmain, Nav2 1.5.0)
+  скачаны в `~/Downloads/c1_deps`, но не собраны. Оба слоя costmap и
+  `quasi_cart_manager` / `quasi_cart_zone_filter` требуют `nav2_ros_common`.
+  Этого пакета в Kilted нет, он есть только в форке `navigation2`, так что
+  для стека c1 Nav2 нужно собирать из исходников вместо apt.
+  `quasi_utils` (из `quasi_ros`, vcs.quasi.ai) нужен почти всем пакетам c1;
+  по SSH с этого ПК он недоступен.
 - Подъезда к столу и захвата с тележки пока нет. Рука на тележке не достаёт
   до `pick_box` (см. CLAUDE.md).
 

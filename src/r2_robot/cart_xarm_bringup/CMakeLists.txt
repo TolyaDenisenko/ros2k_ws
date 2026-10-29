@@ -7,7 +7,7 @@ install(DIRECTORY launch config worlds rviz
   DESTINATION share/${PROJECT_NAME}
 )
 
-install(PROGRAMS scripts/lidar_blackout_filter.py
+install(PROGRAMS scripts/lidar_blackout_filter.py scripts/nav_bringup_watchdog.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

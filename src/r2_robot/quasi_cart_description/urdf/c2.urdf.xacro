@@ -290,9 +290,14 @@
   </joint>
 
 
+    <!-- Симуляция (gz DiffDrive): колёса вращаются (continuous, обе оси +y, т.к. DiffDrive применяет
+       один знак скорости к обоим колёсам). В исходной модели c1 — revolute с пределами 0..0 и левой осью -y.
+       sim_wheel_separation — расстояние между ведущими колёсами, м (считано по суставам). -->
+  <xacro:property name="sim_wheel_separation" value="0.354" />
+
   <joint
     name="drive_wheel_right_joint"
-    type="revolute">
+    type="continuous">
     <origin xyz="0 -0.177 0" rpy="0 0 0"/>
     <parent
       link="drive_link" />
@@ -300,27 +305,19 @@
       link="drive_wheel_right_link" />
     <axis
       xyz="0 1 0" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+    <limit effort="60" velocity="20" />
   </joint>
   <joint
     name="drive_wheel_left_joint"
-    type="revolute">
+    type="continuous">
     <origin xyz="0 0.177 0" rpy="0 0 0"/>
     <parent
       link="drive_link" />
     <child
       link="drive_wheel_left_link" />
     <axis
-      xyz="0 -1 0" />
-    <limit
-      lower="0"
-      upper="0"
-      effort="0"
-      velocity="0" />
+      xyz="0 1 0" />
+    <limit effort="60" velocity="20" />
   </joint>
 
   <joint

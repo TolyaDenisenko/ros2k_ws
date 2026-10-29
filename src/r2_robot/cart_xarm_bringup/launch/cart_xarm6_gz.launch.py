@@ -74,6 +74,10 @@ def generate_launch_description():
     is_orbbec = IfCondition(PythonExpression(["'", camera_model, "' != 'd435i'"]))
     is_d435i = IfCondition(PythonExpression(["'", camera_model, "' == 'd435i'"]))
     front_camera = LaunchConfiguration('front_camera')
+    # Ноды захвата (вакуум, сцена, grasp_analyzer, облако камеры гриппера) нужны
+    # только при манипуляциях; при езде рука ничего не держит, а лишние процессы
+    # грузят процессор (сценарий навигации передаёт false).
+    has_manip = IfCondition(LaunchConfiguration('manipulation_nodes'))
 
     # ---------- 1. URDF тележки + руки (xacro) ----------
     cart_xacro = os.path.join(
@@ -88,6 +92,10 @@ def generate_launch_description():
         ' robot_model:=', robot_model,
         ' front_camera:=', front_camera,
         ' simulator:=ignition',
+        # Без нод захвата плагин приваривания pick_box не нужен: он приваривает коробку к руке
+        # при загрузке, а отпускает её vacuum_gripper_sim; без него коробку тащит тележка.
+        ' vacuum_targets:="', PythonExpression(
+            ["'pick_box' if '", LaunchConfiguration('manipulation_nodes'), "' == 'true' else 'none'"]), '"',
         ' xarm_initial_positions:="', LaunchConfiguration('arm_initial_positions'), '"',
         ' arm_offset_xyz:="', LaunchConfiguration('arm_offset_xyz'), '"',
         ' arm_offset_rpy:="', LaunchConfiguration('arm_offset_rpy'), '"',
@@ -225,7 +233,9 @@ def generate_launch_description():
             parameters=[{'use_sim_time': True, 'queue_size': 5}],
         )],
         output='screen',
-        condition=is_orbbec,
+        condition=IfCondition(PythonExpression(
+            ["'", camera_model, "' != 'd435i' and '",
+             LaunchConfiguration('manipulation_nodes'), "' == 'true'"])),
     )
 
     # 5e. Навигационные датчики тележки: лидар /scan, ToF /rangeN_pcl
@@ -283,6 +293,7 @@ def generate_launch_description():
         name='vacuum_rviz_button',
         parameters=[{'use_sim_time': True}],
         output='screen',
+        condition=has_manip,
     )
 
     # 5f. Истинная сцена Gazebo в RViz (/scene_markers): стол, pick_box,
@@ -293,6 +304,7 @@ def generate_launch_description():
         name='scene_markers',
         parameters=[{'use_sim_time': True}],
         output='screen',
+        condition=has_manip,
     )
 
     # 5g. Парковка руки (имитация тормозов): пока тележка едет (/cmd_vel != 0),
@@ -302,7 +314,10 @@ def generate_launch_description():
         package='xarm_grasping',
         executable='arm_parking.py',
         name='arm_parking',
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'use_sim_time': True,
+                     'park_on_start': ParameterValue(
+                         PythonExpression(["'", LaunchConfiguration('arm_parked'), "' == 'true'"]),
+                         value_type=bool)}],
         output='screen',
     )
 
@@ -314,6 +329,7 @@ def generate_launch_description():
         name='vacuum_gripper_sim',
         # если всё же завершится — перезапустить (кнопка RViz без неё не работает)
         respawn=True, respawn_delay=2.0,
+        condition=has_manip,
         parameters=[{'use_sim_time': True,
                      'robot_model_name': 'cart_xarm6',
                      'object_names': ['pick_box'],
@@ -338,6 +354,17 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}],
         output='screen',
     )
+    # Тормоз руки: forward-контроллер позиций, создаётся выключенным; arm_parking переключает
+    # на него руку при парковке (config/arm_hold.yaml). Без него «выключенная» рука падает.
+    spawner_hold = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['arm_hold_controller', '--inactive',
+                   '--param-file', bridge_cfg('arm_hold.yaml'),
+                   '--controller-manager', '/controller_manager'],
+        parameters=[{'use_sim_time': True}],
+        output='screen',
+    )
 
     # ---------- 7. grasp_analyzer (камера гриппера -> варианты захвата) ----------
     # grasp_analyzer работает в base_frame=link_base. Значения ниже — для
@@ -350,6 +377,7 @@ def generate_launch_description():
     grasp_analyzer = Node(
         package='xarm_grasping',
         executable='grasp_analyzer.py',
+        condition=has_manip,
         name='grasp_analyzer',
         parameters=[
             {'use_sim_time': True},
@@ -444,7 +472,7 @@ def generate_launch_description():
     # ---------- Тайминги ----------
     spawn_delay = TimerAction(period=4.0, actions=[spawn_robot])
     controllers_delay = TimerAction(
-        period=7.0, actions=[spawner_jsb, spawner_traj])
+        period=7.0, actions=[spawner_jsb, spawner_traj, spawner_hold])
     # после спавна контроллеров (иначе нечего выключать)
     parking_delay = TimerAction(period=9.0, actions=[arm_parking])
     analyzer_delay = TimerAction(period=10.0, actions=[grasp_analyzer])
@@ -471,6 +499,15 @@ def generate_launch_description():
             'robot_model', default_value='c2l-v3',
             description='Тип тележки (файл quasi_cart_description/urdf/'
                         '<robot_model>.urdf.xacro): c2 | c2l-v3'),
+        DeclareLaunchArgument(
+            'arm_parked', default_value='false',
+            description='true — рука запаркована (тормоз держит позу) с самого старта и '
+                        'не включается, пока нет запроса: сервис /arm_parking/set {data: false}'),
+        DeclareLaunchArgument(
+            'manipulation_nodes', default_value='true',
+            description='Ноды захвата: vacuum_gripper_sim, vacuum_rviz_button, '
+                        'scene_markers, grasp_analyzer, облако камеры гриппера. '
+                        'false — только езда (arm_parking остаётся)'),
         DeclareLaunchArgument(
             'front_camera', default_value='true',
             description='Передняя камера тележки Orbbec 335Le (/front_camera/..., '

@@ -33,13 +33,10 @@
       </material>
     </visual>
     <collision>
-      <origin
-          xyz="0 0 0"
-          rpy="0 0 0" />
-      <geometry>
-        <mesh
-            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_right_link.STL" />
-      </geometry>
+      <!-- Коллизия колеса в симуляции — цилиндр вместо STL-сетки (у сетки 590..7592 треугольников,
+           контакт «прыгал» и тележка подпрыгивала при езде вперёд). Размеры по пятну контакта сетки. -->
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+      <geometry><cylinder radius="0.065" length="0.04" /></geometry>
     </collision>
   </link>
   <link
@@ -73,13 +70,10 @@
       </material>
     </visual>
     <collision>
-      <origin
-          xyz="0 0 0"
-          rpy="0 0 0" />
-      <geometry>
-        <mesh
-            filename="file://$(find quasi_cart_description)/meshes/drive_wheel_left_link.STL" />
-      </geometry>
+      <!-- Коллизия колеса в симуляции — цилиндр вместо STL-сетки (у сетки 590..7592 треугольников,
+           контакт «прыгал» и тележка подпрыгивала при езде вперёд). Размеры по пятну контакта сетки. -->
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+      <geometry><cylinder radius="0.065" length="0.04" /></geometry>
     </collision>
   </link>
 
@@ -154,13 +148,10 @@
       </material>
     </visual>
     <collision>
-      <origin
-          xyz="0 0 0"
-          rpy="0 0 0" />
-      <geometry>
-        <mesh
-            filename="file://$(find quasi_cart_description)/meshes/wheel_rr_link.stl" />
-      </geometry>
+      <!-- Коллизия колеса в симуляции — цилиндр вместо STL-сетки (у сетки 590..7592 треугольников,
+           контакт «прыгал» и тележка подпрыгивала при езде вперёд). Размеры по пятну контакта сетки. -->
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+      <geometry><cylinder radius="0.062" length="0.032" /></geometry>
     </collision>
   </link>
   <joint
@@ -252,13 +243,10 @@
       </material>
     </visual>
     <collision>
-      <origin
-          xyz="0 0 0"
-          rpy="0 0 0" />
-      <geometry>
-        <mesh
-            filename="file://$(find quasi_cart_description)/meshes/wheel_rl_link.stl" />
-      </geometry>
+      <!-- Коллизия колеса в симуляции — цилиндр вместо STL-сетки (у сетки 590..7592 треугольников,
+           контакт «прыгал» и тележка подпрыгивала при езде вперёд). Размеры по пятну контакта сетки. -->
+      <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
+      <geometry><cylinder radius="0.062" length="0.032" /></geometry>
     </collision>
   </link>
   <joint

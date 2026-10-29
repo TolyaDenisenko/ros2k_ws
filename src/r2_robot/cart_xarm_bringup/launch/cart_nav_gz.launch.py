@@ -58,6 +58,9 @@ def generate_launch_description():
             'use_moveit': LaunchConfiguration('use_moveit'),
             'headless': LaunchConfiguration('headless'),
             'front_camera': 'true',
+            'manipulation_nodes': LaunchConfiguration('manipulation_nodes'),
+            'arm_parked': LaunchConfiguration('arm_parked'),
+            'arm_initial_positions': LaunchConfiguration('arm_initial_positions'),
             'gripper_camera_preview': LaunchConfiguration('gripper_camera_preview'),
             'spawn_x': LaunchConfiguration('spawn_x'),
             'spawn_y': LaunchConfiguration('spawn_y'),
@@ -115,6 +118,14 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('use_octomap')),
         output='screen')
 
+    # ---------- 6. Страж запуска ----------
+    # Гонка при старте иногда оставляет slam_toolbox inactive или обрывает bringup Nav2 (bt_navigator
+    # не находит action-серверы). Страж проверяет менеджеры и повторяет RESET + STARTUP.
+    watchdog = Node(
+        package='cart_xarm_bringup', executable='nav_bringup_watchdog.py',
+        name='nav_bringup_watchdog', output='screen',
+        parameters=[{'use_sim_time': False}])
+
     rviz = Node(
         package='rviz2', executable='rviz2', name='rviz2_nav',
         arguments=['-d', os.path.join(share, 'rviz', 'cart_nav.rviz')],
@@ -129,6 +140,18 @@ def generate_launch_description():
         DeclareLaunchArgument('headless', default_value='false'),
         DeclareLaunchArgument('use_octomap', default_value='true'),
         DeclareLaunchArgument(
+            'arm_initial_positions', default_value='1.5708 0.06 -0.48 0 0.47 0',
+            description='поза руки на время езды (joint1..6, рад): перевёрнутая U поперёк тележки на стороне '
+                        'ручки, присоска в 1.4 см над верхней плитой (x 0.11, y +0.22, пик 1.50 м)'),
+        DeclareLaunchArgument(
+            'arm_parked', default_value='true',
+            description='рука запаркована (тормоз) с самого старта и не включается, пока нет '
+                        'запроса: ros2 service call /arm_parking/set std_srvs/srv/SetBool "{data: false}"'),
+        DeclareLaunchArgument(
+            'manipulation_nodes', default_value='false',
+            description='ноды захвата (вакуум, сцена, grasp_analyzer, облако камеры '
+                        'гриппера): при езде рука ничего не держит — выключены'),
+        DeclareLaunchArgument(
             'gripper_camera_preview', default_value='true',
             description='камера гриппера 640x400 — при езде она не нужна, экономим GPU/CPU'),
         DeclareLaunchArgument('spawn_x', default_value='-2.0'),
@@ -139,5 +162,5 @@ def generate_launch_description():
         TimerAction(period=6.0, actions=[nav_bridge]),
         TimerAction(period=10.0, actions=[slam, octomap, rviz]),
         # Nav2 ждёт map -> base_footprint: после первой карты slam_toolbox
-        TimerAction(period=30.0, actions=[nav2]),
+        TimerAction(period=30.0, actions=[nav2, watchdog]),
     ])

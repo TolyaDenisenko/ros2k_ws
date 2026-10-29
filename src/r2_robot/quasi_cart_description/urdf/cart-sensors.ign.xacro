@@ -7,13 +7,48 @@
   <!-- false, если Sensors-система уже объявлена в world-файле (см. cart_with_arm) -->
   <xacro:arg name="model_sensors_plugin" default="true"/>
 
-  <gazebo>
-    <plugin
-            filename="ignition-gazebo-velocity-control-system"
-            name="ignition::gazebo::systems::VelocityControl">
-      <topic>/model/cart/cmd_vel</topic>
-    </plugin>
-  </gazebo>
+  <!-- Привод в симуляции. diff (по умолчанию) — gz DiffDrive: крутит ведущие колёса
+       drive_wheel_*_joint, тележка едет за счёт сцепления колёс с полом (две задние
+       ведущие колеса, два передних кастера). velocity — прежний VelocityControl: задаёт
+       скорость всему корпусу, колёса не вращаются; при длинном заднем ходе тележка
+       с рукой заваливалась (STATUS K10). Выбор: xacro-аргумент sim_drive. -->
+  <xacro:arg name="sim_drive" default="diff"/>
+  <xacro:arg name="sim_wheel_radius" default="0.065"/>
+  <xacro:if value="${'$(arg sim_drive)' == 'diff'}">
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <topic>/model/cart/cmd_vel</topic>
+        <left_joint>drive_wheel_left_joint</left_joint>
+        <right_joint>drive_wheel_right_joint</right_joint>
+        <wheel_separation>${sim_wheel_separation}</wheel_separation>
+        <wheel_radius>$(arg sim_wheel_radius)</wheel_radius>
+        <!-- пределы, как у Nav2 (nav2_cart.yaml): вперёд 0.4, назад 0.2 м/с; запас по ускорению
+             не даёт колёсам рвануть сильнее, чем держит сцепление -->
+        <max_linear_velocity>1.1</max_linear_velocity>
+        <min_linear_velocity>-0.75</min_linear_velocity>
+        <max_angular_velocity>1.5</max_angular_velocity>
+        <min_angular_velocity>-1.5</min_angular_velocity>
+        <max_linear_acceleration>1.5</max_linear_acceleration>
+        <min_linear_acceleration>-1.5</min_linear_acceleration>
+        <max_angular_acceleration>3.0</max_angular_acceleration>
+        <min_angular_acceleration>-3.0</min_angular_acceleration>
+        <!-- одометрия тележки идёт от OdometryPublisher (ниже, /model/cart/tf);
+             собственную одометрию DiffDrive уводим на другие топики -->
+        <odom_publish_frequency>5</odom_publish_frequency>
+        <odom_topic>/model/cart/diff_odom</odom_topic>
+        <tf_topic>/model/cart/diff_tf</tf_topic>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+  <xacro:unless value="${'$(arg sim_drive)' == 'diff'}">
+    <gazebo>
+      <plugin
+              filename="ignition-gazebo-velocity-control-system"
+              name="ignition::gazebo::systems::VelocityControl">
+        <topic>/model/cart/cmd_vel</topic>
+      </plugin>
+    </gazebo>
+  </xacro:unless>
 
   <!-- <gazebo>
     <plugin

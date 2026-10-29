@@ -98,6 +98,16 @@
               мосты clock/odom/camera).
             -->
             <xacro:include filename="cart-sensors.ign.xacro" />
+            <!-- Сцепление (DiffDrive): ведущие колёса держатся за пол, кастеры скользят
+                 (иначе тележка не повернёт: кастер с трением 1 тормозит боком).
+                 Кастеры в URDF — fixed-суставы и без preserveFixedJoint склеиваются
+                 с корпусом, трение у склеенных звеньев пропадает. -->
+            <gazebo reference="drive_wheel_left_link"><mu1>1.5</mu1><mu2>1.5</mu2></gazebo>
+            <gazebo reference="drive_wheel_right_link"><mu1>1.5</mu1><mu2>1.5</mu2></gazebo>
+            <gazebo reference="caster_wheel_left_joint"><preserveFixedJoint>true</preserveFixedJoint></gazebo>
+            <gazebo reference="caster_wheel_right_joint"><preserveFixedJoint>true</preserveFixedJoint></gazebo>
+            <gazebo reference="caster_wheel_left_link"><mu1>0.02</mu1><mu2>0.02</mu2></gazebo>
+            <gazebo reference="caster_wheel_right_link"><mu1>0.02</mu1><mu2>0.02</mu2></gazebo>
             <!-- Состояние ведущих колёс: их не публикует ни ros2_control
                  (joint_state_broadcaster знает только суставы руки), ни что-то
                  ещё -> у drive_wheel_*_link не было TF ("No transform" в RViz).

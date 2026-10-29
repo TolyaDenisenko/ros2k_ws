@@ -1,0 +1,16 @@
+# Контроллер удержания руки («тормоз») для arm_parking.
+# Парковка переключает руку с xarm6_traj_controller на этот контроллер: он каждый цикл
+# пишет в сустав одну и ту же позицию, и рука стоит жёстко. Просто выключить траекторный
+# контроллер нельзя: в gz рука остаётся без управления и складывается под своим весом.
+# Команды (позиции joint1..joint6, рад) шлёт сам arm_parking в /arm_hold_controller/commands.
+arm_hold_controller:
+  ros__parameters:
+    type: forward_command_controller/ForwardCommandController   # spawner Kilted: тип — здесь, флага нет
+    joints:
+      - joint1
+      - joint2
+      - joint3
+      - joint4
+      - joint5
+      - joint6
+    interface_name: position
