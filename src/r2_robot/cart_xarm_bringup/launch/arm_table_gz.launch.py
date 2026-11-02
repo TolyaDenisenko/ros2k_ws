@@ -29,9 +29,10 @@ import os
 
 import yaml
 
-from ament_index_python.packages import get_package_share_directory
+from ament_index_python.packages import get_package_prefix, get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
+from launch.actions import (DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription,
+                            TimerAction)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (Command, FindExecutable, LaunchConfiguration,
@@ -183,8 +184,24 @@ def generate_launch_description():
     # pick_place_server: action /pick_place (нужен MoveIt: use_moveit:=true).
     object_perception = Node(
         package='xarm_grasping', executable='object_perception.py', name='object_perception',
-        parameters=[{'use_sim_time': True, 'base_frame': 'link_base', 'table_height': 0.0}],
+        parameters=[{'use_sim_time': True, 'base_frame': 'link_base', 'table_height': 0.0,
+                     # класс по картинке — только если запущен детектор
+                     'detections_topic': PythonExpression(
+                         ["'/detections' if '", LaunchConfiguration('detector'),
+                          "' in ('true', 'stub') else ''"])}],
         output='screen')
+    # Детектор классов на OpenVINO (docs/book/RECOGNITION_OPENVINO.md): отдельное окружение Python с
+    # openvino (pip install openvino), поэтому запускается его интерпретатором, а не Node.
+    openvino_python = os.path.expanduser('~/.venvs/openvino/bin/python')
+    detector = ExecuteProcess(
+        cmd=[openvino_python,
+             os.path.join(get_package_prefix('xarm_grasping'), 'lib', 'xarm_grasping',
+                          'openvino_detector.py'),
+             '--ros-args', '--params-file',
+             os.path.join(get_package_share_directory('xarm_grasping'), 'config',
+                          'openvino_detector.yaml')],
+        output='screen', condition=IfCondition(PythonExpression(
+            ["'", LaunchConfiguration('detector'), "' == 'true'"])))
     scene_manager = Node(
         package='xarm_grasping', executable='scene_manager.py', name='scene_manager',
         parameters=[{'use_sim_time': True, 'base_frame': 'link_base',
@@ -228,6 +245,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetParameter('use_sim_time', True),
+        DeclareLaunchArgument(
+            'detector', default_value='false',
+            description='класс объекта по картинке: false — выключено; true — запустить '
+                        'openvino_detector (нужны ~/.venvs/openvino и модель, см. '
+                        'docs/book/RECOGNITION_OPENVINO.md); stub — детектор не запускать, но '
+                        'object_perception слушает /detections (для tools/stub_detections.py)'),
         DeclareLaunchArgument('use_moveit', default_value='true'),
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument(
@@ -246,7 +269,7 @@ def generate_launch_description():
         TimerAction(period=3.0, actions=[spawn_robot]),
         TimerAction(period=6.0, actions=spawners),
         TimerAction(period=8.0, actions=[vacuum_sim, vacuum_button, scene_markers]),
-        TimerAction(period=10.0, actions=[grasp_analyzer, object_perception, scene_manager]),
+        TimerAction(period=10.0, actions=[grasp_analyzer, object_perception, scene_manager, detector]),
         TimerAction(period=16.0, actions=[pick_place]),
         TimerAction(period=10.0, actions=[rviz]),
         TimerAction(period=12.0, actions=[moveit]),

@@ -60,10 +60,11 @@ from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
-from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import CameraInfo, PointCloud2
 from std_msgs.msg import String
 from tf2_ros import Buffer, TransformListener
 from visualization_msgs.msg import Marker, MarkerArray
+from vision_msgs.msg import Detection2DArray
 
 from xarm_grasping import perception as P
 from xarm_grasping_msgs.action import DetectObjects
@@ -107,6 +108,12 @@ class ObjectPerception(Node):
         dp('rules_file', '')
         dp('period', 1.0)
         dp('min_view_height', 0.42)
+        # Класс по картинке (нода openvino_detector): '' — не использовать
+        dp('detections_topic', '')
+        dp('camera_info_topic', '/gripper_camera/color/camera_info')
+        dp('detection_max_age', 3.0)     # с (системное время): старые рамки не берём
+        dp('detection_min_inside', 0.5)  # доля точек кластера в рамке
+        dp('detection_max_area_ratio', 8.0)
         g = lambda n: self.get_parameter(n).value  # noqa: E731
         self.base_frame = g('base_frame')
         self.tcp_frame = g('tcp_frame')
@@ -129,6 +136,9 @@ class ObjectPerception(Node):
         self.moving = set()          # id, унесённые присоской (ждут нового места)
         self.votes = {}              # id -> (кандидат в новый класс, кадров подряд)
         self.view_height = 0.0       # высота камеры над столом в последнем кадре
+        self.detections = None       # последние рамки детектора: [(x1, y1, x2, y2, score, класс)]
+        self.det_time = 0.0
+        self.cam_k = None            # (fx, fy, cx, cy) цветной камеры
 
         cbg = ReentrantCallbackGroup()
         # RELIABLE: облако 1280x800 ~32 МБ, BEST_EFFORT теряет его целиком
@@ -139,6 +149,12 @@ class ObjectPerception(Node):
         latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL)
         self.create_subscription(String, '/vacuum_gripper/held', self.on_held, latched,
                                  callback_group=cbg)
+        if g('detections_topic'):
+            self.create_subscription(Detection2DArray, g('detections_topic'), self.on_detections, 5,
+                                     callback_group=cbg)
+            self.create_subscription(CameraInfo, g('camera_info_topic'), self.on_camera_info, 1,
+                                     callback_group=cbg)
+            self.get_logger().info(f'класс по картинке: {g("detections_topic")}')
         self.pub = self.create_publisher(DetectedObjectArray, '/objects', latched)
         self.pub_markers = self.create_publisher(MarkerArray, '/objects/markers', 10)
         ActionServer(self, DetectObjects, '/detect_objects', self.on_detect,
@@ -151,6 +167,35 @@ class ObjectPerception(Node):
         with self.lock:
             self.cloud = msg
             self.cloud_time = time.monotonic()
+
+    def on_detections(self, msg):
+        boxes = []
+        for d in msg.detections:
+            if not d.results:
+                continue
+            h = d.results[0].hypothesis
+            cx, cy = d.bbox.center.position.x, d.bbox.center.position.y
+            boxes.append((cx - d.bbox.size_x / 2, cy - d.bbox.size_y / 2,
+                          cx + d.bbox.size_x / 2, cy + d.bbox.size_y / 2, h.score, h.class_id))
+        with self.lock:
+            self.detections, self.det_time = boxes, time.monotonic()
+
+    def on_camera_info(self, msg):
+        k = msg.k
+        self.cam_k = (k[0], k[4], k[2], k[5])
+
+    def detector_labels(self, clusters, R, cam):
+        """[(класс, score) | None] на каждый кластер: проекция точек в кадр камеры и сопоставление
+        с рамками детектора. Точки кластеров в base_frame; R, cam — поза камеры в base_frame."""
+        g = lambda n: self.get_parameter(n).value  # noqa: E731
+        with self.lock:
+            boxes, t = self.detections, self.det_time
+        if boxes is None or self.cam_k is None or time.monotonic() - t > g('detection_max_age'):
+            return [None] * len(clusters)
+        fx, fy, cx, cy = self.cam_k
+        pix = [P.project_points((c - cam) @ R, fx, fy, cx, cy) for c in clusters]
+        return P.associate_detections(pix, boxes, g('detection_min_inside'),
+                                      g('detection_max_area_ratio'))
 
     def on_held(self, msg):
         if msg.data and not self.held:
@@ -248,9 +293,14 @@ class ObjectPerception(Node):
             if tcp is not None and np.linalg.norm(f['center'] - tcp) < g('held_exclude_radius'):
                 continue                       # объект в присоске
             label, conf = P.classify(f, self.rules)
-            found.append((f, label, conf, c.shape[0]))
-        for f, label, conf, n in found:
-            out.objects.append(self.to_msg(f, label, conf, n))
+            found.append((f, label, conf, c.shape[0], c))
+        dl = (self.detector_labels([x[4] for x in found], quat_to_rot(q.x, q.y, q.z, q.w), cam)
+              if g('detections_topic') else [None] * len(found))
+        for (f, label, conf, n, _), det in zip(found, dl):
+            o = self.to_msg(f, label, conf, n)
+            if det is not None:
+                o.detector_label, o.detector_score = det[0], float(det[1])
+            out.objects.append(o)
         self.assign_ids(out.objects)
         return out, ''
 

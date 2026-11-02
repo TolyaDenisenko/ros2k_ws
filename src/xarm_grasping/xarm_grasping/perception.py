@@ -216,3 +216,48 @@ def grasp_quat(yaw):
     h = yaw / 2.0
     # Rz(yaw) * Rx(pi): q = (cos h, 0, 0, sin h) * (0, 1, 0, 0) [w, x, y, z]
     return (math.cos(h), math.sin(h), 0.0, 0.0)
+
+
+def project_points(pts_cam, fx, fy, cx, cy):
+    """Точки в оптическом кадре камеры (x вправо, y вниз, z вперёд), (n, 3) -> пиксели (n, 2).
+    Точки позади камеры (z <= 0) дают NaN."""
+    z = pts_cam[:, 2]
+    with np.errstate(divide='ignore', invalid='ignore'):
+        uv = np.stack((fx * pts_cam[:, 0] / z + cx, fy * pts_cam[:, 1] / z + cy), 1)
+    uv[z <= 1e-6] = np.nan
+    return uv
+
+
+def associate_detections(cluster_pix, boxes, min_inside=0.5, max_area_ratio=8.0):
+    """Привязка рамок детектора к кластерам облака (идея R2: кластер принадлежит рамке, если в неё
+    попадает не меньше min_inside его точек).
+
+    cluster_pix — список (n_i, 2) пикселей точек кластеров; boxes — список
+    (x1, y1, x2, y2, score, label). Возвращает список длины len(cluster_pix): (label, score) или None.
+
+    Защита от больших рамок («dining table», «bed»), внутри которых лежат все кластеры: рамка не
+    больше max_area_ratio площадей кластера (по его пиксельному контуру). Рамка достаётся одному
+    кластеру: пары берутся жадно по убыванию доля_внутри * score.
+    """
+    pairs = []
+    for i, uv in enumerate(cluster_pix):
+        uv = uv[np.isfinite(uv).all(1)]
+        if len(uv) < 5:
+            continue
+        lo, hi = uv.min(0), uv.max(0)
+        carea = max(1.0, float((hi[0] - lo[0]) * (hi[1] - lo[1])))
+        for j, (x1, y1, x2, y2, score, label) in enumerate(boxes):
+            inside = float(((uv[:, 0] >= x1) & (uv[:, 0] <= x2) &
+                            (uv[:, 1] >= y1) & (uv[:, 1] <= y2)).mean())
+            if inside < min_inside:
+                continue
+            if (x2 - x1) * (y2 - y1) > max_area_ratio * carea:
+                continue
+            pairs.append((inside * score, i, j))
+    out = [None] * len(cluster_pix)
+    used = set()
+    for _, i, j in sorted(pairs, reverse=True):
+        if out[i] is None and j not in used:
+            out[i] = (boxes[j][5], float(boxes[j][4]))
+            used.add(j)
+    return out

@@ -1,0 +1,14 @@
+# Параметры ноды openvino_detector (классы объектов по картинке). Подробности — docs/book/RECOGNITION_OPENVINO.md.
+openvino_detector:
+  ros__parameters:
+    use_sim_time: false          # ноде не нужны часы симуляции, метку кадра берёт из сообщения
+    image_topic: /gripper_camera/color/image_raw
+    model_path: ~/.local/share/quasi/models/yolox/yolox_tiny.onnx
+    model_type: yolox
+    labels_path: ''              # '' — COCO (80 классов); для своей модели — файл «имя класса на строку»
+    device: CPU                  # CPU | GPU | NPU | AUTO. На NUC сравнить; на ПК с NVIDIA GPU НЕ брать (в 8 раз медленнее CPU)
+    num_threads: 2               # 0 — все ядра (yolox_s: ~170% CPU); 2 — tiny ~46 мс/кадр
+    conf: 0.4
+    nms: 0.45
+    max_rate_hz: 2.0             # предметы на столе стоят: частые кадры не нужны
+    publish_debug_image: true    # detections/image — кадр с рамками (для RViz)

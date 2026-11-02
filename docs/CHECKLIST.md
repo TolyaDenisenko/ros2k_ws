@@ -48,8 +48,8 @@
 - [ ] ⬜ Измерить надёжность: ≥ 9 из 10 захватов подряд (веха M3)
 - [ ] ⬜ Соседние объекты ближе ~5 см сливаются в один кластер
 - [ ] ⬜ Одинаковые по форме и размеру объекты не различаются (нужен цвет или нейросеть)
-- [ ] ⬜ Выбор модели распознавания — материал для решения: [RECOGNITION_MODELS.md](RECOGNITION_MODELS.md) (Orange Pi 5B → RKNN, лицензия, прозрачные объекты)
-- [ ] ⬜ Распознавание по картинке (идея из R2 — [R2_OBJECT_RECOGNITION.md](R2_OBJECT_RECOGNITION.md); на тележке не OpenVINO, а RKNN):
+- [ ] ⬜ Выбор модели распознавания — материал для решения: [RECOGNITION_MODELS.md](RECOGNITION_MODELS.md) (Intel NUC → OpenVINO, лицензия, прозрачные объекты)
+- [ ] 🟡 Распознавание по картинке (OpenVINO, [docs/book/RECOGNITION_OPENVINO.md](book/RECOGNITION_OPENVINO.md): нода, связка с облаком и launch готовы, проверено на COCO-модели и искусственных рамках; нет своей модели). Идея из R2 — [R2_OBJECT_RECOGNITION.md](R2_OBJECT_RECOGNITION.md); на тележке Intel NUC — OpenVINO):
   - [ ] ⬜ Файлы модели R2 (`model.xml/.bin/.labels`, `model_objects.json`) — нет на этом ПК
   - [ ] ⬜ OpenVINO Runtime и нода детектора → `vision_msgs/Detection2DArray`
   - [ ] ⬜ Связка «рамка ↔ кластер» в `object_perception`

@@ -31,6 +31,7 @@ There is no test suite or linter configured.
 - `docs/STATUS.md` — status board, known issues, decisions, changelog (newest first). Add an entry for every behavior change.
 - `docs/CAMERA_VACUUM_SIM.md` — how the Orbbec camera / simulated vacuum / scene work + verification commands.
 - `docs/CHECKLIST.md` — done / to-do checklist for the whole project; tick items when closing tasks.
+- `docs/book/RUN_SCENARIOS.md` — how to launch arm-on-table / arm-on-cart / navigation: every argument, nodes, interfaces, checks, reproducible test scripts in `cart_xarm_bringup/tools/`. Keep it in sync when launch arguments change.
 - `docs/book/NAV.md` — cart navigation (Nav2, SLAM, OctoMap, maps, troubleshooting).
 - `docs/CLAUDE_MISTAKES.md` — Claude's past mistakes in this project and lessons; read it before nav/sensor work and add new entries.
 
@@ -57,6 +58,8 @@ There is no test suite or linter configured.
 - The `DetachableJoint` welds `pick_box` to the arm at load. If `vacuum_gripper_sim` is not running, set `vacuum_targets:=none` (the nav launch does via `manipulation_nodes:=false`), otherwise the cart drags the box and tips over on walls.
 - After many killed sims `/dev/shm` fills with dead Fast DDS segments: services stop being discovered, Nav2/SLAM bringup fails. Stop ROS and run `fastdds shm clean`. Stop test sims with SIGINT on the `ros2 launch` process first, `kill -9` only last.
 - rclpy node with `use_sim_time` + `MultiThreadedExecutor` burns ~84% of a core idle (200 Hz `/clock`; SingleThreaded 9%, wall time 0.1%) — measured 2026-10-29, see `docs/TASK_python_nodes_cpu.md`.
+- Object recognition on the cart = OpenVINO (Intel NUC, user decision 2026-11-02; NOT Orange Pi/RKNN). OpenVINO lives in a separate venv `~/.venvs/openvino` (`--system-site-packages`), the node `openvino_detector.py` must be started with that interpreter (launch `detector:=true` does it). Always set `num_threads` (default = all cores = 150–170% CPU). OpenVINO's `GPU` device on this PC is the NVIDIA card and is 8× slower than the CPU — use `CPU` here. See `docs/book/RECOGNITION_OPENVINO.md`.
+- Never `pgrep -f`/`pkill -f` a script name from a command that itself contains that name (it kills your own shell, happened 3 times). Find processes by scanning `/proc/<pid>/cmdline` in a Python file, or by environ (`GZ_PARTITION`).
 - Vacuum in sim is a logical weld (DetachableJoint), not physics. The plugin welds the target at load; `vacuum_gripper_sim` detaches it at startup.
 - gz does not resolve `package://` for our packages: mesh paths use `file://$(find pkg)/...`. In shell tests never `pkill -f` patterns that appear in your own command line.
 - When testing in sim yourself, isolate it (`ROS_DOMAIN_ID`, `GZ_PARTITION`) — the user often runs their own sim in parallel.
