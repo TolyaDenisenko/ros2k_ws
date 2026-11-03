@@ -3,6 +3,12 @@
 Сценарий «рука на столе» (`ros2 launch cart_xarm_bringup arm_table_gz.launch.py`).
 Три ноды пакета `xarm_grasping` и интерфейсы пакета `xarm_grasping_msgs`.
 
+> С 2026-11-02 на столе **четыре предмета**: `cube`, `parallelepiped`, `rect_plate`, `cylinder` (раньше
+> было 8 мелких коробок и цилиндров). В `/objects` их `id` вида `cube_0`, `cylinder_0`. Правила классов
+> по размерам — `config/objects.yaml`, название по картинке (нейросеть) — поле `detector_label`, см.
+> [book/RECOGNITION_OPENVINO.md](book/RECOGNITION_OPENVINO.md) и [book/MODEL_TRAINING.md](book/MODEL_TRAINING.md).
+> Сам pick&place на новых предметах после замены набора не прогонялся.
+
 ```
 /gripper_camera/points ─► object_perception ── /objects (DetectedObjectArray) ──┐
                            облако → стол → кластеры → форма → класс             │
@@ -77,16 +83,16 @@ action `/find_place_pose` (`object_id`, `zone`): сетка точек в зон
 класс объекта.
 
 ```bash
-ros2 action send_goal /find_place_pose xarm_grasping_msgs/action/FindPlacePose "{object_id: pick_box_0}"
+ros2 action send_goal /find_place_pose xarm_grasping_msgs/action/FindPlacePose "{object_id: cube_0}"
 ```
 
 ## 4. Взять и поставить — `pick_place_server.py`
 
 ```bash
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: pick_box_0}" --feedback          # зона по правилам
+    "{object_id: cube_0}" --feedback               # зона по правилам
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: cylinder_block_0, zone: zone_cylinders}" --feedback
+    "{object_id: cylinder_0, zone: zone_cylinders}" --feedback
 ```
 
 Шаги (feedback `stage`): `detect` → место в зоне (ищется ДО захвата) →

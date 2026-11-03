@@ -4,43 +4,23 @@
 # /clock_gz -> /clock (200 Гц) прореживает clock_throttle, см. gz_bridge.yaml
 - {ros_topic_name: "/clock_gz", gz_topic_name: "/clock", ros_type_name: "rosgraph_msgs/msg/Clock", gz_type_name: "gz.msgs.Clock", direction: GZ_TO_ROS}
 - {ros_topic_name: "/gz/robot_pose", gz_topic_name: "/xarm6_table/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# pick_box
-- {ros_topic_name: "/vacuum/pick_box/attach", gz_topic_name: "/vacuum/pick_box/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/pick_box/detach", gz_topic_name: "/vacuum/pick_box/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/pick_box/state", gz_topic_name: "/vacuum/pick_box/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/pick_box/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# box_small
-- {ros_topic_name: "/vacuum/box_small/attach", gz_topic_name: "/vacuum/box_small/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_small/detach", gz_topic_name: "/vacuum/box_small/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_small/state", gz_topic_name: "/vacuum/box_small/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_small/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# box_tall
-- {ros_topic_name: "/vacuum/box_tall/attach", gz_topic_name: "/vacuum/box_tall/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_tall/detach", gz_topic_name: "/vacuum/box_tall/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_tall/state", gz_topic_name: "/vacuum/box_tall/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_tall/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# box_flat
-- {ros_topic_name: "/vacuum/box_flat/attach", gz_topic_name: "/vacuum/box_flat/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_flat/detach", gz_topic_name: "/vacuum/box_flat/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/box_flat/state", gz_topic_name: "/vacuum/box_flat/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/box_flat/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# cylinder_block
-- {ros_topic_name: "/vacuum/cylinder_block/attach", gz_topic_name: "/vacuum/cylinder_block/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cylinder_block/detach", gz_topic_name: "/vacuum/cylinder_block/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cylinder_block/state", gz_topic_name: "/vacuum/cylinder_block/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cylinder_block/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# cyl_small
-- {ros_topic_name: "/vacuum/cyl_small/attach", gz_topic_name: "/vacuum/cyl_small/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_small/detach", gz_topic_name: "/vacuum/cyl_small/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_small/state", gz_topic_name: "/vacuum/cyl_small/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_small/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# cyl_wide
-- {ros_topic_name: "/vacuum/cyl_wide/attach", gz_topic_name: "/vacuum/cyl_wide/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_wide/detach", gz_topic_name: "/vacuum/cyl_wide/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_wide/state", gz_topic_name: "/vacuum/cyl_wide/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_wide/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
-# cyl_tall
-- {ros_topic_name: "/vacuum/cyl_tall/attach", gz_topic_name: "/vacuum/cyl_tall/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_tall/detach", gz_topic_name: "/vacuum/cyl_tall/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
-- {ros_topic_name: "/vacuum/cyl_tall/state", gz_topic_name: "/vacuum/cyl_tall/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
-- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cyl_tall/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cube
+- {ros_topic_name: "/vacuum/cube/attach", gz_topic_name: "/vacuum/cube/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cube/detach", gz_topic_name: "/vacuum/cube/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cube/state", gz_topic_name: "/vacuum/cube/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cube/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# parallelepiped
+- {ros_topic_name: "/vacuum/parallelepiped/attach", gz_topic_name: "/vacuum/parallelepiped/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/parallelepiped/detach", gz_topic_name: "/vacuum/parallelepiped/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/parallelepiped/state", gz_topic_name: "/vacuum/parallelepiped/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/parallelepiped/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# rect_plate
+- {ros_topic_name: "/vacuum/rect_plate/attach", gz_topic_name: "/vacuum/rect_plate/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/rect_plate/detach", gz_topic_name: "/vacuum/rect_plate/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/rect_plate/state", gz_topic_name: "/vacuum/rect_plate/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/rect_plate/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}
+# cylinder
+- {ros_topic_name: "/vacuum/cylinder/attach", gz_topic_name: "/vacuum/cylinder/attach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cylinder/detach", gz_topic_name: "/vacuum/cylinder/detach", ros_type_name: "std_msgs/msg/Empty", gz_type_name: "gz.msgs.Empty", direction: ROS_TO_GZ}
+- {ros_topic_name: "/vacuum/cylinder/state", gz_topic_name: "/vacuum/cylinder/state", ros_type_name: "std_msgs/msg/String", gz_type_name: "gz.msgs.StringMsg", direction: GZ_TO_ROS}
+- {ros_topic_name: "/gz/object_pose", gz_topic_name: "/model/cylinder/pose", ros_type_name: "tf2_msgs/msg/TFMessage", gz_type_name: "gz.msgs.Pose_V", direction: GZ_TO_ROS}

@@ -96,7 +96,7 @@ vacuum_gripper_sim (ROS)                          Gazebo
 Объекты, которые можно взять, — xacro-аргумент `vacuum_targets` (`cart-arm.xacro`,
 через пробел; на каждый свой плагин DetachableJoint) и параметры ноды
 `object_names` / `object_sizes` (по 3 числа X Y Z на объект; цилиндр — описанный бокс
-2r × 2r × h). Тележка: `pick_box`; рука на столе: `pick_box cylinder_block`.
+2r × 2r × h). Тележка: `pick_box`; рука на столе: все предметы из `config/arm_table_objects.yaml` (сейчас `cube parallelepiped rect_plate cylinder`; запасной список в `arm_on_table.urdf.xacro` — `pick_box cylinder_block`, главный launch его переопределяет).
 Модели в мире должны быть НЕ static, с link `link` и своим PosePublisher.
 
 Проверка касания (параметры ноды): расстояние от TCP (кончик присоски) до поверхности
@@ -147,14 +147,15 @@ ros2 launch cart_xarm_bringup arm_table_gz.launch.py
 ```
 
 Стол верх z=0.75 (в Gazebo), база руки на столешнице; в TF `world` = `link_base`,
-верх стола z=0. Объекты (в link_base): `pick_box` (0.40, 0.10), верх z=0.05;
-`cylinder_block` (0.35, −0.20), торец z=0.09. Быстрый захват без MoveIt:
+верх стола z=0. Объекты (в link_base; с 2026-11-02 четыре формы): `cube` (0.50, 0.00), верх z=0.06;
+`parallelepiped` (0.45, 0.18), верх z=0.07; `rect_plate` (0.25, −0.05), верх z=0.02;
+`cylinder` (0.35, −0.20), торец z=0.10. Быстрый захват без MoveIt:
 
 ```bash
-ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.25            # над коробкой
-ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.051 --lift 0  # присоска на верх
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.50 --y 0.00 --z 0.25            # над кубом
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.50 --y 0.00 --z 0.061 --lift 0  # присоска на верх куба (верх z=0.06)
 ros2 topic pub --once /vacuum_gripper/cmd std_msgs/msg/Bool "{data: true}"
-ros2 run xarm_grasping arm_goto_tcp.py --x 0.40 --y 0.10 --z 0.25 --lift 0   # поднять
+ros2 run xarm_grasping arm_goto_tcp.py --x 0.50 --y 0.00 --z 0.25 --lift 0   # поднять
 ros2 topic pub --once /vacuum_gripper/cmd std_msgs/msg/Bool "{data: false}"  # уронить
 ```
 

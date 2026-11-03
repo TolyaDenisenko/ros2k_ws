@@ -16,6 +16,7 @@ docs/R2_OBJECT_RECOGNITION.md, docs/RECOGNITION_MODELS.md).
       --image ~/.local/share/quasi/test_images/000000039769.jpg --device CPU --out /tmp/out.jpg
 """
 import argparse
+import json
 import os
 import time
 from dataclasses import dataclass
@@ -75,6 +76,49 @@ def letterbox(img, size):
     return out, r
 
 
+def pre_yolox(bgr, size):
+    """Кадр -> вход сети YOLOX: поля 114 вместо искажения, BGR 0..255. ctx — масштаб."""
+    img, ratio = letterbox(bgr, size)
+    return np.ascontiguousarray(img.transpose(2, 0, 1)[None].astype(np.float32)), ratio
+
+
+def pre_ssd(bgr, size):
+    """Кадр -> вход SSD: растяжение до размера сети (как в torchvision), BGR 0..255. Нормировка (в RGB,
+    среднее и разброс 0.5) уже внутри модели. ctx — масштабы по осям (исходный/сеть)."""
+    h, w = bgr.shape[:2]
+    img = cv2.resize(bgr, (size[1], size[0]), interpolation=cv2.INTER_LINEAR)
+    return (np.ascontiguousarray(img.transpose(2, 0, 1)[None].astype(np.float32)),
+            (w / size[1], h / size[0]))
+
+
+def decode_ssd(outs, size, conf, nms_thr, ctx, extra):
+    """Выход SSD (torchvision SSDlite): смещения рамок и логиты классов относительно якорей.
+    outs = [bbox_regression (1, N, 4), cls_logits (1, N, C+1)], extra['anchors'] — (N, 4) xyxy в пикселях
+    сети. Возвращает [x1, y1, x2, y2, score, класс] в пикселях исходного кадра, класс с нуля (без фона)."""
+    rel = np.asarray(outs[0], dtype=np.float32).reshape(-1, 4)
+    logits = np.asarray(outs[1], dtype=np.float32).reshape(rel.shape[0], -1)
+    anchors = extra['anchors']
+    e = np.exp(logits - logits.max(1, keepdims=True))
+    prob = (e / e.sum(1, keepdims=True))[:, 1:]                       # без класса «фон»
+    cid = prob.argmax(1)
+    score = prob[np.arange(len(prob)), cid]
+    keep = score >= conf
+    if not keep.any():
+        return np.zeros((0, 6), np.float32)
+    rel, anc, cid, score = rel[keep], anchors[keep], cid[keep], score[keep]
+    wa, ha = anc[:, 2] - anc[:, 0], anc[:, 3] - anc[:, 1]
+    xa, ya = anc[:, 0] + 0.5 * wa, anc[:, 1] + 0.5 * ha
+    dx, dy = rel[:, 0] / 10.0, rel[:, 1] / 10.0                       # веса BoxCoder SSD: 10, 10, 5, 5
+    dw, dh = np.minimum(rel[:, 2] / 5.0, 4.135), np.minimum(rel[:, 3] / 5.0, 4.135)
+    xc, yc, bw, bh = dx * wa + xa, dy * ha + ya, np.exp(dw) * wa, np.exp(dh) * ha
+    sx, sy = ctx
+    boxes = np.stack(((xc - 0.5 * bw) * sx, (yc - 0.5 * bh) * sy, (xc + 0.5 * bw) * sx, (yc + 0.5 * bh) * sy), 1)
+    off = cid[:, None] * 100000.0
+    xywh = np.concatenate((boxes[:, :2] + off, boxes[:, 2:] - boxes[:, :2]), 1)
+    idx = np.array(cv2.dnn.NMSBoxes(xywh.tolist(), score.tolist(), conf, nms_thr)).reshape(-1)
+    return np.concatenate((boxes[idx], score[idx, None], cid[idx, None]), 1).astype(np.float32)
+
+
 def decode_yolox(raw, size, conf, nms_thr, ratio):
     """Выход YOLOX без декодирования: (1, N, 5+C) -> массив [x1, y1, x2, y2, score, класс]."""
     out = np.asarray(raw, dtype=np.float32)
@@ -107,7 +151,21 @@ def decode_yolox(raw, size, conf, nms_thr, ratio):
     return np.concatenate((boxes[idx], score[idx, None], cid[idx, None]), 1).astype(np.float32)
 
 
-DECODERS = {'yolox': decode_yolox}
+DECODERS = {'yolox': lambda outs, size, conf, nms, ctx, extra: decode_yolox(outs[0], size, conf, nms, ctx),
+            'ssd': decode_ssd}
+PREPROCESS = {'yolox': pre_yolox, 'ssd': pre_ssd}
+
+
+def load_meta(model_path):
+    """Файл-спутник модели <имя>.meta.json: тип, классы, якоря. Нет файла — считаем, что это YOLOX/COCO."""
+    stem = os.path.splitext(os.path.expanduser(model_path))[0]
+    p = stem + '.meta.json'
+    if not os.path.exists(p):
+        return None
+    with open(p, encoding='utf-8') as f:
+        meta = json.load(f)
+    meta['_dir'] = os.path.dirname(p)
+    return meta
 
 
 class OpenVinoDetector:
@@ -115,10 +173,18 @@ class OpenVinoDetector:
                  model_type='yolox', input_size=None, performance_hint='LATENCY', num_threads=0):
         import openvino as ov
         self.conf, self.nms = float(conf), float(nms)
+        meta = load_meta(model_path)
+        self.extra = {}
+        if meta:                                   # модель со спутником: тип, классы и якоря берём из него
+            model_type = meta['type']
+            if not labels:
+                labels = meta.get('classes')
+            if meta.get('anchors'):
+                self.extra['anchors'] = np.load(os.path.join(meta['_dir'], meta['anchors'])).astype(np.float32)
         self.labels = load_labels(labels)
         if model_type not in DECODERS:
             raise ValueError(f'тип модели {model_type!r} не поддерживается: {sorted(DECODERS)}')
-        self.decode = DECODERS[model_type]
+        self.decode, self.preprocess, self.model_type = DECODERS[model_type], PREPROCESS[model_type], model_type
         core = ov.Core()
         model = core.read_model(os.path.expanduser(model_path))
         shape = model.input(0).partial_shape
@@ -137,13 +203,12 @@ class OpenVinoDetector:
     def detect(self, bgr):
         """Кадр BGR (H, W, 3, uint8) -> список Detection (рамки в пикселях кадра)."""
         t0 = time.perf_counter()
-        img, ratio = letterbox(bgr, self.size)
-        blob = np.ascontiguousarray(img.transpose(2, 0, 1)[None].astype(np.float32))
+        blob, ctx = self.preprocess(bgr, self.size)
         t1 = time.perf_counter()
         res = self.req.infer({0: blob})
-        raw = next(iter(res.values()))
+        outs = [res[o] for o in self.compiled.outputs]
         t2 = time.perf_counter()
-        dets = self.decode(raw, self.size, self.conf, self.nms, ratio)
+        dets = self.decode(outs, self.size, self.conf, self.nms, ctx, self.extra)
         h, w = bgr.shape[:2]
         out = []
         for x1, y1, x2, y2, sc, c in dets:

@@ -49,11 +49,15 @@
 - [ ] ⬜ Соседние объекты ближе ~5 см сливаются в один кластер
 - [ ] ⬜ Одинаковые по форме и размеру объекты не различаются (нужен цвет или нейросеть)
 - [ ] ⬜ Выбор модели распознавания — материал для решения: [RECOGNITION_MODELS.md](RECOGNITION_MODELS.md) (Intel NUC → OpenVINO, лицензия, прозрачные объекты)
-- [ ] 🟡 Распознавание по картинке (OpenVINO, [docs/book/RECOGNITION_OPENVINO.md](book/RECOGNITION_OPENVINO.md): нода, связка с облаком и launch готовы, проверено на COCO-модели и искусственных рамках; нет своей модели). Идея из R2 — [R2_OBJECT_RECOGNITION.md](R2_OBJECT_RECOGNITION.md); на тележке Intel NUC — OpenVINO):
+- [ ] 🟡 Распознавание по картинке (OpenVINO, [docs/book/RECOGNITION_OPENVINO.md](book/RECOGNITION_OPENVINO.md): нода, связка с облаком и launch готовы, проверено на COCO-модели и искусственных рамках; своя модель SSDlite на 4 формы обучена на симуляции, в симуляции 4 из 4 верно (mAP 0.945); не проверено на настоящей камере и NUC, см. [MODEL_TRAINING.md](book/MODEL_TRAINING.md)). Идея из R2 — [R2_OBJECT_RECOGNITION.md](R2_OBJECT_RECOGNITION.md); на тележке Intel NUC — OpenVINO):
   - [ ] ⬜ Файлы модели R2 (`model.xml/.bin/.labels`, `model_objects.json`) — нет на этом ПК
-  - [ ] ⬜ OpenVINO Runtime и нода детектора → `vision_msgs/Detection2DArray`
-  - [ ] ⬜ Связка «рамка ↔ кластер» в `object_perception`
-  - [ ] ⬜ Детектор-заглушка по истине Gazebo для проверки в симуляции
+  - [x] ✅ OpenVINO Runtime и нода детектора → `vision_msgs/Detection2DArray`
+  - [x] ✅ Связка «рамка ↔ кластер» в `object_perception`
+  - [x] ✅ Детектор-заглушка по истине Gazebo для проверки в симуляции (`detector:=stub`, `tools/stub_detections.py`)
+  - [x] ✅ Своя модель SSDlite на 4 формы: датасет из Gazebo, обучение, экспорт fp32/fp16/int8, проверка в симуляции ([MODEL_TRAINING.md](book/MODEL_TRAINING.md))
+  - [ ] ⬜ Модель для настоящих предметов и камеры Orbbec (фото, разметка, смесь с симуляцией)
+  - [ ] ⬜ Проверка на Intel NUC (`GPU`/`NPU`/`AUTO`, скорость, int8)
+  - [ ] ⬜ Использование класса по картинке в `/pick_place`, команда «возьми <предмет>»
 - [ ] ⬜ Захват только сверху, присоска вертикально; лежащие на боку объекты не берутся
 - [ ] ⬜ Распознавание только из позы наблюдения
 - [ ] ⬜ Старый `grasp_analyzer` (ищет цилиндр) — заменить или убрать (док. 09)

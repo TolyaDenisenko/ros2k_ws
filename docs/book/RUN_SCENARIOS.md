@@ -114,18 +114,17 @@ Gazebo (если без `headless:=true`) и RViz открываются на э
 
 Мир `worlds/arm_table.world` и мост `config/gz_bridge_arm_table.yaml` **генерируются** из
 `config/arm_table_objects.yaml` инструментом `tools/gen_arm_table_scene.py` (запустить и
-пересобрать пакет, если меняете список). 8 объектов, координаты `xy` — в кадре `link_base`:
+пересобрать пакет, если меняете список). Сейчас 4 объекта разных форм (с 2026-11-02; прежний набор из 8
+мелких коробок и цилиндров лежит в `config/arm_table_objects_8_old.yaml`: чтобы вернуть, скопировать его
+поверх `arm_table_objects.yaml`, запустить генератор, вернуть правила в `xarm_grasping/config/objects.yaml`
+из git и пересобрать). Координаты `xy` — в кадре `link_base`:
 
 | Имя (класс) | Форма | Размер, м | xy |
 |---|---|---|---|
-| `pick_box` | коробка | 0.10 × 0.05 × 0.05 | (0.40, 0.10) |
-| `box_small` | коробка | 0.06 × 0.06 × 0.04 | (0.50, 0.00), поворот 0.3 рад |
-| `box_tall` | коробка | 0.07 × 0.05 × 0.10 | (0.52, 0.15) |
-| `box_flat` | коробка | 0.12 × 0.08 × 0.03 | (0.27, 0.17) |
-| `cylinder_block` | цилиндр | радиус 0.04, высота 0.09 | (0.35, −0.20) |
-| `cyl_small` | цилиндр | 0.025 × 0.06 | (0.50, −0.15) |
-| `cyl_wide` | цилиндр | 0.05 × 0.05 | (0.27, −0.08) |
-| `cyl_tall` | цилиндр | 0.035 × 0.13 | (0.40, −0.05) |
+| `cube` | куб | 0.06 × 0.06 × 0.06 | (0.50, 0.00), поворот 0.3 рад |
+| `parallelepiped` | параллелепипед | 0.12 × 0.05 × 0.07 | (0.45, 0.18) |
+| `rect_plate` | прямоугольная пластина | 0.14 × 0.09 × 0.02 | (0.25, −0.05) |
+| `cylinder` | цилиндр | радиус 0.04, высота 0.10 | (0.35, −0.20) |
 
 Зоны, куда ставить объекты, — `xarm_grasping/config/place_zones.yaml` (`zone_boxes`,
 `zone_cylinders`); классы по размерам — `xarm_grasping/config/objects.yaml`.
@@ -151,6 +150,9 @@ ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true  # + кла�
 | `gripper_camera_preview` | `false` | `true` — камера запястья 640×400 вместо 1280×800: облако в 4 раза легче. Для отладки движений и при низкой скорости симуляции. Распознавание на лёгком кадре хуже |
 | `arm_initial_positions` | `0 -0.596 -1.013 0 1.609 0` | начальные углы `joint1..joint6` (рад) через пробел. Это **поза наблюдения**: присоска вниз в (0.30, 0, 0.40); `pick_place_server` распознаёт объекты только из неё. Менять только для опытов |
 | `detector` | `false` | `false` — без классов по картинке; `true` — запустить `openvino_detector` (§4); `stub` — детектор не запускать, но `object_perception` слушает `/detections` (для заглушки `tools/stub_detections.py`) |
+| `detector_model` | `~/.local/share/quasi/models/yolox/yolox_tiny.onnx` | файл модели детектора (ONNX или OpenVINO IR `.xml`). Рядом может лежать `<имя>.meta.json` с типом, классами и якорями: тогда детектор читает всё сам. Своя обученная модель: `~/.local/share/quasi/models/sim_tabletop_v1/model_fp16.xml` (см. [MODEL_TRAINING.md](MODEL_TRAINING.md)) |
+| `detector_conf` | `0.4` | порог уверенности детектора. Для своей модели SSDlite брать 0.1–0.2 (куб уверен на 0.3–0.65) |
+| `detector_device` | `CPU` | устройство OpenVINO: `CPU`, `GPU`, `NPU`, `AUTO`. На этом ПК брать `CPU` (`GPU` — это NVIDIA, в 8 раз медленнее); на NUC сравнить |
 | `gz_args`, `gz_version`, `ign_*`, `debugger`, `debug_env`, `on_exit_shutdown` | см. `--show-args` | служебные аргументы включаемого `gz_sim.launch.py`; обычно не нужны |
 
 ### 2.5. Что поднимается
@@ -195,13 +197,13 @@ ros2 topic echo /vacuum_gripper/held         # что держим
 В RViz — кнопка-кубик у присоски (инструмент Interact): клик включает и выключает вакуум, цвет —
 «светофор» готовности.
 
-**Взять и поставить** (нужен `use_moveit:=true`):
+**Взять и поставить** (нужен `use_moveit:=true`). С 2026-11-02 на столе четыре предмета (`cube_0`, `parallelepiped_0`, `rect_plate_0`, `cylinder_0`); сам `/pick_place` на этих предметах после замены набора не прогонялся:
 
 ```bash
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: pick_box_0}" --feedback                                  # зона по правилам
+    "{object_id: cube_0}" --feedback                                      # зона по правилам
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: cylinder_block_0, zone: zone_cylinders}" --feedback
+    "{object_id: cylinder_0, zone: zone_cylinders}" --feedback
 ```
 
 Шаги (`stage` в обратной связи): `detect` → поиск места в зоне → `plan_pregrasp` → `approach` →
@@ -225,7 +227,7 @@ ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
 ### 2.8. Что должно быть, чтобы считать запуск удачным
 
 1. В логе нет `process has died` (кроме завершения по Ctrl+C).
-2. `ros2 topic echo /objects --field objects` показывает 8 объектов; в каждом `id`, `label` и
+2. `ros2 topic echo /objects --field objects` показывает 4 объекта; в каждом `id`, `label` и
    `num_points` > 0.
 3. `ros2 topic echo /vacuum_gripper/ready` отвечает.
 4. (С MoveIt) `ros2 action list` содержит `/pick_place` и `/move_action`.
@@ -378,8 +380,10 @@ for n in yolox_nano yolox_tiny yolox_s; do
 cd ~/ros2k_ws && colcon build --symlink-install --packages-select xarm_grasping_msgs xarm_grasping cart_xarm_bringup
 ```
 
-Модель — YOLOX на 80 бытовых классов COCO. **Зелёные коробки и цилиндры сцены она не узнаёт**
-(в симуляции детекций не будет): для них нужна своя обученная модель.
+Готовая модель по умолчанию — YOLOX на 80 бытовых классов COCO. Она называет предметы только словами из этого списка и не
+знает наших форм (куб, цилиндр, пластина, параллелепипед), поэтому в симуляции детекций с
+верными именами не будет, какого бы цвета ни были предметы. Для наших форм нужна своя обученная модель
+([MODEL_TRAINING.md](MODEL_TRAINING.md)); она уже обучена и описана ниже (§4.2).
 
 ### 4.2. В сценарии А
 
@@ -389,7 +393,18 @@ ros2 topic hz /detections                       # ≈ 2 Гц (max_rate_hz)
 ros2 topic echo /objects --field objects | grep -E "id=|detector_label="
 ```
 
-Параметры (устройство `CPU|GPU|NPU|AUTO`, число потоков, порог, частота) —
+**Со своей моделью** (четыре формы сцены; ожидаемо `detector_label` совпадает с именем предмета, например
+`cube_0` → `cube`):
+
+```bash
+ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true gripper_camera_preview:=true \
+    detector_model:=$HOME/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml detector_conf:=0.2
+ros2 run rqt_image_view rqt_image_view /detections/image     # картинка с рамками и названиями
+```
+
+Куб — самый неуверенный (0.3–0.65): если он пропадает, `detector_conf:=0.1`.
+
+Модель и устройство можно сменить аргументами `detector_model` и `detector_device`. Как получить свою модель (датасет, обучение, веса, экспорт) — [MODEL_TRAINING.md](MODEL_TRAINING.md). Остальные параметры (число потоков, порог, частота) —
 `xarm_grasping/config/openvino_detector.yaml`. На этом ПК выбирать `CPU`: `GPU` здесь — это
 NVIDIA, и OpenVINO на ней в 8 раз медленнее процессора; `GPU` и `NPU` проверяют на NUC.
 
@@ -415,7 +430,7 @@ NVIDIA, и OpenVINO на ней в 8 раз медленнее процессо�
 |---|---|---|---|
 | 1 | OpenVINO, сопоставление рамок с кластерами (синтетика), детекция на фото; **без ROS и симуляции** | `~/.venvs/openvino/bin/python tools/check_recognition.py --model ~/.local/share/quasi/models/yolox/yolox_tiny.onnx --image ~/.local/share/quasi/test_images/000000039769.jpg` | все пункты `ок`, найдены 2 кошки, пульт, кровать; ≈ 40 мс на кадр; код возврата 0 |
 | 2 | Нода `openvino_detector` на картинке, без симуляции | в одном окне `python3 tools/publish_test_image.py фото.jpg`, в другом нода (§4.3 с `image_topic` по умолчанию), смотреть `ros2 topic echo /detections --field detections` | рамки с классами и score, ≈ 2 Гц |
-| 3 | Привязка класса к кластеру облака на реальной геометрии камеры | окно 1: `ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=stub use_moveit:=false headless:=true use_rviz:=false`; через ~30 с окно 2: `python3 tools/stub_detections.py --duration 30` | в `/objects` у каждого из 8 объектов `detector_label` = `stub_<id>` (свой), перепутанных нет |
+| 3 | Привязка класса к кластеру облака на реальной геометрии камеры | окно 1: `ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=stub use_moveit:=false headless:=true use_rviz:=false`; через ~30 с окно 2: `python3 tools/stub_detections.py --duration 30` | в `/objects` у каждого из 4 объектов `detector_label` = `stub_<id>` (свой), перепутанных нет |
 | 4 | Колёсный привод: проскальзывание и наклон | окно 1: `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py headless:=true use_rviz:=false use_moveit:=false manipulation_nodes:=false world:=$(ros2 pkg prefix cart_xarm_bringup)/share/cart_xarm_bringup/worlds/cart_nav.world spawn_x:=-3.0 spawn_y:=-0.5`; через ~50 с окно 2: `python3 tools/drive_traction_probe.py` | четыре строки: проскальзывание 0%, тангаж 0.0°, крен 0.0° |
 | 5 | Навигация и устойчивость (то, что раньше опрокидывало тележку) | окно 1: `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true use_rviz:=false use_octomap:=false`; когда Nav2 active, окно 2: `python3 tools/nav_tilt_probe.py` (по умолчанию 4 цели, ≈ 6 мин; быстро: `--goals "0.15,1.76;3.44,1.15"`) | у каждой цели статус 4 («выполнена»), наклон ≈ 0.0°, суставы руки неизменны; в конце `ИТОГ: устойчиво` |
 

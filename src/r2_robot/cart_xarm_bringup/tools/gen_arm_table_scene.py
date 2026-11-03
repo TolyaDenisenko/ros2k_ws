@@ -22,7 +22,7 @@ COLOR = '<material><ambient>0.1 1.0 0.1 1</ambient><diffuse>0.1 1.0 0.1 1</diffu
 
 def inertia(o):
     m = o['mass']
-    if o['shape'] == 'box':
+    if o['shape'] in ('box', 'pyramid'):         # пирамида — с запасом как коробка
         x, y, z = o['size']
         return m * (y * y + z * z) / 12, m * (x * x + z * z) / 12, m * (x * x + y * y) / 12
     r, h = o['size']
@@ -32,15 +32,17 @@ def inertia(o):
 def geometry(o):
     if o['shape'] == 'box':
         return '<box><size>{} {} {}</size></box>'.format(*o['size'])
+    if o['shape'] == 'pyramid':       # единичная пирамида 1×1×1, масштабируется до size
+        return '<mesh><uri>meshes/pyramid.obj</uri><scale>{} {} {}</scale></mesh>'.format(*o['size'])
     return '<cylinder><radius>{}</radius><length>{}</length></cylinder>'.format(*o['size'])
 
 
 def height(o):
-    return o['size'][2] if o['shape'] == 'box' else o['size'][1]
+    return o['size'][2] if o['shape'] in ('box', 'pyramid') else o['size'][1]
 
 
 def radius(o):
-    return 0.5 * math.hypot(o['size'][0], o['size'][1]) if o['shape'] == 'box' else o['size'][0]
+    return 0.5 * math.hypot(o['size'][0], o['size'][1]) if o['shape'] != 'cylinder' else o['size'][0]
 
 
 def model(o):
@@ -77,6 +79,24 @@ def model(o):
       </link>
     </model>
 '''
+
+
+def pyramid_obj():
+    """Единичная четырёхугольная пирамида: основание 1×1 внизу (z=-0.5), вершина вверху (z=+0.5).
+    Нормали у каждой грани свои (плоское затенение): без них dartsim отбрасывает сетку и падает."""
+    v = [(-0.5, -0.5, -0.5), (0.5, -0.5, -0.5), (0.5, 0.5, -0.5), (-0.5, 0.5, -0.5), (0, 0, 0.5)]
+    faces = [(1, 3, 2), (1, 4, 3), (1, 2, 5), (2, 3, 5), (3, 4, 5), (4, 1, 5)]
+    out = ['# СГЕНЕРИРОВАНО tools/gen_arm_table_scene.py: единичная пирамида'] + ['v %g %g %g' % p for p in v]
+    norms = []
+    for f in faces:
+        a, b, c = (v[k - 1] for k in f)
+        u, w = [b[i] - a[i] for i in range(3)], [c[i] - a[i] for i in range(3)]
+        n = (u[1] * w[2] - u[2] * w[1], u[2] * w[0] - u[0] * w[2], u[0] * w[1] - u[1] * w[0])
+        ln = math.sqrt(sum(x * x for x in n))
+        norms.append(tuple(x / ln for x in n))
+    out += ['vn %.6f %.6f %.6f' % n for n in norms]
+    out += ['f ' + ' '.join(f'{k}//{i + 1}' for k in f) for i, f in enumerate(faces)]
+    return '\n'.join(out) + '\n'
 
 
 def bridge(objs):
@@ -120,6 +140,9 @@ def main():
              'config/arm_table_objects.yaml, не править руками -->\n'
              + ''.join(model(o) for o in objs))
     open(wpath, 'w').write(w[:i] + block + w[j:])
+    if any(o['shape'] == 'pyramid' for o in objs):
+        os.makedirs(os.path.join(PKG, 'worlds', 'meshes'), exist_ok=True)
+        open(os.path.join(PKG, 'worlds', 'meshes', 'pyramid.obj'), 'w').write(pyramid_obj())
     open(os.path.join(PKG, 'config', 'gz_bridge_arm_table.yaml'), 'w').write(bridge(objs))
     print(f'объектов: {len(objs)} -> worlds/arm_table.world, config/gz_bridge_arm_table.yaml')
 

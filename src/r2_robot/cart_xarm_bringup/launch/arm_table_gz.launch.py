@@ -52,8 +52,8 @@ def load_objects():
                         'config', 'arm_table_objects.yaml')
     with open(path) as f:
         objs = yaml.safe_load(f)['objects']
-    return [(o['name'], o['shape'],
-             list(o['size']) if o['shape'] == 'box'
+    return [(o['name'], 'box' if o['shape'] == 'pyramid' else o['shape'],   # пирамида в RViz — габаритный бокс
+             list(o['size']) if o['shape'] in ('box', 'pyramid')
              else [2 * o['size'][0], 2 * o['size'][0], o['size'][1]]) for o in objs]
 
 
@@ -199,7 +199,11 @@ def generate_launch_description():
                           'openvino_detector.py'),
              '--ros-args', '--params-file',
              os.path.join(get_package_share_directory('xarm_grasping'), 'config',
-                          'openvino_detector.yaml')],
+                          'openvino_detector.yaml'),
+             # модель и устройство можно сменить аргументами launch (иначе — из yaml)
+             '-p', ['model_path:=', LaunchConfiguration('detector_model')],
+             '-p', ['device:=', LaunchConfiguration('detector_device')],
+             '-p', ['conf:=', LaunchConfiguration('detector_conf')]],
         output='screen', condition=IfCondition(PythonExpression(
             ["'", LaunchConfiguration('detector'), "' == 'true'"])))
     scene_manager = Node(
@@ -251,6 +255,17 @@ def generate_launch_description():
                         'openvino_detector (нужны ~/.venvs/openvino и модель, см. '
                         'docs/book/RECOGNITION_OPENVINO.md); stub — детектор не запускать, но '
                         'object_perception слушает /detections (для tools/stub_detections.py)'),
+        DeclareLaunchArgument(
+            'detector_model', default_value='~/.local/share/quasi/models/yolox/yolox_tiny.onnx',
+            description='файл модели детектора (ONNX или OpenVINO IR .xml); рядом может лежать '
+                        '<имя>.meta.json (тип, классы, якоря). Своя модель: '
+                        '~/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml'),
+        DeclareLaunchArgument(
+            'detector_device', default_value='CPU',
+            description='устройство OpenVINO: CPU | GPU | NPU | AUTO (на этом ПК — CPU, GPU = NVIDIA и медленнее)'),
+        DeclareLaunchArgument(
+            'detector_conf', default_value='0.4',
+            description='порог уверенности детектора 0..1; для своей модели SSDlite — 0.2 (docs/book/MODEL_TRAINING.md)'),
         DeclareLaunchArgument('use_moveit', default_value='true'),
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument(
