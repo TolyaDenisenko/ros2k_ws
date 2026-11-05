@@ -62,7 +62,7 @@ source install/setup.bash
 С `--symlink-install` правки launch, xacro, Python и yaml подхватываются сразу; **новые** файлы
 требуют пересборки пакета (`colcon build --symlink-install --packages-select <пакет>`).
 
-Распознавание объектов (OpenVINO) — отдельная установка, см. §4.1. Для сценариев без детектора
+Распознавание объектов (OpenVINO) — отдельная установка, см. §4.7. Для сценариев без детектора
 она не нужна.
 
 ### 1.2. В каждом терминале
@@ -177,7 +177,7 @@ the param server` и `No 3D sensor plugin(s) defined for octomap updates`. Он�
 **Посмотреть, что видит система.**
 
 ```bash
-ros2 topic echo /objects --field objects     # id, класс, форма, поза, grasp_pose, detector_label
+python3 ~/ros2k_ws/src/r2_robot/cart_xarm_bringup/tools/show_objects.py   # таблицей; сырой вариант: ros2 topic echo /objects --field objects (одна длинная строка) # id, класс, форма, поза, grasp_pose, detector_label
 ros2 topic hz /gripper_camera/points         # облако камеры
 ```
 
@@ -227,7 +227,7 @@ ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
 ### 2.8. Что должно быть, чтобы считать запуск удачным
 
 1. В логе нет `process has died` (кроме завершения по Ctrl+C).
-2. `ros2 topic echo /objects --field objects` показывает 4 объекта; в каждом `id`, `label` и
+2. `python3 …/tools/show_objects.py` (§4.4) показывает таблицу из 4 объектов; в каждом `id`, `label` и
    `num_points` > 0.
 3. `ros2 topic echo /vacuum_gripper/ready` отвечает.
 4. (С MoveIt) `ros2 action list` содержит `/pick_place` и `/move_action`.
@@ -364,12 +364,130 @@ ros2 run nav2_map_server map_saver_cli -f ~/cart_map          # сохранит
 
 ---
 
-## 4. Распознавание объектов (OpenVINO)
+## 4. Распознавание объектов: рамки на картинке (OpenVINO)
 
-Платформа тележки — Intel NUC, поэтому движок OpenVINO. Подробности, замеры скорости и
-ограничения — [RECOGNITION_OPENVINO.md](RECOGNITION_OPENVINO.md). Здесь — как это включается.
+**Что это даёт.** Нейросеть смотрит на кадр камеры, обводит предметы **рамками** и подписывает, что
+это (куб, цилиндр…). Подпись попадает к тому предмету, который уже нашло облако точек. Подробности —
+[RECOGNITION_OPENVINO.md](RECOGNITION_OPENVINO.md), как модель обучена — [MODEL_TRAINING.md](MODEL_TRAINING.md).
 
-### 4.1. Установка (один раз)
+**Что вы увидите.** Окно с кадром камеры, на котором нарисованы рамки с названиями, и таблицу в
+терминале:
+
+![Кадр с рамками: так выглядит окно rqt_image_view](img/fig27_sim_detection.png)
+
+*Подпись у рамки: название и уверенность (1.00 — полностью уверена). Куб 0.29 — нормально, он
+всегда самый неуверенный.*
+
+### 4.1. Что где вводить: три терминала
+
+Откройте **три отдельных окна терминала**. В каждом сначала введите две строки подготовки (они из §1.2;
+без них команды `ros2` не находят наш код):
+
+```bash
+source /opt/ros/kilted/setup.bash
+source ~/ros2k_ws/install/setup.bash
+```
+
+| Окно | Для чего | Что вводить | Когда |
+|---|---|---|---|
+| **1** | запустить симуляцию и нейросеть | команда из шага 1 ниже | первым |
+| **2** | смотреть кадр с **рамками** | команда из шага 2 | через 1–2 минуты после окна 1 |
+| **3** | видеть **таблицу** предметов | команда из шага 3 | когда окно 2 показывает картинку |
+
+Окно 1 занято, пока работает симуляция: в нём ничего больше не вводите.
+
+### 4.2. Шаг 1 (окно 1): запуск симуляции с нейросетью
+
+```bash
+# убрать мусор прошлых запусков (из §1.3)
+pgrep -a gz            # должно быть пусто
+fastdds shm clean
+
+ros2 launch cart_xarm_bringup arm_table_gz.launch.py \
+    use_moveit:=false use_rviz:=false gripper_camera_preview:=true \
+    detector:=true \
+    detector_model:=$HOME/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml \
+    detector_conf:=0.2
+```
+
+Что значит каждая строка: `arm_table_gz.launch.py` — сцена «рука на столе»; `use_moveit:=false
+use_rviz:=false` — не запускать тяжёлые MoveIt и RViz, они для распознавания не нужны;
+`gripper_camera_preview:=true` — лёгкая камера (640×400); `detector:=true` — включить нейросеть;
+`detector_model:=…` — **какая** модель (наша, на четыре формы); `detector_conf:=0.2` — отбрасывать
+рамки, в которых уверенность ниже 0.2 (подробнее ниже).
+
+Откроется окно Gazebo со столом и четырьмя предметами. Подождите **1–2 минуты**, пока всё запустится
+(в терминале перестанут бежать новые строки).
+
+### 4.3. Шаг 2 (окно 2): посмотреть кадр с рамками
+
+```bash
+ros2 run rqt_image_view rqt_image_view /detections/image
+```
+
+Откроется окно `rqt_image_view` с кадром камеры. **Рамки с названиями нарисованы прямо на нём** (как
+на рисунке выше). Если окно пустое:
+- в выпадающем списке вверху выберите `/detections/image` (рядом кнопка обновления списка);
+- подождите ещё минуту: картинка появляется, когда нейросеть обработает первый кадр.
+
+Картинка обновляется примерно 2 раза в секунду (это настройка `max_rate_hz`, чтобы не грузить процессор).
+
+### 4.4. Шаг 3 (окно 3): таблица предметов
+
+```bash
+python3 ~/ros2k_ws/src/r2_robot/cart_xarm_bringup/tools/show_objects.py
+```
+
+Напечатает один раз (с ключом `--watch` будет обновлять):
+
+```
+id (по облаку)     размеры, см              x, y, м          по картинке: название и уверенность
+------------------------------------------------------------------------------------------------
+cube_0              6.6 ×  6.0 ×  6.3       ( 0.50, -0.00)   cube            0.30
+cylinder_0         цилиндр h=10.0 r= 4.4    ( 0.35, -0.20)   cylinder        1.00
+parallelepiped_0   12.4 ×  6.8 ×  7.2       ( 0.45,  0.18)   parallelepiped  0.99
+rect_plate_0       14.1 ×  9.3 ×  2.9       ( 0.25, -0.05)   rect_plate      1.00
+предметов: 4, названо нейросетью: 4
+```
+
+Как читать колонки:
+
+| Колонка | Откуда | Что значит |
+|---|---|---|
+| `id` | облако точек | имя по размерам + номер; от него зависит захват |
+| размеры | облако точек | длина × ширина × высота в сантиметрах (у цилиндра: высота и радиус) |
+| `x, y` | облако точек | где предмет стоит на столе, метры, в системе руки |
+| название и число справа | **нейросеть** | что она увидела на картинке и насколько уверена |
+
+**Главное, на что смотреть:** справа название должно совпадать с именем в первой колонке (`cube_0` →
+`cube`). Если там «— (нейросеть не нашла)», у этого предмета нет рамки с достаточной уверенностью.
+
+> Почему не `ros2 topic echo /objects`? Эта команда выводит всё одной огромной строкой, в ней трудно
+> что-либо найти. `show_objects.py` показывает то же самое в виде таблицы.
+
+### 4.5. Что можно менять в запуске
+
+| Аргумент | По умолчанию | Что делает | Когда менять |
+|---|---|---|---|
+| `detector_model` | `…/yolox/yolox_tiny.onnx` (готовая, **наших форм не знает**) | какая модель | для наших предметов всегда указывать `…/sim_shapes_v3/model_fp16.xml` |
+| `detector_conf` | `0.4` | порог уверенности: рамки ниже порога выбрасываются | предмет пропал (куб) — **уменьшить** до `0.1`; появляются лишние рамки — увеличить до `0.3` |
+| `detector_device` | `CPU` | на чём считать: `CPU`, `GPU`, `NPU`, `AUTO` | на этом ПК только `CPU`; `GPU` здесь — видеокарта NVIDIA, в 8 раз медленнее |
+
+Остальные настройки (число потоков, частота) — `xarm_grasping/config/openvino_detector.yaml`.
+
+### 4.6. Если что-то не получилось
+
+| Что видите | Что делать |
+|---|---|
+| В окне 2 пусто, список топиков без `/detections/image` | подождите до 2 минут; убедитесь, что в окне 1 нет красных ошибок, и что **в окнах 2 и 3 выполнены две строки `source`** |
+| `show_objects.py`: «ничего не пришло» | то же; ещё проверьте, что запущена именно эта симуляция и совпадает `ROS_DOMAIN_ID` (если вы его меняли, §1.5) |
+| Рамок нет вообще или в таблице «нейросеть не нашла» у всех | вы запустили без `detector_model:=…sim_shapes_v3…`: готовая модель по умолчанию наших форм не знает (§4.7) |
+| Куб иногда пропадает | снизить `detector_conf` до 0.1 |
+| В окне 1 «No such file» про модель | неверный путь к модели; проверьте `ls ~/.local/share/quasi/models/sim_shapes_v3/` |
+| `ModuleNotFoundError: openvino` | нет окружения OpenVINO: §4.7 «Установка» |
+| Симуляция тормозит | закройте лишние окна и другие симуляции (§6, §1.5) |
+
+### 4.7. Установка (один раз) и готовая модель YOLOX
 
 ```bash
 python3 -m venv --system-site-packages ~/.venvs/openvino
@@ -380,44 +498,23 @@ for n in yolox_nano yolox_tiny yolox_s; do
 cd ~/ros2k_ws && colcon build --symlink-install --packages-select xarm_grasping_msgs xarm_grasping cart_xarm_bringup
 ```
 
-Готовая модель по умолчанию — YOLOX на 80 бытовых классов COCO. Она называет предметы только словами из этого списка и не
-знает наших форм (куб, цилиндр, пластина, параллелепипед), поэтому в симуляции детекций с
-верными именами не будет, какого бы цвета ни были предметы. Для наших форм нужна своя обученная модель
-([MODEL_TRAINING.md](MODEL_TRAINING.md)); она уже обучена и описана ниже (§4.2).
+Готовая YOLOX (`detector:=true` без `detector_model`) нужна только для проверки самого детектора: она
+называет предметы словами из своего списка (кошка, чашка…) и наших форм (куб, цилиндр, пластина,
+параллелепипед) **не знает**, при любом цвете предметов. Для наших форм используйте свою модель из
+шага 1. Как её получить (датасет, обучение, экспорт) — [MODEL_TRAINING.md](MODEL_TRAINING.md).
 
-### 4.2. В сценарии А
-
-```bash
-ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true
-ros2 topic hz /detections                       # ≈ 2 Гц (max_rate_hz)
-ros2 topic echo /objects --field objects | grep -E "id=|detector_label="
-```
-
-**Со своей моделью** (четыре формы сцены; ожидаемо `detector_label` совпадает с именем предмета, например
-`cube_0` → `cube`):
-
-```bash
-ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true gripper_camera_preview:=true \
-    detector_model:=$HOME/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml detector_conf:=0.2
-ros2 run rqt_image_view rqt_image_view /detections/image     # картинка с рамками и названиями
-```
-
-Куб — самый неуверенный (0.3–0.65): если он пропадает, `detector_conf:=0.1`.
-
-Модель и устройство можно сменить аргументами `detector_model` и `detector_device`. Как получить свою модель (датасет, обучение, веса, экспорт) — [MODEL_TRAINING.md](MODEL_TRAINING.md). Остальные параметры (число потоков, порог, частота) —
-`xarm_grasping/config/openvino_detector.yaml`. На этом ПК выбирать `CPU`: `GPU` здесь — это
-NVIDIA, и OpenVINO на ней в 8 раз медленнее процессора; `GPU` и `NPU` проверяют на NUC.
-
-### 4.3. В сценарии Б
+### 4.8. В сценарии Б (тележка)
 
 В Б1/Б2 конвейера объектов нет, но детектор можно запустить отдельно и смотреть рамки в
-`/detections` и `/detections/image`:
+`/detections/image` (шаг 2 выше):
 
 ```bash
 ~/.venvs/openvino/bin/python ~/ros2k_ws/install/xarm_grasping/lib/xarm_grasping/openvino_detector.py \
   --ros-args --params-file ~/ros2k_ws/install/xarm_grasping/share/xarm_grasping/config/openvino_detector.yaml \
   -p image_topic:=/front_camera/color/image_raw
 ```
+
+Для тележки своей модели пока нет: она обучена на сцене «рука на столе».
 
 ---
 
@@ -429,8 +526,8 @@ NVIDIA, и OpenVINO на ней в 8 раз медленнее процессо�
 | № | Что проверяет | Как запустить | Ожидаемо |
 |---|---|---|---|
 | 1 | OpenVINO, сопоставление рамок с кластерами (синтетика), детекция на фото; **без ROS и симуляции** | `~/.venvs/openvino/bin/python tools/check_recognition.py --model ~/.local/share/quasi/models/yolox/yolox_tiny.onnx --image ~/.local/share/quasi/test_images/000000039769.jpg` | все пункты `ок`, найдены 2 кошки, пульт, кровать; ≈ 40 мс на кадр; код возврата 0 |
-| 2 | Нода `openvino_detector` на картинке, без симуляции | в одном окне `python3 tools/publish_test_image.py фото.jpg`, в другом нода (§4.3 с `image_topic` по умолчанию), смотреть `ros2 topic echo /detections --field detections` | рамки с классами и score, ≈ 2 Гц |
-| 3 | Привязка класса к кластеру облака на реальной геометрии камеры | окно 1: `ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=stub use_moveit:=false headless:=true use_rviz:=false`; через ~30 с окно 2: `python3 tools/stub_detections.py --duration 30` | в `/objects` у каждого из 4 объектов `detector_label` = `stub_<id>` (свой), перепутанных нет |
+| 2 | Нода `openvino_detector` на картинке, без симуляции | в одном окне `python3 tools/publish_test_image.py фото.jpg`, в другом нода (§4.8 с `image_topic` по умолчанию), смотреть `ros2 topic echo /detections --field detections` | рамки с классами и score, ≈ 2 Гц |
+| 3 | Привязка класса к кластеру облака на реальной геометрии камеры (таблицу печатает `tools/show_objects.py`) | окно 1: `ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=stub use_moveit:=false headless:=true use_rviz:=false`; через ~30 с окно 2: `python3 tools/stub_detections.py --duration 30` | в `/objects` у каждого из 4 объектов `detector_label` = `stub_<id>` (свой), перепутанных нет |
 | 4 | Колёсный привод: проскальзывание и наклон | окно 1: `ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py headless:=true use_rviz:=false use_moveit:=false manipulation_nodes:=false world:=$(ros2 pkg prefix cart_xarm_bringup)/share/cart_xarm_bringup/worlds/cart_nav.world spawn_x:=-3.0 spawn_y:=-0.5`; через ~50 с окно 2: `python3 tools/drive_traction_probe.py` | четыре строки: проскальзывание 0%, тангаж 0.0°, крен 0.0° |
 | 5 | Навигация и устойчивость (то, что раньше опрокидывало тележку) | окно 1: `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true use_rviz:=false use_octomap:=false`; когда Nav2 active, окно 2: `python3 tools/nav_tilt_probe.py` (по умолчанию 4 цели, ≈ 6 мин; быстро: `--goals "0.15,1.76;3.44,1.15"`) | у каждой цели статус 4 («выполнена»), наклон ≈ 0.0°, суставы руки неизменны; в конце `ИТОГ: устойчиво` |
 

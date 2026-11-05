@@ -185,6 +185,39 @@ def fig26_history():
     save(fig, 'fig26_history.png')
 
 
+# ---------------------------------------------------------------- fig30: кадры v4
+def fig30_randomized():
+    files = sorted(glob.glob(os.path.join(Q, 'datasets/sim_shapes_v4/preview/*.jpg')))[:6]
+    if not files:
+        print('нет превью v4 — fig30 пропущен')
+        return
+    fig, axs = plt.subplots(2, 3, figsize=(12, 5.6))
+    for ax, f in zip(axs.ravel(), files):
+        ax.imshow(cv2.cvtColor(cv2.imread(f), cv2.COLOR_BGR2RGB))
+        ax.axis('off')
+    fig.suptitle('Датасет v4: случайные цвета и свет, предметы вплотную (подпись внизу: расстановка / вид)')
+    save(fig, 'fig30_randomized_samples.png')
+
+
+# ---------------------------------------------------------------- fig31: v3 против v4 по условиям
+def fig31_v3_vs_v4():
+    cond = ['свободно,\nзелёные', 'вплотную,\nзелёные', 'свободно,\nслучайные', 'вплотную,\nслучайные']
+    v3 = [0.942, 0.761, 0.877, 0.710]     # evaluate_detector.py --filter, val sim_shapes_v4 (91 кадр), fp16
+    v4 = [0.942, 0.862, 0.943, 0.872]
+    x = np.arange(4)
+    fig, ax = plt.subplots(figsize=(9.5, 4.4))
+    b1 = ax.bar(x - 0.2, v3, 0.4, color=GREY, label='v3 (старая)')
+    b2 = ax.bar(x + 0.2, v4, 0.4, color=GREEN, label='v4 (новая)')
+    for b in list(b1) + list(b2):
+        ax.text(b.get_x() + b.get_width() / 2, b.get_height(), f'{b.get_height():.2f}', ha='center', va='bottom')
+    ax.set_xticks(x, cond)
+    ax.set_ylim(0.6, 1.0)
+    ax.set_ylabel('mAP (ось от 0.6)')
+    ax.legend()
+    ax.set_title('Одни и те же проверочные кадры: v4 сильно лучше там, где v3 не училась', fontsize=11)
+    save(fig, 'fig31_v3_vs_v4.png')
+
+
 if __name__ == '__main__':
     fig20_dataset()
     fig21_training()
@@ -193,6 +226,8 @@ if __name__ == '__main__':
     fig24_per_class()
     fig25_small_vs_big()
     fig26_history()
+    fig30_randomized()
+    fig31_v3_vs_v4()
 
 # ------------------------------------------------------------------ снимки
 # fig27_sim_detection.png — кадр /detections/image из симуляции (модель sim_shapes_v3/model_fp16.xml,

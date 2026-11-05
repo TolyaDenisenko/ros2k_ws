@@ -9,8 +9,11 @@ evaluate_detector — честная проверка готовых модел�
 совпала хотя бы наполовину), время кадра на выбранном устройстве и размер файла.
 
   ~/.venvs/yolox/bin/python evaluate_detector.py \
-      --data ~/.local/share/quasi/training/datasets/sim_tabletop_v1 \
-      --models ~/.local/share/quasi/models/sim_tabletop_v1/model_{fp32,fp16,int8}.xml --device CPU --threads 4
+      --data ~/.local/share/quasi/training/datasets/sim_shapes_v3 \
+      --models ~/.local/share/quasi/models/sim_shapes_v3/model_{fp32,fp16,int8}.xml --device CPU --threads 4
+
+Только плотные кадры со случайными цветами (датасеты, собранные с v4-сборщиком):
+      ... --filter layout=tight --filter appearance=random
 """
 import argparse
 import importlib.util
@@ -37,6 +40,9 @@ def main():
     ap.add_argument('--threads', type=int, default=0)
     ap.add_argument('--conf', type=float, default=0.05, help='низкий порог нужен для честного mAP')
     ap.add_argument('--limit', type=int, default=0, help='проверить только первые N картинок')
+    ap.add_argument('--filter', action='append', default=[], metavar='КЛЮЧ=ЗНАЧЕНИЕ',
+                    help='проверять только картинки, у которых в разметке поле КЛЮЧ равно ЗНАЧЕНИЕ '
+                         '(датасеты v4: layout=tight|spread, appearance=random|default); можно несколько')
     a = ap.parse_args()
     from pycocotools.coco import COCO
     from pycocotools.cocoeval import COCOeval
@@ -46,7 +52,13 @@ def main():
     with open(ann) as f:
         j = json.load(f)
     cats = sorted(c['id'] for c in j['categories'])
-    imgs = j['images'][:a.limit] if a.limit else j['images']
+    imgs = j['images']
+    for f in a.filter:
+        k, v = f.split('=', 1)
+        imgs = [i for i in imgs if str(i.get(k)) == v]
+    imgs = imgs[:a.limit] if a.limit else imgs
+    if not imgs:
+        raise SystemExit('после фильтра не осталось картинок')
     print(f'проверочных картинок: {len(imgs)}, рамок: {sum(1 for x in j["annotations"] if x["image_id"] in {i["id"] for i in imgs})}')
     print(f'{"модель":24s} {"mAP":>6s} {"mAP@.5":>7s} {"кадр, мс":>9s} {"размер":>8s}')
     for mp in a.models:

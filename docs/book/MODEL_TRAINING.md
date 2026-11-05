@@ -375,9 +375,9 @@ ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true \
     detector_model:=$HOME/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml \
     detector_conf:=0.2 gripper_camera_preview:=true
 
-# в другом окне:
+# в других окнах (в каждом сначала две строки source, см. RUN_SCENARIOS.md §4.1):
 ros2 run rqt_image_view rqt_image_view /detections/image          # картинка с рамками
-ros2 topic echo /objects --field objects | grep -E "id=|detector_label|detector_score"
+python3 src/r2_robot/cart_xarm_bringup/tools/show_objects.py     # таблица: предмет, размеры, название от нейросети
 ```
 
 Детектор сам прочитает файл-спутник (тип, классы, якоря). Если всё работает, у каждого предмета в

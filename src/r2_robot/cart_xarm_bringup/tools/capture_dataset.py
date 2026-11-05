@@ -15,6 +15,14 @@ capture_dataset — собирает датасет для обучения де
   <out>/meta.json            — параметры сбора (сид, камера, число кадров)
   <out>/preview/*.jpg        — первые кадры с нарисованными рамками: ГЛАЗАМИ проверить разметку
 
+Что варьируется от кадра к кадру (подробно — docs/book/RECOGNITION_IMPROVEMENT.md):
+  * РАССТАНОВКА: «свободная» (зазор ≥ 1.5 см) или «плотная» (зазор 2–12 мм: предметы почти
+    касаются; доля плотных — --tight-frac). Зазоры считаются по настоящим контурам, а не по кругам.
+  * ВНЕШНИЙ ВИД: случайные цвета предметов, цвет стола и пола, направление и яркость света
+    (доля таких кадров — --color-frac; остальные кадры — «как в сцене по умолчанию», зелёные предметы).
+    Цвета меняются командой gz `visual_config`, свет — `light_config`; класс от цвета не зависит.
+  Чтобы получить прежнее поведение (v3): --tight-frac 0 --color-frac 0.
+
 Запуск (подробно — docs/book/MODEL_TRAINING.md):
   # окно 1
   ros2 launch cart_xarm_bringup arm_table_gz.launch.py use_moveit:=false headless:=true \
@@ -23,10 +31,12 @@ capture_dataset — собирает датасет для обучения де
   python3 capture_dataset.py --out ~/.local/share/quasi/training/datasets/sim_tabletop_v1 --count 20
 """
 import argparse
+import colorsys
 import json
 import math
 import os
 import random
+import re
 import subprocess
 import time
 
@@ -64,35 +74,206 @@ def load_objects(path):
     return out
 
 
-def sample_layout(objs, rng, margin=0.015):
-    """Случайная расстановка без пересечений; часть объектов (3..N) на виду, остальные спрятаны."""
-    k = rng.randint(3, len(objs))
+def footprint(o, x, y, yaw):
+    """Контур предмета на столе (выпуклый многоугольник, м): прямоугольник или 24-угольник цилиндра."""
+    if o['shape'] == 'cylinder':
+        return [(x + o['radius'] * math.cos(2 * math.pi * i / 24), y + o['radius'] * math.sin(2 * math.pi * i / 24))
+                for i in range(24)]
+    c, s = math.cos(yaw), math.sin(yaw)
+    return [(x + c * dx * o['sx'] - s * dy * o['sy'], y + s * dx * o['sx'] + c * dy * o['sy'])
+            for dx, dy in ((-0.5, -0.5), (0.5, -0.5), (0.5, 0.5), (-0.5, 0.5))]
+
+
+def poly_gap(A, B):
+    """Зазор между двумя выпуклыми многоугольниками (метод разделяющих осей), м.
+    > 0 — не касаются (настоящее расстояние не меньше этого числа), <= 0 — пересекаются."""
+    best = -1e9
+    for P in (A, B):
+        for i in range(len(P)):
+            x1, y1 = P[i]
+            x2, y2 = P[(i + 1) % len(P)]
+            nx, ny = y2 - y1, x1 - x2
+            ln = math.hypot(nx, ny)
+            if ln < 1e-9:
+                continue
+            nx, ny = nx / ln, ny / ln
+            pa = [nx * px + ny * py for px, py in A]
+            pb = [nx * px + ny * py for px, py in B]
+            best = max(best, min(pb) - max(pa), min(pa) - max(pb))
+    return best
+
+
+def sample_layout(objs, rng, tight=False, gap_min=0.015, gap_tight=(0.002, 0.012)):
+    """Случайная расстановка без пересечений.
+
+    Свободная (tight=False): все видимые предметы на расстоянии не менее gap_min друг от друга.
+    Плотная (tight=True): предметы жмутся друг к другу, зазор между контурами 2–12 мм: так предметы
+    стоят на настоящем столе, и облако точек склеивает их в один кластер. Видимых предметов обычно все.
+    Возвращает ({имя: (x, y, поворот, виден)}, минимальный зазор между видимыми, м)."""
+    n = len(objs)
+    k = n if (tight and rng.random() < 0.7) else rng.randint(min(3, n), n)
     visible = set(rng.sample([o['name'] for o in objs], k))
-    placed, layout = [], {}
-    hide_slots = [(0.15 + 0.08 * i) for i in range(len(objs))]
+    placed, layout = [], {}                       # placed: (объект, x, y, yaw)
+    hide_slots = [(0.15 + 0.08 * i) for i in range(n)]
     for o in sorted(objs, key=lambda o: -o['radius']):
         if o['name'] not in visible:
             slot = hide_slots.pop(0)
             layout[o['name']] = (slot, HIDE_Y if rng.random() < 0.5 else -HIDE_Y, rng.uniform(-math.pi, math.pi), False)
             continue
-        for _ in range(300):
-            x, y = rng.uniform(*VIEW_X), rng.uniform(*VIEW_Y)
-            if all(math.hypot(x - px, y - py) > o['radius'] + pr + margin for px, py, pr in placed):
-                placed.append((x, y, o['radius']))
-                layout[o['name']] = (x, y, rng.uniform(-math.pi, math.pi), True)
+        want = rng.uniform(*gap_tight) if tight else gap_min
+        ok = False
+        for _ in range(400):
+            yaw = rng.uniform(-math.pi, math.pi)
+            if tight and placed:                   # встать рядом с уже стоящим предметом
+                ao, ax, ay, _ = rng.choice(placed)
+                ang = rng.uniform(0, 2 * math.pi)
+                d = ao['radius'] + o['radius'] + rng.uniform(-0.02, 0.01)
+                x, y = ax + d * math.cos(ang), ay + d * math.sin(ang)
+                if not (VIEW_X[0] <= x <= VIEW_X[1] and VIEW_Y[0] <= y <= VIEW_Y[1]):
+                    continue
+            else:
+                x, y = rng.uniform(*VIEW_X), rng.uniform(*VIEW_Y)
+            fp = footprint(o, x, y, yaw)
+            gaps = [poly_gap(fp, footprint(po, px, py, pyaw)) for po, px, py, pyaw in placed]
+            g = min(gaps) if gaps else None
+            if g is None:                          # первый предмет — любое место
+                good = True
+            elif tight:                            # зазор с ближайшим соседом в узком коридоре
+                good = want <= g <= want + 0.02
+            else:
+                good = g >= want
+            if good:
+                placed.append((o, x, y, yaw))
+                layout[o['name']] = (x, y, yaw, True)
+                ok = True
                 break
-        else:
+        if not ok:
             layout[o['name']] = (None, None, None, False)       # не поместился — пропустим кадр
-    return layout
+    gaps = [poly_gap(footprint(a, ax, ay, ayaw), footprint(b, bx, by, byaw))
+            for i, (a, ax, ay, ayaw) in enumerate(placed) for (b, bx, by, byaw) in placed[i + 1:]]
+    return layout, (min(gaps) if gaps else None)
+
+
+def gz_call_start(world, service, reqtype, req):
+    """Запускает `gz service` в фоне; ответ `data: true` читают через communicate()."""
+    return subprocess.Popen(['gz', 'service', '-s', f'/world/{world}/{service}', '--reqtype', reqtype,
+                             '--reptype', 'gz.msgs.Boolean', '--timeout', '3000', '--req', req],
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
 
 
 def gz_set_pose_start(world, name, x, y, z, yaw):
-    """Запускает `gz service set_pose` в фоне (процесс на объект; их запускают разом — так быстрее)."""
+    """Команда set_pose в фоне (процесс на объект; их запускают разом — так быстрее)."""
     req = (f'name: "{name}", position: {{x: {x:.4f}, y: {y:.4f}, z: {z:.4f}}}, '
            f'orientation: {{x: 0, y: 0, z: {math.sin(yaw / 2):.6f}, w: {math.cos(yaw / 2):.6f}}}')
-    return subprocess.Popen(['gz', 'service', '-s', f'/world/{world}/set_pose', '--reqtype', 'gz.msgs.Pose',
-                             '--reptype', 'gz.msgs.Boolean', '--timeout', '3000', '--req', req],
-                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    return gz_call_start(world, 'set_pose', 'gz.msgs.Pose', req)
+
+
+# ---------------------------------------------------------------- внешний вид (цвета, свет)
+# Исходные значения из worlds/arm_table.world (и объекты из gen_arm_table_scene.py): кадры «по умолчанию»
+# возвращают сцену ровно к ним, поэтому стандартная зелёная сцена остаётся в датасете.
+DEFAULT_OBJ = dict(amb=(0.1, 1.0, 0.1), dif=(0.1, 1.0, 0.1), emi=(0.0, 0.35, 0.0), spe=(0.0, 0.0, 0.0))
+DEFAULT_TABLE = dict(amb=(0.6, 0.4, 0.2), dif=(0.7, 0.5, 0.3), emi=(0.0, 0.0, 0.0), spe=(0.0, 0.0, 0.0))
+DEFAULT_GROUND = dict(amb=(0.4, 0.4, 0.4), dif=(0.5, 0.5, 0.5), emi=(0.0, 0.0, 0.0), spe=(0.0, 0.0, 0.0))
+DEFAULT_SUN = dict(dif=(1.0, 1.0, 1.0), spe=(0.3, 0.3, 0.3), dir=(-0.5, 0.1, -0.9), shadows=True, intensity=1.0)
+DEFAULT_FILL = dict(dif=(0.5, 0.5, 0.5), spe=(0.1, 0.1, 0.1), dir=(0.6, -0.3, -0.7), shadows=False, intensity=1.0)
+MIN_CONTRAST = 0.40        # минимальное расстояние в RGB между цветом предмета и стола: чтобы предмет был виден
+
+
+def scene_ids(world, names):
+    """Номера визуальных элементов (нужны для visual_config): предметы, столешница, пол.
+    Берутся из описания сцены Gazebo (сервис scene/info); у каждого запуска симуляции они свои."""
+    out = subprocess.run(['gz', 'service', '-s', f'/world/{world}/scene/info', '--reqtype', 'gz.msgs.Empty',
+                          '--reptype', 'gz.msgs.Scene', '--timeout', '5000', '--req', ''],
+                         capture_output=True, text=True).stdout
+    ids = {}
+    for part in re.split(r'\nmodel \{\n', '\n' + out)[1:]:
+        m = re.match(r'\s*name: "(\w+)"', part)
+        if not m:
+            continue
+        vis = dict(re.findall(r'visual \{\s*name: "(\w+)"\s*id: (\d+)', part))
+        key = {'table': 'top_visual', 'ground_plane': 'visual'}.get(m.group(1), 'visual')
+        if key in vis:
+            ids[m.group(1)] = int(vis[key])
+    missing = [n for n in list(names) + ['table', 'ground_plane'] if n not in ids]
+    if missing:
+        raise SystemExit(f'в сцене Gazebo не нашлись визуальные элементы: {missing} '
+                         '(запущена ли симуляция, тот ли --world и GZ_PARTITION?). Без цветов: --color-frac 0')
+    return ids
+
+
+def _hsv(rng, s_lo, s_hi, v_lo, v_hi):
+    return colorsys.hsv_to_rgb(rng.random(), rng.uniform(s_lo, s_hi), rng.uniform(v_lo, v_hi))
+
+
+def sample_appearance(rng, names):
+    """Случайный внешний вид: цвет каждого предмета, столешницы, пола и два источника света.
+    Цвет предмета подбирается так, чтобы он заметно отличался от стола (иначе рамка была бы
+    у «невидимого» предмета). Класс предмета от цвета не зависит: цвета берутся независимо."""
+    if rng.random() < 0.3:                                   # нейтральный стол: серый, белый, тёмный
+        g = rng.uniform(0.2, 0.9)
+        table = (g, g * rng.uniform(0.95, 1.05), g * rng.uniform(0.95, 1.05))
+    else:
+        table = _hsv(rng, 0.15, 0.75, 0.35, 0.95)
+    gg = rng.uniform(0.15, 0.8)
+    colors = {}
+    for n in names:
+        for _ in range(60):
+            c = _hsv(rng, 0.35, 1.0, 0.45, 1.0)
+            if math.dist(c, table) >= MIN_CONTRAST:
+                break
+        colors[n] = c
+    br, tint = rng.uniform(0.55, 1.0), [rng.uniform(0.85, 1.0) for _ in range(3)]
+    d = [rng.uniform(-0.9, 0.3), rng.uniform(-0.5, 0.5), rng.uniform(-1.0, -0.6)]
+    ln = math.sqrt(sum(v * v for v in d))
+    sun = dict(dif=tuple(br * t for t in tint), spe=(0.3, 0.3, 0.3), dir=tuple(v / ln for v in d), shadows=True,
+               intensity=rng.uniform(0.7, 1.4))
+    fill = dict(dif=(rng.uniform(0.2, 0.7),) * 3, spe=(0.1, 0.1, 0.1), dir=DEFAULT_FILL['dir'], shadows=False,
+                intensity=1.0)
+    k = lambda c, e: dict(amb=c, dif=c, emi=tuple(e * v for v in c), spe=(0.1, 0.1, 0.1))  # noqa: E731
+    return dict(kind='random', objects={n: k(colors[n], 0.3) for n in names},
+                table=dict(amb=table, dif=table, emi=(0, 0, 0), spe=(0, 0, 0)),
+                ground=dict(amb=(gg,) * 3, dif=(gg,) * 3, emi=(0, 0, 0), spe=(0, 0, 0)), sun=sun, fill=fill)
+
+
+def default_appearance(names):
+    return dict(kind='default', objects={n: DEFAULT_OBJ for n in names}, table=DEFAULT_TABLE,
+                ground=DEFAULT_GROUND, sun=DEFAULT_SUN, fill=DEFAULT_FILL)
+
+
+def _c(name, v):
+    return f'{name} {{r: {v[0]:.4f} g: {v[1]:.4f} b: {v[2]:.4f} a: 1}}'
+
+
+def appearance_calls(world, ids, ap):
+    """Список запусков gz service, которые приводят сцену к внешнему виду ap."""
+    def vis(vid, m):
+        req = f'id: {vid}, material {{{_c("ambient", m["amb"])} {_c("diffuse", m["dif"])} ' \
+              f'{_c("specular", m["spe"])} {_c("emissive", m["emi"])}}}'
+        return lambda: gz_call_start(world, 'visual_config', 'gz.msgs.Visual', req)
+
+    def light(name, L):
+        req = (f'name: "{name}", type: DIRECTIONAL, pose {{position {{z: 10}} orientation {{w: 1}}}}, '
+               f'{_c("diffuse", L["dif"])}, {_c("specular", L["spe"])}, '
+               f'direction {{x: {L["dir"][0]:.4f} y: {L["dir"][1]:.4f} z: {L["dir"][2]:.4f}}}, '
+               f'cast_shadows: {"true" if L["shadows"] else "false"}, intensity: {L["intensity"]:.3f}, range: 10, '
+               'attenuation_constant: 1, attenuation_linear: 1')
+        return lambda: gz_call_start(world, 'light_config', 'gz.msgs.Light', req)
+    calls = [vis(ids[n], m) for n, m in ap['objects'].items()]
+    calls += [vis(ids['table'], ap['table']), vis(ids['ground_plane'], ap['ground']),
+              light('sun', ap['sun']), light('fill', ap['fill'])]
+    return calls
+
+
+def run_calls(calls, attempts=4):
+    """Запускает все вызовы разом, неудавшиеся повторяет. True — все ответили `true`."""
+    pending = list(calls)
+    for _ in range(attempts):
+        procs = [(c, c()) for c in pending]
+        pending = [c for c, p in procs if 'true' not in p.communicate()[0].lower()]
+        if not pending:
+            return True
+        time.sleep(0.3)
+    return False
 
 
 def object_points(o, x, y, yaw, n=16):
@@ -189,6 +370,10 @@ def main():
     ap.add_argument('--camera-info', default='/gripper_camera/color/camera_info')
     ap.add_argument('--optical-frame', default='gripper_camera_color_optical_frame')
     ap.add_argument('--base-frame', default='link_base')
+    ap.add_argument('--tight-frac', type=float, default=0.5,
+                    help='доля кадров с ПЛОТНОЙ расстановкой (предметы почти касаются, зазор 2–20 мм)')
+    ap.add_argument('--color-frac', type=float, default=0.75,
+                    help='доля кадров со СЛУЧАЙНЫМ внешним видом (цвета, стол, пол, свет); остальные — как в сцене по умолчанию')
     ap.add_argument('--preview', type=int, default=12, help='сколько кадров с рамками сохранить для проверки')
     a = ap.parse_args()
     out = os.path.expanduser(a.out)
@@ -198,6 +383,7 @@ def main():
     names = [o['name'] for o in objs]
     cat = {n: i + 1 for i, n in enumerate(names)}
     rng = random.Random(a.seed)
+    ids = scene_ids(a.world, names) if a.color_frac > 0 else None
     rclpy.init()
     node = Capture(a)
     t0 = time.time()
@@ -209,6 +395,8 @@ def main():
             for s in ('train', 'val')}
     ann_id, done, skipped, failures = 1, 0, 0, 0
     prev_img, frozen = None, 0
+    cur_default = None            # в каком виде сейчас сцена (чтобы не слать лишние команды)
+    stats = dict(tight=0, spread=0, random=0, default=0)
     n_val = int(a.count * a.val_fraction)
 
     def dump():
@@ -216,28 +404,32 @@ def main():
             with open(os.path.join(out, 'annotations', f'{sp}.json'), 'w') as fh:
                 json.dump(coco[sp], fh)
     while done < a.count and rclpy.ok():
-        layout = sample_layout(objs, rng)
+        tight = rng.random() < a.tight_frac
+        layout, min_gap = sample_layout(objs, rng, tight=tight)
         if any(v[0] is None for v in layout.values()):
             skipped += 1
             continue
+        want_random = a.color_frac > 0 and rng.random() < a.color_frac
+        appearance = sample_appearance(rng, names) if want_random else default_appearance(names)
+
         def zc(o):
             return TABLE_TOP_WORLD_Z + (o['sz'] if o['shape'] != 'cylinder' else o['height']) / 2 + 0.002
-        pending = list(objs)
-        for attempt in range(4):                 # неудавшиеся объекты повторяем (бывает при загруженной машине)
-            procs = [(o, gz_set_pose_start(a.world, o['name'], layout[o['name']][0], layout[o['name']][1],
-                                           zc(o), layout[o['name']][2])) for o in pending]
-            pending = [o for o, p in procs if 'true' not in p.communicate()[0].lower()]
-            if not pending:
-                break
-            time.sleep(0.3)
-        ok = not pending
+        pose_calls = [(lambda o=o: gz_set_pose_start(a.world, o['name'], layout[o['name']][0], layout[o['name']][1],
+                                                     zc(o), layout[o['name']][2])) for o in objs]
+        calls = list(pose_calls)
+        if a.color_frac > 0 and (want_random or cur_default is not True):    # вернуть умолчания или задать случайные
+            calls += appearance_calls(a.world, ids, appearance)
+        ok = run_calls(calls)
+        if ok and a.color_frac > 0:
+            cur_default = not want_random
         if not ok:
             failures += 1
-            print(f'set_pose не прошёл (бывает при высокой нагрузке; подряд {failures}) — пропускаю кадр', flush=True)
-            if failures >= 8:
+            print(f'gz-команда не прошла (бывает при высокой нагрузке; подряд {failures}) — пропускаю кадр', flush=True)
+            if failures >= 20:
                 print('слишком много сбоев подряд: проверьте имя мира (--world) и GZ_PARTITION — прерываю')
                 break
-            time.sleep(1.0)
+            cur_default = None if a.color_frac > 0 else cur_default
+            time.sleep(3.0)
             continue
         failures = 0
         node.spin_for(a.settle)
@@ -276,7 +468,12 @@ def main():
         fn = f'{iid:06d}.jpg'
         cv2.imwrite(os.path.join(out, 'images', split, fn), img, [cv2.IMWRITE_JPEG_QUALITY, 95])
         H, W = img.shape[:2]
-        coco[split]['images'].append(dict(id=iid, file_name=fn, width=W, height=H))
+        coco[split]['images'].append(dict(id=iid, file_name=fn, width=W, height=H,
+                                          layout='tight' if tight else 'spread',
+                                          min_gap_mm=None if min_gap is None else round(min_gap * 1000, 1),
+                                          appearance=appearance['kind']))
+        stats['tight' if tight else 'spread'] += 1
+        stats['random' if want_random else 'default'] += 1
         for name, (bx, by, bw, bh) in anns:
             coco[split]['annotations'].append(dict(id=ann_id, image_id=iid, category_id=cat[name],
                                                    bbox=[round(bx, 1), round(by, 1), round(bw, 1), round(bh, 1)],
@@ -288,6 +485,8 @@ def main():
                 cv2.rectangle(pv, (int(bx), int(by)), (int(bx + bw), int(by + bh)), (0, 0, 255), 2)
                 cv2.putText(pv, name, (int(bx), max(12, int(by) - 4)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
                             (0, 0, 255), 1, cv2.LINE_AA)
+            cv2.putText(pv, f"{'tight' if tight else 'spread'} / {appearance['kind']}", (6, H - 8),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1, cv2.LINE_AA)
             cv2.imwrite(os.path.join(out, 'preview', fn), pv)
         done += 1
         print(f'кадр {done}/{a.count} ({split}): рамок {len(anns)}', flush=True)
@@ -299,7 +498,9 @@ def main():
     with open(os.path.join(out, 'meta.json'), 'w') as f:
         json.dump(dict(seed=a.seed, count=done, val=len(coco['val']['images']), skipped_layouts=skipped, camera_k=node.k,
                        date=time.strftime('%Y-%m-%d %H:%M'), objects_yaml=os.path.abspath(a.objects),
+                       tight_frac=a.tight_frac, color_frac=a.color_frac, frames=stats,
                        view_x=VIEW_X, view_y=VIEW_Y), f, indent=1)
+    print(f'расстановки/вид: {stats}')
     print(f'готово: {done} кадров ({len(coco["val"]["images"])} val), рамок: train {len(coco["train"]["annotations"])}, '
           f'val {len(coco["val"]["annotations"])} -> {out}')
 
