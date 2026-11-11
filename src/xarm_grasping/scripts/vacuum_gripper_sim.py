@@ -315,14 +315,21 @@ class VacuumGripperSim(Node):
             pub.publish(Empty())
         return True, 'вакуум выключен (detach отправлен)'
 
+    def _log(self, ok, text):
+        # rclpy не разрешает менять уровень лога в одной и той же строке кода
+        if ok:
+            self.get_logger().info(text)
+        else:
+            self.get_logger().warning(text)
+
     def on_set(self, req: SetBool.Request, res: SetBool.Response):
         res.success, res.message = self.vacuum_on() if req.data else self.vacuum_off()
-        (self.get_logger().info if res.success else self.get_logger().warning)(res.message)
+        self._log(res.success, res.message)
         return res
 
     def on_cmd(self, msg: Bool):
         ok, text = self.vacuum_on() if msg.data else self.vacuum_off()
-        (self.get_logger().info if ok else self.get_logger().warning)(text)
+        self._log(ok, text)
 
     # ------------------------------------------------------------ статус
     def on_status_timer(self):

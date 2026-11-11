@@ -215,6 +215,11 @@ def generate_launch_description():
         package='xarm_grasping', executable='pick_place_server.py', name='pick_place_server',
         parameters=[{'use_sim_time': True}], output='screen',
         condition=IfCondition(use_moveit))
+    # pick_by_name: «возьми куб 1» (топик /pick_command, ответы /pick_status); время симуляции
+    # не нужно (нет таймеров, TF — последний), поэтому use_sim_time не включаем
+    pick_by_name = Node(
+        package='xarm_grasping', executable='pick_by_name.py', name='pick_by_name',
+        output='screen', condition=IfCondition(use_moveit))
 
     # ---------- 7. RViz / MoveIt ----------
     # Конфиги RViz общие с тележкой (Fixed Frame base_link есть и здесь;
@@ -285,7 +290,7 @@ def generate_launch_description():
         TimerAction(period=6.0, actions=spawners),
         TimerAction(period=8.0, actions=[vacuum_sim, vacuum_button, scene_markers]),
         TimerAction(period=10.0, actions=[grasp_analyzer, object_perception, scene_manager, detector]),
-        TimerAction(period=16.0, actions=[pick_place]),
+        TimerAction(period=16.0, actions=[pick_place, pick_by_name]),
         TimerAction(period=10.0, actions=[rviz]),
         TimerAction(period=12.0, actions=[moveit]),
     ])

@@ -40,6 +40,18 @@ zone из place_zones.yaml (пусто — по правилам для клас
   observe_pose [0.30, 0.0, 0.40] (x y z присоски в base_frame; камера ~0.47 над столом,
                видны обе зоны: из 0.30 зоны были на краю кадра и распознавались частично)
   probe_step 0.003  probe_depth 0.025
+  probe_with_vacuum false — true для реальной руки: у захвата нет датчика касания, есть
+               только датчик давления; вакуум включается ДО спуска (/vacuum_gripper/cmd),
+               рука опускается шагами, пока /vacuum_gripper/state не станет true
+  hold_confirm_s 1.0 — сколько секунд ждать подтверждения «предмет взят»
+
+Подтверждение захвата (одинаково в симуляции и на реальной руке)
+  Источник правды — /vacuum_gripper/state (Bool): true = предмет удерживается.
+  В симуляции его даёт vacuum_gripper_sim.py (объект приварен), на реальной руке —
+  vacuum_gripper_xarm.py (датчик давления xArm). Сервер проверяет его трижды:
+  после включения вакуума, после подъёма и после переноса (перед опусканием). Нет
+  подтверждения — вакуум выключается, действие завершается ошибкой «захват не
+  подтверждён» / «предмет потерян …».
 """
 import math
 import time
@@ -55,6 +67,7 @@ from rclpy.action import ActionClient, ActionServer, CancelResponse
 from rclpy.callback_groups import ReentrantCallbackGroup
 from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
+from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from shape_msgs.msg import SolidPrimitive
 from std_msgs.msg import Bool
 from std_srvs.srv import SetBool
@@ -95,6 +108,8 @@ class PickPlaceServer(Node):
         dp('observe_pose', [0.30, 0.0, 0.40])
         dp('probe_step', 0.003)
         dp('probe_depth', 0.025)
+        dp('probe_with_vacuum', False)
+        dp('hold_confirm_s', 1.0)
 
         cbg = ReentrantCallbackGroup()
         self.move = ActionClient(self, MoveGroup, '/move_action', callback_group=cbg)
@@ -107,6 +122,13 @@ class PickPlaceServer(Node):
                                        callback_group=cbg)
         self.vacuum = self.create_client(SetBool, '/vacuum_gripper/set', callback_group=cbg)
         self.ready = False
+        self.held = False        # /vacuum_gripper/state: предмет удерживается
+        self.cmd = self.create_publisher(Bool, '/vacuum_gripper/cmd', 10)
+        latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                             reliability=ReliabilityPolicy.RELIABLE)
+        self.create_subscription(Bool, '/vacuum_gripper/state',
+                                 lambda m: setattr(self, 'held', m.data), latched,
+                                 callback_group=cbg)
         self.create_subscription(Bool, '/vacuum_gripper/ready',
                                  lambda m: setattr(self, 'ready', m.data), 10,
                                  callback_group=cbg)
@@ -216,6 +238,23 @@ class PickPlaceServer(Node):
             raise StepFailed(f'вакуум: {r.message}')
         return r.message
 
+    def wait_held(self, timeout):
+        """Ждёт /vacuum_gripper/state == true до timeout секунд."""
+        t_end = time.monotonic() + timeout
+        while not self.held and time.monotonic() < t_end:
+            time.sleep(0.05)
+        return self.held
+
+    def require_held(self, what, timeout=0.0):
+        """Предмет должен удерживаться; иначе вакуум выключается и ошибка."""
+        if self.wait_held(timeout):
+            return
+        try:
+            self.set_vacuum(False)
+        except StepFailed as e:
+            self.get_logger().warning(f'не смог выключить вакуум: {e}')
+        raise StepFailed(what)
+
     def go_observe(self):
         x, y, z = self.p('observe_pose')
         self.stage('observe', 'поза наблюдения (камера высоко над столом)')
@@ -317,20 +356,38 @@ class PickPlaceServer(Node):
         self.stage('approach', f'вниз до {gap * 1000:.0f} мм над верхом')
         self.straight(self.pose_at(gp.position.x, gp.position.y, top + gap, q), 'спуск')
 
-        self.stage('grip', 'жду касания и включаю вакуум')
-        time.sleep(0.3)           # /vacuum_gripper/ready обновляется 10 Гц
         z = top + gap
-        while not self.ready and z > top + gap - float(self.p('probe_depth')):
-            z -= float(self.p('probe_step'))
-            self.straight(self.pose_at(gp.position.x, gp.position.y, z, q),
-                          'спуск до касания', avoid_collisions=False)
+        if self.p('probe_with_vacuum'):
+            # реальная рука: касание видно только по давлению, поэтому вакуум идёт
+            # ВО ВРЕМЯ спуска и рука опускается, пока /vacuum_gripper/state не станет true
+            self.stage('grip', 'включаю вакуум и опускаюсь до сигнала давления')
+            self.cmd.publish(Bool(data=True))
             time.sleep(0.3)
-        msg = self.set_vacuum(True)
-        self.stage('grip', msg)
+            while not self.held and z > top + gap - float(self.p('probe_depth')):
+                z -= float(self.p('probe_step'))
+                self.straight(self.pose_at(gp.position.x, gp.position.y, z, q),
+                              'спуск до сигнала давления', avoid_collisions=False)
+                time.sleep(0.3)
+            self.require_held('захват не подтверждён: давление не набралось на глубине '
+                              f'{(top + gap - z) * 1000:.0f} мм', float(self.p('hold_confirm_s')))
+            msg = 'предмет взят (датчик давления)'
+        else:
+            self.stage('grip', 'жду касания и включаю вакуум')
+            time.sleep(0.3)           # /vacuum_gripper/ready обновляется 10 Гц
+            while not self.ready and z > top + gap - float(self.p('probe_depth')):
+                z -= float(self.p('probe_step'))
+                self.straight(self.pose_at(gp.position.x, gp.position.y, z, q),
+                              'спуск до касания', avoid_collisions=False)
+                time.sleep(0.3)
+            msg = self.set_vacuum(True)
+            self.require_held('захват не подтверждён: /vacuum_gripper/state не стал true',
+                              float(self.p('hold_confirm_s')))
+        self.stage('grip', msg + ' — захват подтверждён')
         time.sleep(0.5)           # scene_manager прикрепляет объект в Planning Scene
 
         self.stage('lift', 'вверх')
         self.straight(self.pose_at(gp.position.x, gp.position.y, z + up, q), 'подъём')
+        self.require_held('предмет потерян при подъёме')
 
         # присоска над местом: верх объекта = низ (стол + place_drop) + h + зазор захвата
         table_z = place.z - h / 2
@@ -342,6 +399,7 @@ class PickPlaceServer(Node):
         self.stage('transfer', f'к зоне {fp.zone}')
         self.plan_and_move(self.pose_at(place.x, place.y, tcp_place_z + up, q_place),
                            'перенос')
+        self.require_held('предмет потерян при переносе')
         self.stage('lower', 'вниз к столу')
         self.straight(self.pose_at(place.x, place.y, tcp_place_z, q_place), 'опускание')
 

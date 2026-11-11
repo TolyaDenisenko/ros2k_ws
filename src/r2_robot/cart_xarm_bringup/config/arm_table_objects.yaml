@@ -6,7 +6,10 @@
 # После правки — запустить генератор и пересобрать (новые файлы не нужны,
 # --symlink-install подхватит).
 #
-# name  — имя модели в Gazebo = класс в xarm_grasping/config/objects.yaml
+# name  — уникальное имя модели в Gazebo. Класс в /objects определяют по РАЗМЕРАМ правила
+#         xarm_grasping/config/objects.yaml, поэтому предметов одной формы может быть несколько
+#         (cube, cube_2, cube_3 — все «cube»). Сборщик датасета capture_dataset.py пока считает
+#         имя модели классом — для съёмки с повторами его надо доработать (см. docs/STATUS.md).
 # shape — box | cylinder | pyramid
 # size  — box: [X, Y, Z]; cylinder: [радиус, высота]; pyramid: [сторона основания X, Y, высота], м
 #         (пирамида — четырёхугольная, сетка worlds/meshes/pyramid.obj, генерируется)
@@ -18,3 +21,7 @@ objects:
   - {name: parallelepiped, shape: box,     size: [0.12, 0.05, 0.07], xy: [0.45, 0.18],  yaw: 0.0, mass: 0.15}
   - {name: rect_plate,    shape: box,      size: [0.14, 0.09, 0.02], xy: [0.25, -0.05],  yaw: 0.0, mass: 0.12}
   - {name: cylinder,      shape: cylinder, size: [0.04, 0.10],       xy: [0.35, -0.20], yaw: 0.0, mass: 0.12}
+  # Повторы одной формы (для номеров «куб 1/2/3» и диалога «этот?»; добавлено 2026-11-09)
+  - {name: cube_2,        shape: box,      size: [0.06, 0.06, 0.06], xy: [0.52, -0.13], yaw: 0.0, mass: 0.10}
+  - {name: cube_3,        shape: box,      size: [0.06, 0.06, 0.06], xy: [0.55, 0.10],  yaw: 0.6, mass: 0.10}
+  - {name: cylinder_2,    shape: cylinder, size: [0.04, 0.10],       xy: [0.33, 0.08],  yaw: 0.0, mass: 0.12}

@@ -1,0 +1,23 @@
+# Каталог предметов для команд «возьми …» (pick_by_name.py): как называть предметы в приложении.
+# Ключ — класс (как в config/objects.yaml и в классах нейросети). Для нового предмета добавьте
+# запись здесь, правило в objects.yaml и класс в датасет/модель.
+# aliases — любые написания (регистр не важен); первое — основное название для показа в приложении.
+# zone — куда ставить (пусто — по правилам place_zones.yaml);
+# vacuum_layout — раскладка присосок (для будущей проверки «подходит ли предмет», пока справочно).
+catalog:
+  cube:
+    aliases: [куб, кубик, cube]
+    zone: ''
+    vacuum_layout: center
+  parallelepiped:
+    aliases: [параллелепипед, брусок, parallelepiped]
+    zone: ''
+    vacuum_layout: line
+  rect_plate:
+    aliases: [пластина, плитка, прямоугольник, plate, rect_plate]
+    zone: ''
+    vacuum_layout: all
+  cylinder:
+    aliases: [цилиндр, банка, cylinder]
+    zone: ''
+    vacuum_layout: center
