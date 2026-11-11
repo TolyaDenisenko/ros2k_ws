@@ -332,6 +332,7 @@ ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true use_octomap:=
 | `arm_parked` | `true` | рука под тормозом с самого старта и не включается, пока нет запроса (сервис `/arm_parking/set`) |
 | `manipulation_nodes` | `false` | ноды захвата выключены: при езде рука ничего не держит. `true` — вернуть все (вакуум, анализатор, облако камеры запястья) |
 | `gripper_camera_preview` | `true` | камера запястья 640×400 (экономит GPU и процессор) |
+| `aruco` | `true` | детектор метки ArUco на торце стола (`aruco_detector.py`): `/aruco/marker_pose`, `/aruco/status`, `/aruco/image` — для будущей парковки, см. [NAV.md](NAV.md) §8а. `false` — экономия ~0.35 ядра |
 | `spawn_x`, `spawn_y`, `spawn_yaw` | `-2.0`, `0.0`, `0.0` | где стартует тележка (м, рад) |
 | проходят в `cart_xarm6_gz` | | `camera_model`, `spawn_z`, `arm_offset_xyz`, `arm_offset_rpy` — объявлены во вложенном launch и доходят до него |
 | **не менять** | | `world` (нужен `cart_nav.world`), `front_camera`, а также `autostart`, `params_file`, `slam_params_file`, `use_lifecycle_manager`, `use_composition`, `namespace`, `graph`, `use_respawn`, `log_level`, `container_name`: их выставляет сам launch (`config/nav2_cart.yaml`, `config/slam_cart.yaml`) |

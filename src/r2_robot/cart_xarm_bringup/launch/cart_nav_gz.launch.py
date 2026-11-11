@@ -132,6 +132,12 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}],
         condition=IfCondition(use_rviz), output='screen')
 
+    # Метка ArUco на торце стола (worlds/cart_nav.world, tools/gen_aruco_marker.py) — для парковки.
+    # Время из меток кадра, use_sim_time не нужен (иначе rclpy-нода зря ест процессор на /clock).
+    aruco = Node(
+        package='cart_xarm_bringup', executable='aruco_detector.py', name='aruco_detector',
+        output='screen', condition=IfCondition(LaunchConfiguration('aruco')))
+
     return LaunchDescription([
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument(
@@ -154,10 +160,15 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'gripper_camera_preview', default_value='true',
             description='камера гриппера 640x400 — при езде она не нужна, экономим GPU/CPU'),
+        DeclareLaunchArgument(
+            'aruco', default_value='true',
+            description='aruco_detector: метка ArUco на торце стола (парковка) по передней камере, '
+                        '/aruco/marker_pose, /detected_dock_pose'),
         DeclareLaunchArgument('spawn_x', default_value='-2.0'),
         DeclareLaunchArgument('spawn_y', default_value='0.0'),
         DeclareLaunchArgument('spawn_yaw', default_value='0.0'),
         cart,
+        TimerAction(period=10.0, actions=[aruco]),
         # после спавна тележки (cart_xarm6_gz: спавн через 4 с)
         TimerAction(period=6.0, actions=[nav_bridge]),
         TimerAction(period=10.0, actions=[slam, octomap, rviz]),

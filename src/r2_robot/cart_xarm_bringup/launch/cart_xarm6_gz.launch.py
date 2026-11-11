@@ -25,8 +25,8 @@ URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
 import os
 
 from launch import LaunchDescription
-from launch.actions import (DeclareLaunchArgument, IncludeLaunchDescription,
-                            TimerAction)
+from launch.actions import (AppendEnvironmentVariable, DeclareLaunchArgument,
+                            IncludeLaunchDescription, TimerAction)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import (Command, FindExecutable, LaunchConfiguration,
@@ -518,6 +518,10 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'arm_offset_rpy', default_value='0 0 0',
             description='Доп. поворот базы руки, рад'),
+        # Каталог worlds/ — в пути ресурсов Gazebo: текстуры миров (worlds/materials/*.png, например
+        # метка ArUco в cart_nav.world) задаются относительным путём и ищутся здесь
+        AppendEnvironmentVariable('GZ_SIM_RESOURCE_PATH', os.path.join(
+            get_package_share_directory('cart_xarm_bringup'), 'worlds')),
         gz_sim,
         jsp,
         rsp,

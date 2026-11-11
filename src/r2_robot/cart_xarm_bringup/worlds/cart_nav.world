@@ -261,5 +261,32 @@
           <material><ambient>0.3 0.3 0.8 1</ambient><diffuse>0.3 0.3 0.8 1</diffuse></material></visual>
       </link>
     </model>
+    <!-- ARUCO BEGIN (генерирует tools/gen_aruco_marker.py, руками не править) -->
+    <!--
+      aruco_dock — метка ArUco DICT_4X4_50 id 0 для парковки тележки: на торце стола, обращена
+      к тележке (в -x). Метка 0.160 м (без белой рамки), пластина 0.200 м,
+      центр (0.444, 0.0, 0.8) в мире.
+    -->
+    <model name="aruco_dock">
+      <static>true</static>
+      <pose>0.444 0.0 0.8 0 0 0</pose>
+      <link name="link">
+        <visual name="board">
+          <pose>0.003 0 0 0 0 0</pose>
+          <geometry><box><size>0.006 0.2 0.2</size></box></geometry>
+          <material><ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse></material>
+        </visual>
+        <visual name="marker">
+          <pose>-0.0005 0 0 0 0 0</pose>
+          <geometry><plane><normal>-1 0 0</normal><size>0.2 0.2</size></plane></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal><albedo_map>materials/aruco_4x4_50_0.png</albedo_map><roughness>1.0</roughness><metalness>0.0</metalness></metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <!-- ARUCO END -->
+
   </world>
 </sdf>
