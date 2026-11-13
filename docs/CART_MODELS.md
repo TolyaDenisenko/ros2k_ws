@@ -3,7 +3,8 @@
 Как выбрать тележку при запуске, где задаётся точка крепления руки и что
 менять, чтобы её сдвинуть или добавить новую тележку.
 
-Основной README: [README.md](README.md) (установка, сборка, все сценарии запуска).
+Установка и сборка — [INSTALL.md](INSTALL.md), все сценарии запуска — [RUN_SCENARIOS.md](RUN_SCENARIOS.md),
+устройство файлов модели — [глава 1](01-quasi_cart_description.md).
 
 ---
 
@@ -29,6 +30,11 @@ z = 0.849 м, ручка до ≈ 0.99 м.
 | Поворотные колёса от оси ведущих, X | 0.5465 | 0.7465 |
 | Масса корпуса | 22.9 кг | 35.5 кг |
 | Доп. напольные ToF 27–30 | нет | есть (`enable_extra_floor_tofs`) |
+| Колея для `DiffDrive` в Gazebo (`sim_wheel_separation`) | 0.354 м | 0.50386 м |
+| Передняя камера (`front_camera_xyz`) | `0.309 0 0.840` | `0.409 0 0.840` (оценка) |
+
+Навигация (`cart_nav_gz`, контур тележки в `nav2_cart.yaml`) настроена только под `c2l-v3`;
+`robot_model:=c2` в текущей сборке не проверялся.
 
 > Меш `base_link_c2l-v3.stl` взят из репозитория тележки `quasi_ros_c1`
 > (`quasi_cart_description/meshes`), оттуда же меши ToF 27–36. Раньше меша не
@@ -39,16 +45,17 @@ z = 0.849 м, ручка до ≈ 0.99 м.
 
 ## 2. Запуск
 
-Перед запуском (после любых правок в `urdf/` или `launch/`):
+Сборка (один раз, и после добавления **новых** файлов в `urdf/` или `launch/`):
 
 ```bash
 cd ~/ros2k_ws
-colcon build --packages-select quasi_cart_description cart_xarm_bringup
+colcon build --symlink-install --packages-select quasi_cart_description cart_xarm_bringup
 source install/setup.bash
 ```
 
-> Файлы xacro читаются из `install/`, а не из `src/`. Без пересборки
-> изменения не применятся.
+> Файлы xacro читаются из `install/`, а не из `src/`. С `--symlink-install` там лежат
+> ссылки на `src/`, поэтому правки **существующих** файлов видны сразу (перезапусти launch).
+> Новый файл (например новая модель тележки) без пересборки не найдётся.
 
 ### Gazebo + MoveIt (основной запуск)
 
@@ -61,6 +68,9 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2
 
 # c2l без MoveIt, обычный RViz
 ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py robot_model:=c2l-v3 use_moveit:=false
+
+# тележка без руки (лёгкая симуляция для езды и парковки)
+ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py arm:=false
 ```
 
 ### Только RViz (без Gazebo) — проверка модели и крепления
@@ -82,10 +92,18 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
 | `arm_offset_xyz` | `0 0 0` | **доп.** смещение базы руки от точки крепления тележки, м |
 | `arm_offset_rpy` | `0 0 0` | доп. поворот базы руки (roll pitch yaw), рад |
 
-Только в `cart_xarm6_gz.launch.py`: `spawn_x`, `spawn_y`, `spawn_z`, `spawn_yaw` —
-поза спавна тележки в мире. Стол стоит на x ≈ +1.7. У c2l рука сдвинута на
-0.25 м назад, а перед тележки на 0.1 м длиннее, поэтому для работы со столом
-может понадобиться другой `spawn_x`.
+Только в `cart_xarm6_gz.launch.py`:
+
+| Аргумент | По умолчанию | Назначение |
+|---|---|---|
+| `arm` | `true` | `false` — тележка **без руки** (xacro `with_arm:=false`): нет руки, камеры запястья, вакуума, контроллеров руки, MoveIt и нод захвата. В `cart_nav_gz.launch.py` по умолчанию `false` |
+| `front_camera` | `true` | передняя камера тележки (раздел 5) |
+| `spawn_x`, `spawn_y`, `spawn_z`, `spawn_yaw` | `-0.5`, `0`, `0.07`, `0` | поза спавна тележки в мире |
+
+Стол в мире по умолчанию (`cart_table_offline.world`) стоит на x = 1.05, его ближний край —
+на x = 0.45. У c2l рука сдвинута на 0.25 м назад, а перед тележки на 0.1 м длиннее,
+поэтому для работы со столом может понадобиться другой `spawn_x`. Сейчас рука с тележки
+до `pick_box` не достаёт (база руки в ~1.1 м от коробки).
 
 ---
 
@@ -96,13 +114,14 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
 ```
                  вид сверху на тележку
 
-          +Y (влево, если стоять у ручки лицом вперёд)
-           ^
-           |      * рука c2l: (-0.25, -0.1295)
-   ручка   |                                       перед
-   ведущие |             o base_link (0, 0)        поворотные
-   колёса  |                                       колёса
-           +------------------------------------------> +X (вперёд)
+                    +Y (влево, если стоять у ручки лицом вперёд)
+                     ^
+   ручка             |                                  перед
+   ведущие колёса    |                                  поворотные колёса
+   ------------------o base_link (0, 0)-----------------> +X (вперёд)
+         * рука c2l: (-0.25, -0.1295)
+                     |
+                    -Y
 ```
 
 - **Начало `base_link`** — центр корпуса в плане.
@@ -129,6 +148,8 @@ ros2 launch cart_xarm_bringup cart_xarm6_rviz.launch.py robot_model:=c2l-v3
 
 1. **Сторона смещения вбок.** Взято −Y: правый край, если стоять у ручки
    лицом вперёд. Если рука должна стоять у другого края, замените на `0.1295`.
+   ⚠️ Комментарий в `c2l-v3.urdf.xacro` при этом говорит «к левому краю (+Y)» —
+   комментарий и значение расходятся, сторону нужно сверить с реальной тележкой.
 2. **Высота.** Взят верх крыши по мешу, 0.849. В CAD 855.3 мм отсчитаны от
    точки внизу тележки. Если эта точка совпадает с началом `base_link`,
    поставьте `0.855`.
@@ -190,10 +211,16 @@ ros2 launch cart_xarm_bringup cart_xarm6_gz.launch.py \
 
 | Топик | Тип | frame |
 |---|---|---|
-| `/scan`, `/scan/points` | LaserScan, PointCloud2 | `lidar_link` |
+| `/scan_raw` | LaserScan, сырой скан из Gazebo | `lidar_link` |
+| `/scan` | LaserScan без секторов, закрытых стойками тележки (`lidar_blackout_filter.py`, углы `config/lidar_blackout.yaml` — как `blackout_angles` драйвера ydlidar на железе) | `lidar_link` |
+| `/scan/points` | PointCloud2 лидара | `lidar_link` |
 | `/range1_pcl` … `/range8_pcl` | PointCloud2 (ToF 18×18 лучей) | `tofN_link` |
+| `/imu` | Imu, 50 Гц | `imu_link` |
 | `/front_camera/color/image_raw`, `.../camera_info`, `/front_camera/aligned_depth/image_raw` | Image, CameraInfo | `front_camera_color_optical_frame` |
 | `/front_camera/points` | PointCloud2 (depth_image_proc) | `front_camera_color_optical_frame` |
+
+Картинка передней камеры в ROS перевёрнута на 180° — камера установлена вверх ногами,
+как на железе. Камера видит не ближе 0.25 м.
 
 ---
 
@@ -237,8 +264,12 @@ ros2 run tf2_ros tf2_echo drive_link drive_wheel_left_link
    Без этой строки рука встанет в центр крыши c2 (`-0.0075 0 0.849`).
 3. Задайте позу передней камеры `front_camera_xyz` / `front_camera_rpy`
    (иначе — поза c2).
-4. Пересоберите пакет и запустите с `robot_model:=<имя>`.
-5. Желательно добавить имя в `description` аргумента `robot_model` в обоих
+4. Для симуляции задайте `<xacro:property name="sim_wheel_separation" value="…"/>` —
+   расстояние между ведущими колёсами, м (его читает привод `DiffDrive` в
+   `cart-sensors.ign.xacro`; без него xacro с `use_sim:=true` упадёт). Суставы ведущих
+   колёс — `continuous`, у обоих ось `0 1 0` (как в `c2l-v3`).
+5. Пересоберите пакет и запустите с `robot_model:=<имя>`.
+6. Желательно добавить имя в `description` аргумента `robot_model` в обоих
    launch-файлах (`src/r2_robot/cart_xarm_bringup/launch/`).
 
 > Имена, начинающиеся с `c2w` и `c2h`, `cart-base.urdf.xacro` и
@@ -251,14 +282,14 @@ ros2 run tf2_ros tf2_echo drive_link drive_wheel_left_link
 
 | Файл | Роль |
 |---|---|
-| `quasi_cart_description/urdf/cart_with_arm.urdf.xacro` | сборка: подключает `<robot_model>.urdf.xacro`, привод, датчики, руку |
-| `quasi_cart_description/urdf/cart-arm.xacro` | рука xArm6 + присоска + D435i; `arm_mount_joint`, значение `arm_mount_xyz` по умолчанию |
+| `quasi_cart_description/urdf/cart_with_arm.urdf.xacro` | сборка: подключает `<robot_model>.urdf.xacro`, привод, датчики, переднюю камеру и (при `with_arm:=true`) руку |
+| `quasi_cart_description/urdf/cart-arm.xacro` | рука xArm6 + присоска + камера на запястье (Orbbec 335Le по умолчанию, `camera_model:=d435i` — старая); `arm_mount_joint`, значение `arm_mount_xyz` по умолчанию |
 | `quasi_cart_description/urdf/c2.urdf.xacro` | тележка c2 |
 | `quasi_cart_description/urdf/c2l-v3.urdf.xacro` | тележка c2l: геометрия, `arm_mount_xyz`, `front_camera_*` |
 | `quasi_cart_description/urdf/cart-front-camera.xacro` | передняя камера Orbbec 335Le (`front_camera:=true`) |
 | `quasi_cart_description/meshes/base_link_c2-v3.stl`, `base_link_c2l-v3.stl` | меши корпусов c2, c2l |
-| `cart_xarm_bringup/config/gz_bridge_cart_sensors.yaml`, `gz_bridge_front_camera.yaml` | мосты лидара, ToF, передней камеры |
-| `cart_xarm_bringup/launch/cart_xarm6_gz.launch.py` | Gazebo + RViz/MoveIt; аргументы `robot_model`, `arm_offset_*`, `spawn_*` |
+| `cart_xarm_bringup/config/gz_bridge_cart_sensors.yaml`, `gz_bridge_front_camera.yaml` | мосты лидара, ToF, IMU, передней камеры |
+| `cart_xarm_bringup/launch/cart_xarm6_gz.launch.py` | Gazebo + RViz/MoveIt; аргументы `robot_model`, `arm`, `arm_offset_*`, `spawn_*` |
 | `cart_xarm_bringup/launch/cart_xarm6_rviz.launch.py` | только RViz; аргументы `robot_model`, `arm_offset_*` |
 
 Все пути относительно `src/r2_robot/`.

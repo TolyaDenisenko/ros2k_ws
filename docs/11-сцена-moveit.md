@@ -1,6 +1,6 @@
 # Глава 11. Сцена MoveIt: чтобы рука не сбивала объекты
 
-> Главный файл: [`scripts/scene_manager.py`](../../src/xarm_grasping/scripts/scene_manager.py)
+> Главный файл: [`scripts/scene_manager.py`](../src/xarm_grasping/scripts/scene_manager.py)
 > (первая половина — Planning Scene; вторая — зоны, глава 12).
 
 ---
@@ -14,8 +14,7 @@ Scene** — модель мира внутри `move_group`:
 * **робот** — его модель и текущее положение суставов (это MoveIt знает сам);
 * **объекты мира** (`CollisionObject`) — препятствия: стол, коробки, цилиндры;
 * **прикреплённые объекты** (`AttachedCollisionObject`) — тела, которые
-  «приросли» к звену робота и двигаются вместе с ним: камера на кронштейне,
-  коробка в присоске.
+  «приросли» к звену робота и двигаются вместе с ним: коробка в присоске.
 
 Без сцены MoveIt не знает про объекты, и при подходе к одному объекту рука
 спокойно проводит корпус сквозь соседний. В первых прогонах так и сбивался
@@ -72,7 +71,7 @@ def co(self, oid, primitive=None, pose=None, op=CollisionObject.ADD):
 ### Объекты со стола
 
 На каждое сообщение `/objects` (`on_objects`,
-[строка 215](../../src/xarm_grasping/scripts/scene_manager.py#L215)):
+[строка 193](../src/xarm_grasping/scripts/scene_manager.py#L193)):
 
 * каждый объект → `CollisionObject` с его `id` (ADD заменяет прежний с тем же id —
   объект «переезжает», если распознан в другом месте);
@@ -81,13 +80,17 @@ def co(self, oid, primitive=None, pose=None, op=CollisionObject.ADD):
 
 Поэтому **важно, чтобы `/objects` публиковался только при хорошем обзоре**
 (глава 10, 10.9). Иначе, пока рука работает низко, объекты «исчезали» бы из
-сцены прямо во время движения.
+сцены прямо во время движения. По той же причине `/objects` не публикуется во время
+осмотра стола с разных сторон (`/survey/active`, глава 10, §10.9а): с наклонного ракурса камера
+видела саму руку, в сцене появлялся ложный объект на месте основания руки, и рука потом не могла
+спланировать возврат.
 
 ### Стол
 
 ```python
-tp.position = Point(x=0.3, y=0.0, z=msg.table_z - 0.003 - 0.025)   # верх на 3 мм ниже плоскости
-s.world.collision_objects.append(self.co('table', BOX[1.0, 1.2, 0.05], tp))
+tc, ts = table_center, table_size                                   # [0.3, 0.0], [1.0, 1.2]
+tp.position = Point(x=tc[0], y=tc[1], z=msg.table_z - 0.003 - 0.025) # верх на 3 мм ниже плоскости
+s.world.collision_objects.append(self.co('table', BOX[ts[0], ts[1], 0.05], tp))
 ```
 
 Почему **на 3 мм ниже** найденной плоскости. База руки стоит на столе вплотную. Если
@@ -95,32 +98,31 @@ s.world.collision_objects.append(self.co('table', BOX[1.0, 1.2, 0.05], tp))
 и любое планирование провалится с «start state in collision». Размер стола в плане
 задаётся параметрами `table_center`, `table_size`.
 
-### Камера с кронштейном
+### Камера с кронштейном — уже в модели MoveIt
 
-MoveIt строит свою модель руки (`moveit_configs_builder`, глава 6), и в ней **нет
-камеры**. Без неё MoveIt мог бы протащить камеру сквозь объект. Поэтому камера
-добавляется **прикреплённым боксом** к `link_eef` (`add_camera`,
-[строка 199](../../src/xarm_grasping/scripts/scene_manager.py#L199)):
+MoveIt строит свою модель руки (`moveit_configs_builder`, глава 6), и по умолчанию в ней **нет
+камеры** — тогда MoveIt мог бы протащить камеру сквозь объект. Раньше `scene_manager` добавлял
+камеру в сцену прикреплённым боксом. С 2026-10-27 это не нужно: launch передаёт MoveIt
+`add_gripper_camera:=true` (`arm_table_gz.launch.py`, `cart_xarm6_gz.launch.py`), и кронштейн с
+корпусом камеры входят в саму модель робота MoveIt; столкновения камеры с соседними звеньями
+(фланец, присоска) отключены в `xarm.srdf.xacro`. `scene_manager` камеру **не добавляет**.
+
+Камера всё равно встречается в коде `scene_manager` — в списке **`touch_links`**:
 
 ```python
-CAMERA_BOX_CENTER = (0.061, 0.0, 0.028)    # в link_eef: x 0.046..0.0755, z 0.003..0.053
-CAMERA_BOX_SIZE   = (0.040, 0.134, 0.060)  # + запас 5 мм
-GRIPPER_TOUCH_LINKS = ['link6', 'link_eef', 'link_tcp', 'xarm_vacuum_gripper_link']
-
-a = AttachedCollisionObject(link_name='link_eef', touch_links=GRIPPER_TOUCH_LINKS)
-a.object = self.co('gripper_camera', box, pose)
-a.object.header.frame_id = 'link_eef'
+GRIPPER_TOUCH_LINKS = ['link6', 'link_eef', 'link_tcp', 'xarm_vacuum_gripper_link',
+                       'gripper_camera_bracket_link', 'gripper_camera_link']
 ```
 
-**`touch_links`** — звенья робота, которым **разрешено** касаться прикреплённого
-тела. Камера вплотную прилегает к фланцу и присоске; если не разрешить касание,
-MoveIt будет считать столкновением саму руку.
+`touch_links` — звенья робота, которым **разрешено** касаться прикреплённого тела (предмета в
+присоске, §11.4). Предмет прижат к присоске, а камера висит рядом; если не разрешить касание,
+MoveIt будет считать столкновением саму руку с её же грузом.
 
 ## 11.4. Объект в присоске
 
 Когда вакуум схватил объект (`/vacuum_gripper/held` стал непустым), MoveIt должен
 узнать, что рука теперь **несёт** коробку: при переносе коробка не должна задевать
-стол и соседей. `attach_nearest` ([строка 255](../../src/xarm_grasping/scripts/scene_manager.py#L255)):
+стол и соседей. `attach_nearest` ([строка 233](../src/xarm_grasping/scripts/scene_manager.py#L233)):
 
 ```python
 tcp = self.tcp_position()                                  # где присоска (TF)
@@ -148,7 +150,7 @@ self.apply(s)
 ```mermaid
 stateDiagram-v2
     [*] --> НаСтоле: /objects
-    НаСтоле --> ВПрисоске: held = "pick_box"<br/>attach к link_tcp
+    НаСтоле --> ВПрисоске: held = "cube_2"<br/>attach к link_tcp
     ВПрисоске --> НаСтоле: held = ""<br/>detach, остаётся в мире
     НаСтоле --> [*]: нет в /objects → REMOVE
 ```
@@ -170,7 +172,7 @@ ros2 service call /get_planning_scene moveit_msgs/srv/GetPlanningScene \
 |---|---|---|
 | стол другого размера/места | `scene_manager`: `table_center`, `table_size` | в `link_base` |
 | прикреплять с большего расстояния | `scene_manager`: `attach_radius` | 0.08 м |
-| другой кронштейн/камера | `CAMERA_BOX_*` в `scene_manager.py` | по мешам (глава 8, 8.5) |
+| другой кронштейн/камера | модель камеры в `quasi_camera_description` + исключения коллизий в `xarm.srdf.xacro` | по мешам (глава 8, 8.5) |
 
 ## 11.7. Частые ошибки
 
@@ -183,7 +185,7 @@ ros2 service call /get_planning_scene moveit_msgs/srv/GetPlanningScene \
 
 ## 11.8. Проверь себя
 
-1. Почему камера нужна в сцене, если она и так есть в URDF?
+1. Почему камеру пришлось отдельно добавлять в модель MoveIt, если она и так есть в URDF робота для Gazebo?
 2. Что такое `touch_links` и что будет без них?
 3. Зачем стол в сцене опущен на 3 мм?
 4. Где окажется объект в сцене после `detach`, если камера его ещё не видела?

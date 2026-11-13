@@ -1,4 +1,4 @@
-# Параметры ноды openvino_detector (классы объектов по картинке). Подробности — docs/book/RECOGNITION_OPENVINO.md.
+# Параметры ноды openvino_detector (классы объектов по картинке). Подробности — docs/RECOGNITION_OPENVINO.md.
 openvino_detector:
   ros__parameters:
     use_sim_time: false          # ноде не нужны часы симуляции, метку кадра берёт из сообщения

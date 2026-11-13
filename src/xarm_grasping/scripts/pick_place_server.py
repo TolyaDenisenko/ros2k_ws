@@ -44,6 +44,10 @@ zone из place_zones.yaml (пусто — по правилам для клас
                только датчик давления; вакуум включается ДО спуска (/vacuum_gripper/cmd),
                рука опускается шагами, пока /vacuum_gripper/state не станет true
   hold_confirm_s 1.0 — сколько секунд ждать подтверждения «предмет взят»
+  use_refined true — если есть свежий осмотр с разных сторон (/objects_refined, survey_objects.py),
+               геометрию для захвата (центр, поворот, размеры, точка хвата) брать оттуда: в момент
+               захвата камера слепая, а вид сверху даёт ошибку. Предмет сопоставляется по положению
+               (не дальше refined_match_radius 0.04 м), осмотр не старше refined_max_age 600 с
 
 Подтверждение захвата (одинаково в симуляции и на реальной руке)
   Источник правды — /vacuum_gripper/state (Bool): true = предмет удерживается.
@@ -57,6 +61,7 @@ import math
 import time
 import traceback
 
+import numpy as np
 import rclpy
 from geometry_msgs.msg import Pose, PoseStamped
 from moveit_msgs.action import ExecuteTrajectory, MoveGroup
@@ -75,7 +80,7 @@ from tf2_ros import Buffer, TransformListener
 
 from xarm_grasping import perception as P
 from xarm_grasping_msgs.action import DetectObjects, FindPlacePose, PickPlace
-from xarm_grasping_msgs.msg import DetectedObject
+from xarm_grasping_msgs.msg import DetectedObject, DetectedObjectArray
 
 
 class StepFailed(Exception):
@@ -110,6 +115,9 @@ class PickPlaceServer(Node):
         dp('probe_depth', 0.025)
         dp('probe_with_vacuum', False)
         dp('hold_confirm_s', 1.0)
+        dp('use_refined', True)
+        dp('refined_match_radius', 0.04)
+        dp('refined_max_age', 600.0)
 
         cbg = ReentrantCallbackGroup()
         self.move = ActionClient(self, MoveGroup, '/move_action', callback_group=cbg)
@@ -123,9 +131,12 @@ class PickPlaceServer(Node):
         self.vacuum = self.create_client(SetBool, '/vacuum_gripper/set', callback_group=cbg)
         self.ready = False
         self.held = False        # /vacuum_gripper/state: предмет удерживается
+        self.refined, self.refined_t = [], 0.0
         self.cmd = self.create_publisher(Bool, '/vacuum_gripper/cmd', 10)
         latched = QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
                              reliability=ReliabilityPolicy.RELIABLE)
+        self.create_subscription(DetectedObjectArray, '/objects_refined', self.on_refined, latched,
+                                 callback_group=cbg)
         self.create_subscription(Bool, '/vacuum_gripper/state',
                                  lambda m: setattr(self, 'held', m.data), latched,
                                  callback_group=cbg)
@@ -238,6 +249,26 @@ class PickPlaceServer(Node):
             raise StepFailed(f'вакуум: {r.message}')
         return r.message
 
+    def on_refined(self, msg):
+        self.refined, self.refined_t = list(msg.objects), time.monotonic()
+
+    def refine(self, o):
+        """Геометрия предмета из осмотра с разных сторон, если он свежий и предмет на месте."""
+        if not self.p('use_refined') or not self.refined:
+            return o, ''
+        if time.monotonic() - self.refined_t > float(self.p('refined_max_age')):
+            return o, ''
+        c = np.array([o.pose.position.x, o.pose.position.y])
+        best, bd = None, float(self.p('refined_match_radius'))
+        for r in self.refined:
+            d = float(np.linalg.norm(np.array([r.pose.position.x, r.pose.position.y]) - c))
+            if d <= bd:
+                best, bd = r, d
+        if best is None:
+            return o, ''
+        best.id = o.id
+        return best, f'геометрия из осмотра (сдвиг {bd * 1000:.0f} мм от вида сверху)'
+
     def wait_held(self, timeout):
         """Ждёт /vacuum_gripper/state == true до timeout секунд."""
         t_end = time.monotonic() + timeout
@@ -334,6 +365,9 @@ class PickPlaceServer(Node):
         if object_id not in objs:
             raise StepFailed(f'объект {object_id} не найден (есть: {", ".join(objs) or "ничего"})')
         o: DetectedObject = objs[object_id]
+        o, note = self.refine(o)
+        if note:
+            self.stage('detect', note)
         gp = o.grasp_pose
         q = (gp.orientation.x, gp.orientation.y, gp.orientation.z, gp.orientation.w)
         top = gp.position.z

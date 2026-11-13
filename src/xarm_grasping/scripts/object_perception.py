@@ -61,7 +61,7 @@ from rclpy.executors import ExternalShutdownException, MultiThreadedExecutor
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import CameraInfo, PointCloud2
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
 from tf2_ros import Buffer, TransformListener
 from visualization_msgs.msg import Marker, MarkerArray
 from vision_msgs.msg import Detection2DArray
@@ -161,6 +161,10 @@ class ObjectPerception(Node):
                      callback_group=cbg)
         if g('period') > 0:
             self.create_timer(g('period'), self.on_timer, callback_group=cbg)
+        self.survey_active = False
+        self.create_subscription(Bool, '/survey/active', lambda m: setattr(self, 'survey_active', m.data),
+                                 QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL,
+                                            reliability=ReliabilityPolicy.RELIABLE), callback_group=cbg)
 
     # ---------------------------------------------------------------- входы
     def on_cloud(self, msg):
@@ -210,6 +214,9 @@ class ObjectPerception(Node):
         self.held = msg.data
 
     def on_timer(self):
+        if self.survey_active:
+            return                    # идёт осмотр с разных сторон (survey_objects): ракурсы наклонные,
+                                      # в кадр попадает сама рука — сцену из них не публикуем
         res, why = self.detect(max_age=3.0)
         if res is None and why.startswith('обзор частичный'):
             return                    # рука работает низко — сцену не трогаем

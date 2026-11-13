@@ -25,7 +25,7 @@ URDF: quasi_cart_description/urdf/cart_with_arm.urdf.xacro
 import os
 
 from launch import LaunchDescription
-from launch.actions import (AppendEnvironmentVariable, DeclareLaunchArgument,
+from launch.actions import (AppendEnvironmentVariable, DeclareLaunchArgument, GroupAction,
                             IncludeLaunchDescription, TimerAction)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -78,6 +78,9 @@ def generate_launch_description():
     # только при манипуляциях; при езде рука ничего не держит, а лишние процессы
     # грузят процессор (сценарий навигации передаёт false).
     has_manip = IfCondition(LaunchConfiguration('manipulation_nodes'))
+    # arm:=false — тележка без руки (лёгкая симуляция): в модели нет руки, камеры запястья и вакуума,
+    # не запускаются контроллеры руки, парковка, мост и облако камеры запястья, ноды захвата, MoveIt
+    arm = LaunchConfiguration('arm')
 
     # ---------- 1. URDF тележки + руки (xacro) ----------
     cart_xacro = os.path.join(
@@ -92,6 +95,7 @@ def generate_launch_description():
         ' robot_model:=', robot_model,
         ' front_camera:=', front_camera,
         ' simulator:=ignition',
+        ' with_arm:=', arm,
         # Без нод захвата плагин приваривания pick_box не нужен: он приваривает коробку к руке
         # при загрузке, а отпускает её vacuum_gripper_sim; без него коробку тащит тележка.
         ' vacuum_targets:="', PythonExpression(
@@ -416,7 +420,7 @@ def generate_launch_description():
         # С MoveIt открывается его RViz (cart_xarm_moveit.rviz: то же самое +
         # MotionPlanning), второе окно не нужно.
         condition=IfCondition(PythonExpression(
-            ["'", use_rviz, "' == 'true' and '", use_moveit, "' != 'true'"])),
+            ["'", use_rviz, "' == 'true' and ('", use_moveit, "' != 'true' or '", arm, "' != 'true')"])),
     )
 
     # ---------- 9. MoveIt (опционально) ----------
@@ -500,6 +504,10 @@ def generate_launch_description():
             description='Тип тележки (файл quasi_cart_description/urdf/'
                         '<robot_model>.urdf.xacro): c2 | c2l-v3'),
         DeclareLaunchArgument(
+            'arm', default_value='true',
+            description='false — тележка БЕЗ руки (лёгкая симуляция для езды/парковки): нет руки, '
+                        'камеры запястья, вакуума, контроллеров руки, MoveIt и нод захвата'),
+        DeclareLaunchArgument(
             'arm_parked', default_value='false',
             description='true — рука запаркована (тормоз держит позу) с самого старта и '
                         'не включается, пока нет запроса: сервис /arm_parking/set {data: false}'),
@@ -527,21 +535,24 @@ def generate_launch_description():
         rsp,
         gz_bridge,
         clock_throttle,
-        gz_bridge_orbbec,
-        gz_bridge_d435i,
-        camera_points,
         gz_bridge_cart_sensors,
         lidar_blackout_filter,
         gz_bridge_front_camera,
         front_camera_points,
-        vacuum_sim,
-        scene_markers,
-        vacuum_button,
         spawn_delay,
-        controllers_delay,
-        parking_delay,
-        analyzer_delay,
         rviz_node,
-        moveit_world_tf,
-        moveit_delay,
+        # всё, что относится к руке (arm:=false — не запускается)
+        GroupAction([
+            gz_bridge_orbbec,
+            gz_bridge_d435i,
+            camera_points,
+            vacuum_sim,
+            scene_markers,
+            vacuum_button,
+            controllers_delay,
+            parking_delay,
+            analyzer_delay,
+            moveit_world_tf,
+            moveit_delay,
+        ], condition=IfCondition(arm)),
     ])

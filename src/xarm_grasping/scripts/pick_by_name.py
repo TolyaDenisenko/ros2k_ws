@@ -32,6 +32,10 @@ pick_by_name — «возьми куб 2»: принимает команду т
   min_detector_score 0.3 — уверенность нейросети, с которой верим её названию (ниже — класс по размерам)
   image_topic /gripper_camera/color/image_raw   camera_info_topic /gripper_camera/color/camera_info
   base_frame link_base   objects_topic /objects (для проверок можно подменить)
+  survey_before_pick true — перед разбором команды с названием предмета рука осматривает стол с разных
+               сторон (сервис /survey_objects, узел survey_objects.py), и класс берётся из уточнённого
+               результата /objects_refined; нет сервиса или осмотр не удался — работаем как раньше
+  min_refined_score 0.15 — итог голосования ниже — не верим ему, класс по размерам
 """
 import json
 import os
@@ -50,6 +54,7 @@ from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import CameraInfo, Image
 from std_msgs.msg import String
+from std_srvs.srv import Trigger
 from tf2_ros import Buffer, TransformListener
 from visualization_msgs.msg import Marker, MarkerArray
 
@@ -77,6 +82,9 @@ class PickByName(Node):
         dp('camera_info_topic', '/gripper_camera/color/camera_info')
         dp('base_frame', 'link_base')
         dp('objects_topic', '/objects')
+        dp('survey_before_pick', True)
+        dp('survey_service', '/survey_objects')
+        dp('min_refined_score', 0.15)
         path = self.get_parameter('catalog').value or os.path.join(
             get_package_share_directory('xarm_grasping'), 'config', 'object_catalog.yaml')
         self.catalog = yaml.safe_load(open(path))['catalog']
@@ -103,6 +111,11 @@ class PickByName(Node):
         self.create_subscription(CameraInfo, self.get_parameter('camera_info_topic').value,
                                  lambda m: setattr(self, 'cam', m), 1, callback_group=cbg)
         self.client = ActionClient(self, PickPlace, '/pick_place', callback_group=cbg)
+        self.refined = {}          # id -> (класс, уверенность) после осмотра
+        self.create_subscription(DetectedObjectArray, '/objects_refined', self.on_refined, latched,
+                                 callback_group=cbg)
+        self.survey = self.create_client(Trigger, self.get_parameter('survey_service').value,
+                                         callback_group=cbg)
         self.tf_buffer = Buffer()
         self.tf_listener = TransformListener(self.tf_buffer, self)
 
@@ -131,12 +144,40 @@ class PickByName(Node):
     def on_objects(self, msg):
         self.objects = list(msg.objects)
 
+    def on_refined(self, msg):
+        self.refined = {o.id: (o.detector_label, o.detector_score) for o in msg.objects if o.detector_label}
+
+    def run_survey(self):
+        """Осмотр стола с разных сторон (survey_objects). True — уточнённые классы получены."""
+        if not self.get_parameter('survey_before_pick').value:
+            return False
+        if not self.survey.wait_for_service(timeout_sec=1.0):
+            self.get_logger().warning('нет сервиса осмотра — классы только из позы наблюдения')
+            return False
+        self.say('survey', 'осматриваю стол с разных сторон (около минуты)…')
+        fut = self.survey.call_async(Trigger.Request())
+        end = time.monotonic() + 240.0
+        while not fut.done() and time.monotonic() < end:
+            time.sleep(0.1)
+        r = fut.result() if fut.done() else None
+        if r is None or not r.success:
+            self.say('survey', f'осмотр не удался ({r.message if r else "нет ответа"}) — '
+                     'классы из позы наблюдения')
+            return False
+        time.sleep(0.5)                  # /objects_refined приходит следом за ответом
+        self.say('survey', r.message)
+        return True
+
     def on_image(self, msg):
         self.image = msg
 
     # ------------------------------------------------------------ разбор
     def cls_of(self, o):
-        """Класс предмета: название нейросети, если ей верим, иначе по размерам."""
+        """Класс предмета: итог осмотра с разных сторон, иначе название нейросети сверху (если ей
+        верим), иначе по размерам."""
+        lab, sc = self.refined.get(o.id, ('', 0.0))
+        if lab and sc >= float(self.get_parameter('min_refined_score').value):
+            return lab
         if o.detector_label and o.detector_score >= float(self.get_parameter('min_detector_score').value):
             return o.detector_label
         return o.label
@@ -174,6 +215,12 @@ class PickByName(Node):
             known = ', '.join(self.title.values())
             return self.say('unknown', f'не понял «{msg.data.strip()}». Я знаю: {known}')
         self.dialog = None
+        self.busy = True
+        try:
+            self.refined = {}
+            self.run_survey()
+        finally:
+            self.busy = False
         cands = self.by_class(cls)
         if not cands:
             return self.say('not_found', f'нет такого предмета на столе: {self.title[cls]}', cls)

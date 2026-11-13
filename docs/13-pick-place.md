@@ -1,8 +1,10 @@
 # Глава 13. Pick & place: взять объект и поставить в зону одной командой
 
-> Главный файл: [`scripts/pick_place_server.py`](../../src/xarm_grasping/scripts/pick_place_server.py).
-> Интерфейс: [`xarm_grasping_msgs/action/PickPlace.action`](../../src/xarm_grasping_msgs/action/PickPlace.action).
-> Справочник команд: [`docs/PICK_PLACE.md`](../PICK_PLACE.md).
+> Главный файл: [`scripts/pick_place_server.py`](../src/xarm_grasping/scripts/pick_place_server.py).
+> Интерфейс: [`xarm_grasping_msgs/action/PickPlace.action`](../src/xarm_grasping_msgs/action/PickPlace.action).
+> Справочник команд: [`PICK_PLACE.md`](PICK_PLACE.md) — там же подробно о подтверждении захвата,
+> командах текстом «возьми куб 2» (`pick_by_name`) и осмотре стола с разных сторон
+> (`survey_objects`). Эта глава объясняет, **как устроен** сам `/pick_place`.
 
 ---
 
@@ -11,29 +13,40 @@
 ```bash
 ros2 topic echo /objects --once                     # какие id есть на столе
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: cyl_tall_0}" --feedback            # зона по правилам (глава 12)
+    "{object_id: cylinder_0}" --feedback            # зона по правилам (глава 12)
 ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-    "{object_id: pick_box_0, zone: zone_boxes}" --feedback   # зона явно
+    "{object_id: cube_1, zone: zone_boxes}" --feedback   # зона явно
 ```
 
 ```text
 Feedback: stage: observe        detail: поза наблюдения (камера высоко над столом)
 Feedback: stage: detect         detail: свежее распознавание
 Feedback: stage: transfer       detail: ищу место в зоне
-Feedback: stage: plan_pregrasp  detail: над cyl_tall_0
+Feedback: stage: plan_pregrasp  detail: над cylinder_0
 Feedback: stage: approach       detail: вниз до 5 мм над верхом
-Feedback: stage: grip           detail: объект cyl_tall захвачен (DetachableJoint: attached)
+Feedback: stage: grip           detail: жду касания и включаю вакуум
+Feedback: stage: grip           detail: объект cylinder захвачен (DetachableJoint: attached) — захват подтверждён
 Feedback: stage: lift ...  transfer ... lower ... release ... retreat ... observe
-Result:   success: true   message: cyl_tall_0 поставлен
+Result:   success: true   message: cylinder_0 поставлен
 ```
+
+(Строки `detail` — как в коде; вывод собран для примера, не снят целиком с одного прогона.
+В `grip` имя `cylinder` — имя модели в Gazebo от `vacuum_gripper_sim`, а не id из `/objects`.
+Если перед этим был осмотр стола, после `detect` придёт ещё строка «геометрия из осмотра (сдвиг
+N мм от вида сверху)», см. 13.4, п. 8.)
+
+`object_id` — это id из `/objects` (`cube_0`, `cube_1`, …), а **не** номер «куб 2» из команд
+текстом. Человеческие команды «возьми куб 2» разбирает отдельный узел `pick_by_name`, который
+сам переводит их в `object_id` и вызывает этот же action (13.6а).
 
 ```mermaid
 flowchart LR
-    C["клиент:<br/>CLI / скрипт / обучение"] -- "/pick_place<br/>(action)" --> PP[pick_place_server]
+    C["клиент:<br/>CLI / скрипт / pick_by_name"] -- "/pick_place<br/>(action)" --> PP[pick_place_server]
+    SUR[survey_objects] -- "/objects_refined" --> PP
     PP -- "/detect_objects (action)" --> PER[object_perception]
     PP -- "/find_place_pose (action)" --> SM[scene_manager]
     PP -- "/move_action (action)<br/>/compute_cartesian_path (srv)<br/>/execute_trajectory (action)" --> MG[move_group]
-    PP -- "/vacuum_gripper/set (srv)<br/>/vacuum_gripper/ready (topic)" --> V[vacuum_gripper_sim]
+    PP -- "/vacuum_gripper/set (srv)<br/>/vacuum_gripper/ready, /state (topic)" --> V["vacuum_gripper_sim<br/>(на железе vacuum_gripper_xarm)"]
     MG --> CTRL[xarm6_traj_controller] --> ARM((рука в Gazebo))
 ```
 
@@ -163,7 +176,7 @@ def wait(fut, timeout):
 
 ## 13.4. Шаги одного pick & place
 
-`pick_place` ([`pick_place_server.py`](../../src/xarm_grasping/scripts/pick_place_server.py)):
+`pick_place` ([`pick_place_server.py`](../src/xarm_grasping/scripts/pick_place_server.py)):
 
 ```mermaid
 stateDiagram-v2
@@ -175,9 +188,9 @@ stateDiagram-v2
     pregrasp --> approach: MoveIt над объектом (+10 см)
     approach --> grip: прямо вниз до 5 мм над верхом
     grip --> grip: нет касания → ещё 3 мм вниз (до 2.5 см)
-    grip --> lift: вакуум вкл, объект прикреплён в сцене
-    lift --> transfer: прямо вверх
-    transfer --> lower: MoveIt над местом (+10 см)
+    grip --> lift: вакуум вкл, /vacuum_gripper/state = true (проверка 1)
+    lift --> transfer: прямо вверх, state всё ещё true (проверка 2)
+    transfer --> lower: MoveIt над местом (+10 см), state true (проверка 3)
     lower --> release: прямо вниз до 6 мм над столом
     release --> retreat: вакуум выкл
     retreat --> observe2: прямо вверх
@@ -186,7 +199,9 @@ stateDiagram-v2
     find_place --> fail: нет места
     pregrasp --> fail
     approach --> fail
-    lift --> fail
+    grip --> fail: захват не подтверждён (вакуум выкл)
+    lift --> fail: предмет потерян (вакуум выкл)
+    transfer --> fail
     fail --> recover: вверх + поза наблюдения
     recover --> [*]
 ```
@@ -194,8 +209,8 @@ stateDiagram-v2
 Важные решения внутри:
 
 **1. Распознавание только из позы наблюдения.** Камера видит только дальше 25 см
-(глава 8, рис. 8.1). Из любой другой позы стол виден частично: в одном из прогонов из
-стартовой позы 3 объекта из 8 распознались неверно.
+(глава 8, рис. 8.1). Из любой другой позы стол виден частично: в одном из прогонов (ещё на
+прежней сцене из 8 предметов) из другой позы 3 объекта из 8 распознались неверно.
 
 **2. Место ищется до захвата.** Если места в зоне нет, нет смысла брать объект и
 потом держать его в воздухе.
@@ -231,12 +246,29 @@ tcp_place_z = стол + place_drop + h + (z - top)
 присоску поворачивают на этот угол: `q_place = grasp_quat(place_yaw)`.
 
 **6. Восстановление.** Если любой шаг после начала движения упал, рука уходит
-вверх и в позу наблюдения (`recover`). Если объект уже в присоске, он
+вверх и в позу наблюдения (`recover`). Если упала проверка захвата (п. 7), вакуум уже выключен.
+Если же упал другой шаг (например, MoveIt не нашёл путь к зоне), а объект в присоске, он
 **остаётся в ней** — отпусти кнопкой, когда рука над столом.
+
+**7. Взяли или нет — проверяем трижды.** После включения вакуума `pick_place_server` ждёт
+`/vacuum_gripper/state = true` до `hold_confirm_s` (1 с), потом проверяет его после подъёма и
+после переноса. Нет сигнала — вакуум выключается, результат `success: false` («захват не
+подтверждён…», «предмет потерян при подъёме», «…при переносе»). Сигнал одинаковый в симуляции
+(`vacuum_gripper_sim`) и на реальной руке (`vacuum_gripper_xarm`, датчик давления). На реальной
+руке датчика касания нет, поэтому есть режим `probe_with_vacuum:=true`: вакуум включается **до**
+последних миллиметров спуска, и рука опускается шагами, пока не наберётся давление. Подробно и
+что проверено — [PICK_PLACE.md](PICK_PLACE.md), раздел «Подтверждение захвата».
+
+**8. Геометрия из осмотра.** Если незадолго до команды стол осматривали с разных сторон
+(`survey_objects`, топик `/objects_refined`), сервер берёт позу и размеры предмета оттуда — при
+условии, что предмет там есть не дальше `refined_match_radius` (4 см) от его места в `/objects` и
+результату не больше `refined_max_age` (600 с). Иначе — как раньше, из вида сверху. Выключить:
+`use_refined:=false`. По умолчанию осмотр сам берёт геометрию из вида сверху (`geometry:=top`),
+так что в симуляции это почти ничего не меняет; подробно — [PICK_PLACE.md](PICK_PLACE.md).
 
 ### Ориентация «присоска вниз» — кватернион
 
-`grasp_quat(yaw)` ([`perception.py`](../../src/xarm_grasping/xarm_grasping/perception.py#L213))
+`grasp_quat(yaw)` ([`perception.py`](../src/xarm_grasping/xarm_grasping/perception.py#L213))
 возвращает поворот `R = Rz(yaw) · Rx(π)`: сначала перевернуть инструмент вниз
 (поворот на 180° вокруг X), потом повернуть вокруг вертикали на yaw. В кватернионах
 это `(x, y, z, w) = (cos(yaw/2), sin(yaw/2), 0, 0)`.
@@ -252,6 +284,15 @@ tcp_place_z = стол + place_drop + h + (z - top)
 | `place_drop` | 0.006 | на какой высоте над столом отпускать (дно), м |
 | `velocity_scaling`, `accel_scaling` | 0.3, 0.3 | доля предельной скорости/ускорения |
 | `planning_time` | 5.0 | время на планирование, с |
+| `probe_with_vacuum` | `false` | `true` — реальная рука: вакуум во время спуска, касание по давлению |
+| `hold_confirm_s` | 1.0 | сколько ждать подтверждения захвата после включения вакуума, с |
+| `use_refined` | `true` | брать геометрию из `/objects_refined` (осмотр), если есть |
+| `refined_match_radius`, `refined_max_age` | 0.04, 600.0 | насколько близко должен быть предмет из осмотра (м) и насколько свежим (с) |
+| `group`, `tcp_frame`, `base_frame` | `xarm6`, `link_tcp`, `link_base` | группа MoveIt и кадры |
+
+Задать при запуске вручную, например:
+`ros2 run xarm_grasping pick_place_server.py --ros-args -p probe_with_vacuum:=true`
+(в `arm_table_gz.launch.py` параметры не переопределяются, кроме `use_sim_time`).
 
 ## 13.6. Свой клиент: отсортировать весь стол
 
@@ -297,9 +338,32 @@ if __name__ == '__main__':
     main()
 ```
 
+> ⚠️ На нынешней сцене (7 предметов) пять коробок в `zone_boxes`, скорее всего, не поместятся —
+> см. прикидку в главе 12, §12.7. Скрипт честно получит «нет свободного места» на последней.
+> Ещё: id предмета может смениться после того, как его переставили (глава 10, §10.9), поэтому
+> список берётся один раз в начале.
+
 > Подсказка для обучения: в цикле «попытка — результат» удобно читать
 > `/vacuum_gripper/contact` (глава 9) — расстояние и угол до объекта на каждом шаге —
 > и `/objects` до и после: это готовые признаки и награда.
+
+## 13.6а. Команды текстом и осмотр стола — надстройки над `/pick_place`
+
+Два узла сценария «рука на столе» (запускаются при `use_moveit:=true`) сами являются клиентами
+`/pick_place`:
+
+* **`pick_by_name`** — принимает в топике `/pick_command` строки вроде `куб 2`, `пластина`,
+  `да`/`нет`/`стоп`/`список`, находит предмет (класс — итог осмотра, иначе от нейросети, если
+  она уверена ≥ 0.3, иначе по размерам; номер — порядок по `y`, затем `x`), при нескольких одинаковых спрашивает «этот?» со
+  стрелкой на кадре и вызывает `/pick_place` с нужным `object_id`. Названия — в
+  `config/object_catalog.yaml`.
+* **`survey_objects`** — сервис `/survey_objects`: проводит камеру вокруг предметов под 45°,
+  голосует классы нейросети по ракурсам и публикует `/objects_refined`. `pick_by_name` вызывает
+  его перед каждой командой с названием (`survey_before_pick`, по умолчанию `true`).
+
+Для команд по названию нужна нейросеть (`detector:=true` с моделью `sim_shapes_v3`, глава 8);
+без неё классы будут только по размерам. Как пользоваться, все топики и что проверено —
+[PICK_PLACE.md](PICK_PLACE.md).
 
 ## 13.7. Частые ошибки
 
@@ -310,6 +374,8 @@ if __name__ == '__main__':
 | `подход над объектом: MoveIt код -1` и др. | MoveIt не нашёл путь (недостижимо, столкновение) | объект слишком далеко (> ~0.55 м) или зажат соседями |
 | `спуск: прямой путь пройден на 60%` | обратная кинематика по прямой не решается | объект у предела досягаемости |
 | `вакуум: отказ: нет касания — до X 30 мм` | верх оценён с ошибкой больше `probe_depth` | увеличить `probe_depth`; проверить распознавание высоты |
+| `захват не подтверждён: /vacuum_gripper/state не стал true` | вакуум включился, но предмет не держится (или узел вакуума не публикует `state`) | `ros2 topic echo /vacuum_gripper/state`; на железе — `probe_with_vacuum:=true` и датчик |
+| `предмет потерян при подъёме` / `…при переносе` | `state` пропал по дороге | вакуум уже выключен; посмотреть, где упал предмет (ветка в симуляции не проверялась) |
 | `распознавание: обзор частичный` | рука не в позе наблюдения | обычно сам уходит в неё; проверь `observe_pose` |
 | `нет сервера action` | MoveIt/восприятие не запущены | `use_moveit:=true`; `ros2 node list` |
 
@@ -325,3 +391,4 @@ if __name__ == '__main__':
 3. Объект распознан на 1.5 см выше, чем есть. Что сделает робот и чем закончится
    захват?
 4. Как в своём клиенте отменить pick & place, если он идёт дольше 2 минут?
+5. Почему место в зоне ищется до захвата, а подтверждение захвата проверяется трижды?

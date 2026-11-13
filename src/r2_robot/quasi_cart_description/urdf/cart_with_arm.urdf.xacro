@@ -38,6 +38,9 @@
     <xacro:arg name="model_sensors_plugin" default="false"/>
 
     <!-- Аргументы руки (пробрасываются в cart-arm.xacro) -->
+    <!-- with_arm:=false — только тележка с её датчиками, без руки, камеры запястья и вакуума
+         (лёгкая симуляция для езды и парковки; launch-аргумент arm) -->
+    <xacro:arg name="with_arm" default="true"/>
     <xacro:arg name="arm_dof" default="6"/>
     <xacro:arg name="arm_prefix" default=""/>
     <xacro:arg name="arm_hw_ns" default="xarm"/>
@@ -132,7 +135,9 @@
     <!-- Ссылка на руку: include + вызов макроса mount_xarm6_on_cart.
          Внутри: xArm6 dof=$(arg arm_dof) + add_vacuum_gripper=true
          + камера гриппера по camera_model (для grasp_analyzer). -->
-    <xacro:include filename="cart-arm.xacro"/>
-    <xacro:mount_xarm6_on_cart/>
+    <xacro:if value="$(arg with_arm)">
+        <xacro:include filename="cart-arm.xacro"/>
+        <xacro:mount_xarm6_on_cart/>
+    </xacro:if>
 
 </robot>

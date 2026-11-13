@@ -53,6 +53,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(share, 'launch', 'cart_xarm6_gz.launch.py')),
         launch_arguments={
+            'arm': LaunchConfiguration('arm'),
             'world': os.path.join(share, 'worlds', 'cart_nav.world'),
             'use_rviz': 'false',
             'use_moveit': LaunchConfiguration('use_moveit'),
@@ -160,6 +161,10 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'gripper_camera_preview', default_value='true',
             description='камера гриппера 640x400 — при езде она не нужна, экономим GPU/CPU'),
+        DeclareLaunchArgument(
+            'arm', default_value='false',
+            description='рука на тележке: false (по умолчанию) — лёгкая симуляция без руки, для езды и '
+                        'парковки; true — с рукой (поза arm_initial_positions, тормоз arm_parked)'),
         DeclareLaunchArgument(
             'aruco', default_value='true',
             description='aruco_detector: метка ArUco на торце стола (парковка) по передней камере, '

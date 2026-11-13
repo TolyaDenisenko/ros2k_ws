@@ -6,7 +6,7 @@ arm_table_gz.launch.py — рука xArm6 на столе (без тележки
 Та же сборка руки, что на тележке (arm_on_table.urdf.xacro -> cart-arm.xacro):
 присоска, камера гриппера Orbbec (/gripper_camera/...), вакуум DetachableJoint
 на каждый объект из vacuum_targets. Мир: worlds/arm_table.world (стол, верх
-z=0.75; pick_box и cylinder_block в 0.35–0.45 м перед базой).
+z=0.75; 7 предметов из config/arm_table_objects.yaml в 0.25–0.55 м перед базой).
 
 Вакуум (vacuum_gripper_sim):
   кнопка в RViz — кубик у присоски (инструмент Interact): клик вкл/выкл;
@@ -19,7 +19,7 @@ z=0.75; pick_box и cylinder_block в 0.35–0.45 м перед базой).
 Что на столе и куда ставить (docs/PICK_PLACE.md):
   ros2 topic echo /objects                      # объекты: класс, форма, поза
   ros2 action send_goal /pick_place xarm_grasping_msgs/action/PickPlace \
-      "{object_id: pick_box_0}" --feedback      # взять и поставить в зону
+      "{object_id: cube_0}" --feedback      # взять и поставить в зону
 
 Запуск:
   ros2 launch cart_xarm_bringup arm_table_gz.launch.py
@@ -190,7 +190,7 @@ def generate_launch_description():
                          ["'/detections' if '", LaunchConfiguration('detector'),
                           "' in ('true', 'stub') else ''"])}],
         output='screen')
-    # Детектор классов на OpenVINO (docs/book/RECOGNITION_OPENVINO.md): отдельное окружение Python с
+    # Детектор классов на OpenVINO (docs/RECOGNITION_OPENVINO.md): отдельное окружение Python с
     # openvino (pip install openvino), поэтому запускается его интерпретатором, а не Node.
     openvino_python = os.path.expanduser('~/.venvs/openvino/bin/python')
     detector = ExecuteProcess(
@@ -219,6 +219,11 @@ def generate_launch_description():
     # не нужно (нет таймеров, TF — последний), поэтому use_sim_time не включаем
     pick_by_name = Node(
         package='xarm_grasping', executable='pick_by_name.py', name='pick_by_name',
+        output='screen', condition=IfCondition(use_moveit))
+    # survey_objects: осмотр стола с разных сторон под 45° и голосование нейросети (сервис
+    # /survey_objects, результат /objects_refined); pick_by_name вызывает его перед взятием
+    survey = Node(
+        package='xarm_grasping', executable='survey_objects.py', name='survey_objects',
         output='screen', condition=IfCondition(use_moveit))
 
     # ---------- 7. RViz / MoveIt ----------
@@ -258,7 +263,7 @@ def generate_launch_description():
             'detector', default_value='false',
             description='класс объекта по картинке: false — выключено; true — запустить '
                         'openvino_detector (нужны ~/.venvs/openvino и модель, см. '
-                        'docs/book/RECOGNITION_OPENVINO.md); stub — детектор не запускать, но '
+                        'docs/RECOGNITION_OPENVINO.md); stub — детектор не запускать, но '
                         'object_perception слушает /detections (для tools/stub_detections.py)'),
         DeclareLaunchArgument(
             'detector_model', default_value='~/.local/share/quasi/models/yolox/yolox_tiny.onnx',
@@ -270,7 +275,7 @@ def generate_launch_description():
             description='устройство OpenVINO: CPU | GPU | NPU | AUTO (на этом ПК — CPU, GPU = NVIDIA и медленнее)'),
         DeclareLaunchArgument(
             'detector_conf', default_value='0.4',
-            description='порог уверенности детектора 0..1; для своей модели SSDlite — 0.2 (docs/book/MODEL_TRAINING.md)'),
+            description='порог уверенности детектора 0..1; для своей модели SSDlite — 0.2 (docs/MODEL_TRAINING.md)'),
         DeclareLaunchArgument('use_moveit', default_value='true'),
         DeclareLaunchArgument('use_rviz', default_value='true'),
         DeclareLaunchArgument(
@@ -290,7 +295,7 @@ def generate_launch_description():
         TimerAction(period=6.0, actions=spawners),
         TimerAction(period=8.0, actions=[vacuum_sim, vacuum_button, scene_markers]),
         TimerAction(period=10.0, actions=[grasp_analyzer, object_perception, scene_manager, detector]),
-        TimerAction(period=16.0, actions=[pick_place, pick_by_name]),
+        TimerAction(period=16.0, actions=[pick_place, pick_by_name, survey]),
         TimerAction(period=10.0, actions=[rviz]),
         TimerAction(period=12.0, actions=[moveit]),
     ])

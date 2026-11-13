@@ -8,8 +8,8 @@
 #
 # name  — уникальное имя модели в Gazebo. Класс в /objects определяют по РАЗМЕРАМ правила
 #         xarm_grasping/config/objects.yaml, поэтому предметов одной формы может быть несколько
-#         (cube, cube_2, cube_3 — все «cube»). Сборщик датасета capture_dataset.py пока считает
-#         имя модели классом — для съёмки с повторами его надо доработать (см. docs/STATUS.md).
+#         (cube, cube_2, cube_3 — все «cube»). Сборщик датасета capture_dataset.py берёт класс из
+#         необязательного поля `class`, иначе — имя без хвоста _N (cube_2 -> cube; с 2026-11-13).
 # shape — box | cylinder | pyramid
 # size  — box: [X, Y, Z]; cylinder: [радиус, высота]; pyramid: [сторона основания X, Y, высота], м
 #         (пирамида — четырёхугольная, сетка worlds/meshes/pyramid.obj, генерируется)

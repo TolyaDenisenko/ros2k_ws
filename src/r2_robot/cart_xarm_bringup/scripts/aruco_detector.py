@@ -37,6 +37,7 @@ import math
 import cv2
 import numpy as np
 import rclpy
+from rclpy.executors import ExternalShutdownException
 from geometry_msgs.msg import PoseStamped
 from rclpy.node import Node
 from sensor_msgs.msg import CameraInfo, Image
@@ -225,7 +226,7 @@ def main():
     node = ArucoDetector()
     try:
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):     # Ctrl+C / остановка launch — тихо
         pass
     finally:
         node.destroy_node()
