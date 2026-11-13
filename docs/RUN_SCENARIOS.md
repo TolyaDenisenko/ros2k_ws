@@ -28,8 +28,9 @@
 - В **А** рука закреплена на столе, тележки нет: всё, что связано с объектами на столе, работает
   только здесь (`/objects`, `/pick_place`, `/pick_command`, `/survey_objects`, зоны, детектор классов).
 - В **Б1** (и в **Б2** при `arm:=true`) рука стоит на тележке `c2l-v3`. Конвейера pick&place на
-  тележке пока **нет**: подъезда к столу ещё нет, а с тележки рука достаёт до стола, только если
-  встать к нему задом ([NAV.md](NAV.md) §8а).
+  тележке пока **нет**. Есть команда **«паркуйся»** (`ros2 service call /park std_srvs/srv/Trigger`
+  в **Б2**): тележка по метке ArUco встаёт к столу **боком, правым бортом — со стороны руки**
+  ([NAV.md](NAV.md) §8б).
 - **Б2** — это тот же стенд, что **Б1** (он включается внутрь), но с навигацией, без нод захвата
   и — по умолчанию — без руки.
 
@@ -426,7 +427,8 @@ ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true arm:=true    
 | `use_moveit` | `false` | MoveIt для руки (только при `arm:=true`). Для езды не нужен и тяжёлый |
 | `headless` | `false` | **Рекомендуется `true`**: окно Gazebo ест 0.6–0.75 ядра, вместе с RViz и OctoMap процессор забивается (2026-10-29). Тележку и карты смотрите в RViz |
 | `use_octomap` | `true` | 3D-карта по передней камере (`octomap_server`). `false` — меньше нагрузка; Nav2 её не использует |
-| `aruco` | `true` | детектор метки ArUco на торце стола (`aruco_detector.py`, стартует через 10 с): `/aruco/marker_pose`, `/detected_dock_pose`, `/aruco/status`, `/aruco/image` — для будущей парковки, см. [NAV.md](NAV.md) §8а. `false` — экономия ~0.35 ядра |
+| `aruco` | `true` | детектор метки ArUco на торце стола (`aruco_detector.py`, стартует через 10 с): `/aruco/marker_pose`, `/detected_dock_pose`, `/aruco/status`, `/aruco/image` — для парковки, см. [NAV.md](NAV.md) §8а. `false` — экономия ~0.35 ядра (и без парковки) |
+| `parking` | `true` | узел `table_parking.py` (команда «паркуйся»: `/park`, `/park_command`, `/park/cancel`, `/park/status`), стартует с Nav2 через 30 с; работает только при `aruco:=true` ([NAV.md](NAV.md) §8б) |
 | `arm_initial_positions` | `1.5708 0.06 -0.48 0 0.47 0` | (при `arm:=true`) поза руки на время езды: «перевёрнутая U» поперёк тележки на стороне ручки, присоска в 1.4 см над верхней плитой, пик руки 1.50 м (прежняя поза давала 1.78 м и торчала за борт) |
 | `arm_parked` | `true` | (при `arm:=true`) рука под тормозом с самого старта и не включается, пока нет запроса (сервис `/arm_parking/set`) |
 | `manipulation_nodes` | `false` | (при `arm:=true`) ноды захвата выключены: при езде рука ничего не держит. `true` — вернуть все (вакуум, анализатор, облако камеры запястья) |
@@ -639,6 +641,7 @@ Gazebo), что и симуляция.
 | `test_pick_by_name.py` | проверка логики `pick_by_name.py` без симуляции: поддельные `/objects` и `/pick_place`, команды и ответы | нет |
 | `fake_xarm_vacuum.py` | подмена драйвера xArm (`/xarm/set_vacuum_gripper`, `/xarm/get_vacuum_gripper`) для проверки `vacuum_gripper_xarm.py` без руки | нет |
 | `check_survey_accuracy.py` | точность положения предметов: вид сверху (`/objects`) против осмотра (`/objects_refined`), правда — позы из Gazebo | А, `use_moveit:=true detector:=true` |
+| `test_parking.py` | вызывает `/park`, ждёт итог и сравнивает позу тележки с идеальной стоянкой по Gazebo | Б2 |
 | `check_aruco_accuracy.py` | точность `aruco_detector.py`: переставляет тележку перед столом и сравнивает позу метки с правдой из Gazebo | Б2 |
 | `drive_traction_probe.py` | колёсный привод: проскальзывание колёс и наклон корпуса по командам `/cmd_vel` | Б1 в мире `cart_nav.world` |
 | `nav_tilt_probe.py` | навигация и устойчивость: шлёт цели Nav2, пишет наклон, суставы руки и парковку | Б2 |
@@ -662,6 +665,7 @@ Gazebo), что и симуляция.
 | 5 | Навигация и устойчивость (то, что раньше опрокидывало тележку) | окно 1: `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true use_rviz:=false use_octomap:=false arm:=true`; когда Nav2 active, окно 2: `python3 tools/nav_tilt_probe.py` (по умолчанию 4 цели, ≈ 6 мин; быстро: `--goals "0.15,1.76;3.44,1.15"`) | у каждой цели статус 4 («выполнена»), наклон ≈ 0.0°, суставы руки неизменны; в конце `ИТОГ: устойчиво` (2026-11-02, тогда рука была всегда). Без `arm:=true` скрипт тоже работает, но вместо суставов печатает `nan` (не проверено). С рукой Nav2 может не подняться (§0.1) |
 | 6 | Логика команд «возьми куб 1» без симуляции | окно 1: `ROS_DOMAIN_ID=80 python3 ~/ros2k_ws/src/xarm_grasping/scripts/pick_by_name.py`; окно 2: `ROS_DOMAIN_ID=80 python3 tools/test_pick_by_name.py` | 11 из 11 проверок, код возврата 0 (2026-11-09) |
 | 7 | Переходник вакуума реальной руки без руки | окно 1: `ROS_DOMAIN_ID=78 python3 tools/fake_xarm_vacuum.py`; окно 2: `ROS_DOMAIN_ID=78 python3 ~/ros2k_ws/src/xarm_grasping/scripts/vacuum_gripper_xarm.py`; окно 3: `ROS_DOMAIN_ID=78 ros2 service call /vacuum_gripper/set std_srvs/srv/SetBool "{data: true}"`, «подложить предмет»: `ROS_DOMAIN_ID=78 ros2 param set /fake_xarm_vacuum object true` | `/vacuum_gripper/state` становится `true`, когда предмет «подложен» при включённом вакууме (2026-11-09; точный вывод — не записан) |
+| 8а | Парковка «паркуйся» | окно 1: `cart_nav_gz.launch.py headless:=true`, дождаться Nav2; окно 2: `python3 tools/test_parking.py` | «6/6 стою», ошибка по Gazebo до ~1 см и ~1.5° (2026-11-13: 5–9 мм, до 1.3°) |
 | 8 | Точность метки ArUco | окно 1: `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true`; окно 2: `python3 tools/check_aruco_accuracy.py` (`--quick` — 3 позы) | ошибка положения 0.7–18 мм, курса до 1.5° на 0.64–2.64 м (2026-11-11, тогда с рукой; без руки — не проверено) |
 | 9 | Точность положения предметов после осмотра | окно 1: `ros2 launch cart_xarm_bringup arm_table_gz.launch.py detector:=true detector_model:=$HOME/.local/share/quasi/models/sim_shapes_v3/model_fp16.xml detector_conf:=0.2`; окно 2: `ros2 service call /survey_objects std_srvs/srv/Trigger`, затем `python3 tools/check_survey_accuracy.py` (с `GZ_PARTITION`, как у симуляции, если задан) | по каждому предмету ошибка центра, высоты и размеров, вид сверху против осмотра; вид сверху ~2 мм (2026-11-13) |
 
@@ -719,6 +723,7 @@ ros2 topic hz /imu                            # только Б2 (навигац
 | Навигация, самый лёгкий режим | `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true use_octomap:=false aruco:=false` (руки нет по умолчанию) |
 | Навигация со всеми окнами | `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py` (нагрузка высокая) |
 | Навигация с рукой | `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true arm:=true` (§0.1) |
+| Парковка у стола («паркуйся») | `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true` → дождаться Nav2 → `ros2 service call /park std_srvs/srv/Trigger`, ход: `ros2 topic echo /park/status` ([NAV.md](NAV.md) §8б) |
 | Метка ArUco у стола | `ros2 launch cart_xarm_bringup cart_nav_gz.launch.py headless:=true` → `ros2 topic echo /aruco/status` ([NAV.md](NAV.md) §8а) |
 | Другая поза руки на тележке | добавить `arm_initial_positions:="0 -0.6 -1.0 0 1.6 0"` к запуску Б1 (в Б2 — вместе с `arm:=true`) |
 | Тележка в другом месте | `spawn_x:=-2.0 spawn_y:=1.0 spawn_yaw:=1.57` |

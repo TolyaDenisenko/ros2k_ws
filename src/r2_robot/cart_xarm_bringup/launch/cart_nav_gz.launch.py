@@ -36,7 +36,7 @@ from launch.actions import (DeclareLaunchArgument, GroupAction, IncludeLaunchDes
                             TimerAction)
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node, SetParameter
 
 
@@ -138,6 +138,12 @@ def generate_launch_description():
     aruco = Node(
         package='cart_xarm_bringup', executable='aruco_detector.py', name='aruco_detector',
         output='screen', condition=IfCondition(LaunchConfiguration('aruco')))
+    # Команда «паркуйся»: /park, /park_command, /park/status (docs/NAV.md §8б). Без use_sim_time.
+    parking = Node(
+        package='cart_xarm_bringup', executable='table_parking.py', name='table_parking',
+        output='screen', parameters=[{'use_sim_time': False}],
+        condition=IfCondition(PythonExpression(["'", LaunchConfiguration('parking'), "' == 'true' and '",
+                                                LaunchConfiguration('aruco'), "' == 'true'"])))
 
     return LaunchDescription([
         DeclareLaunchArgument('use_rviz', default_value='true'),
@@ -169,6 +175,10 @@ def generate_launch_description():
             'aruco', default_value='true',
             description='aruco_detector: метка ArUco на торце стола (парковка) по передней камере, '
                         '/aruco/marker_pose, /detected_dock_pose'),
+        DeclareLaunchArgument(
+            'parking', default_value='true',
+            description='table_parking: команда «паркуйся» (/park) — встать у стола боком, правым бортом '
+                        '(нужен aruco:=true)'),
         DeclareLaunchArgument('spawn_x', default_value='-2.0'),
         DeclareLaunchArgument('spawn_y', default_value='0.0'),
         DeclareLaunchArgument('spawn_yaw', default_value='0.0'),
@@ -178,5 +188,5 @@ def generate_launch_description():
         TimerAction(period=6.0, actions=[nav_bridge]),
         TimerAction(period=10.0, actions=[slam, octomap, rviz]),
         # Nav2 ждёт map -> base_footprint: после первой карты slam_toolbox
-        TimerAction(period=30.0, actions=[nav2, watchdog]),
+        TimerAction(period=30.0, actions=[nav2, watchdog, parking]),
     ])
